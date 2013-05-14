@@ -106,10 +106,6 @@ public class RouterAdminServlet extends HttpServlet {
 
             request.setAttribute("entityName", entityName);
 
-            if (matcher.group(2) != null) {
-                request.setAttribute("entityID", matcher.group(2));
-            }
-
             getServletContext()
                     .getNamedDispatcher("ReturnEntityServlet")
                     .forward(request, response);
@@ -138,8 +134,13 @@ public class RouterAdminServlet extends HttpServlet {
 
             final String entityName = matcher.group(1);
             request.setAttribute("entityName", entityName);
+            
+            System.out.println(entityName);
+            
             request.setAttribute("action", "update");
 
+            System.out.println(entityName);
+            
             getServletContext()
                     .getNamedDispatcher("EntityActionServlet")
                     .forward(request, response);
