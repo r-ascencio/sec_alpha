@@ -24,6 +24,7 @@ import utils.HelperSQL;
 public class EntityServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
+    String id = "codigo";
 
     /**
      * @see HttpServlet#HttpServlet()
@@ -61,6 +62,7 @@ public class EntityServlet extends HttpServlet {
         request.setAttribute("adminDesc", "Administracion");
         request.setAttribute("fields", buildFields(entidad));
         request.setAttribute("columns", buildColumns(entidad));
+        request.setAttribute("ID", id);
         request.getRequestDispatcher("/WEB-INF/templates/entidad.jsp").forward(request, response);
         return;
     }
@@ -89,6 +91,11 @@ public class EntityServlet extends HttpServlet {
 
         for (int i = 0; i < entidad.getColsName().length; i++) {
             String field = entidad.getColsName()[i];
+            fk_matcher = fk.matcher(field);
+            
+            if (i == 0 && fk_matcher.matches()) {
+                id = fk_matcher.group(1);
+            }
 
             hidden_matcher = hidden.matcher(field);
 
@@ -144,12 +151,12 @@ public class EntityServlet extends HttpServlet {
                 }
             }
         }
-        
+
         object.append("{command: [{name: \'edit\', text: { edit: \'Editar\', "
                 + "update: \'Guardar\', cancel: \'Cancelar\'}}, "
                 + "{name: \'destroy\', text: \'Eliminar\' }], "
                 + "title: \'&nbsp;\'}");
-        
+
         return "[" + object.toString() + "]";
 
     }

@@ -1,7 +1,6 @@
 package controllers;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.logging.Level;
@@ -18,8 +17,6 @@ import models.Tabla;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import utils.HelperSQL;
-import utils.Utils;
 
 @SuppressWarnings("unused")
 public class EntityActionServlet extends HttpServlet {
@@ -88,9 +85,17 @@ public class EntityActionServlet extends HttpServlet {
                     case "delete":
                         for (int i = 0; i < models.length(); i++) {
                             JSONObject model = models.getJSONObject(i);
+                            String field = tabla.getColsName()[0];
+                            fk_matcher = fk.matcher(field);
                             try {
+                                if (fk_matcher.matches()) {
+                                    field = fk_matcher.group(1);
+                                } else {
+                                    field = "codigo"; // dont hur't me babe, dont hur't me.
+                                }
                                 tabla.Borrar(
-                                        String.valueOf(model.get("codigo")));
+                                        String.valueOf(model.get(field))
+                                        );
                             } catch (Exception ex) {
                                 Logger.getLogger(EntityActionServlet.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -110,10 +115,10 @@ public class EntityActionServlet extends HttpServlet {
 
                                 if (fk_matcher.matches()) {
                                     fieldName = fk_matcher.group(1);
-                                }else if (auto_matcher.matches()) {
+                                } else if (auto_matcher.matches()) {
                                     fieldName = auto_matcher.group(1);
                                 }
-                                
+
                                 String value = String.valueOf(
                                         model.get(fieldName));
                                 values.add(value);

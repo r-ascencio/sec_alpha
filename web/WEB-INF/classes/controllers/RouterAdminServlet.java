@@ -75,7 +75,8 @@ public class RouterAdminServlet extends HttpServlet {
         ADMIN_LOGOUT = Pattern.compile("/admin/logout(/?)");
 
         String pathInfo = request.getRequestURI().substring(request.getContextPath().length());
-
+        
+        System.out.println("::::: " + pathInfo + " :::::");
         // Enumeration enumeration = request.getParameterNames();
         // while (enumeration.hasMoreElements()) {
         // String parameterName = (String) enumeration.nextElement();

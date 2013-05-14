@@ -470,11 +470,12 @@ public final class HelperSQL {
     }
 
     // Pasar un String con el query, y los parametros.
-    public static boolean borrarFila(String tabla, ArrayList<String> params) {
+    public static boolean borrarFila(String tabla, ArrayList<String> params,
+            String id) {
         Boolean response = false;
         try {
             coneccion = obtenerConneccion();
-            String sql = "DELETE FROM " + tabla + " WHERE codigo = ?";
+            String sql = "DELETE FROM " + tabla + " WHERE " + id + "= ?";
             PreparedStatement pexec = coneccion.prepareStatement(sql);
 
             pexec.setString(1, params.get(0));

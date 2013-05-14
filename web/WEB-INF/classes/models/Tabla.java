@@ -73,10 +73,25 @@ public class Tabla {
 
     public void Borrar(String codigo) {
         ArrayList<String> params = new ArrayList<>();
-        params.add(codigo);
-
+        String id;
+        Pattern fk = Pattern.compile("([_A-Za-z0-9]+)(_fk)$");
+        Matcher fk_matcher;
+        Pattern auto = Pattern.compile("([_A-Za-z0-9]+)(_auto)$");
+        Matcher auto_matcher;
         boolean response;
-        response = HelperSQL.borrarFila(this.getTableName(), params);
+
+        params.add(codigo);
+        String field = this.getColsName()[0];
+        fk_matcher = fk.matcher(field);
+
+        if (fk_matcher.matches()) {
+            id = fk_matcher.group(1);
+        } else {
+            id = "codigo";
+        }
+
+        response = HelperSQL.borrarFila(this.getTableName(), params,
+                id);
 
         if (response) {
             System.out.println("This shit works :D ");
