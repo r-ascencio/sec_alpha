@@ -1,6 +1,6 @@
-./.classpath
-./conf/
-./dist/
-./nbproject/
-./resources/
-./build/
+classpath/
+conf/
+dist/
+nbproject/
+resources/
+build/

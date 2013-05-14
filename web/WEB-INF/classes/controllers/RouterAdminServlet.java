@@ -66,13 +66,13 @@ public class RouterAdminServlet extends HttpServlet {
         // '/admin/shit/'
         // see req.getRequestURI()
 
-        ADMIN_ENTITY = Pattern.compile("/admin/([A-Za-z]+)/");
+        ADMIN_ENTITY = Pattern.compile("/admin/([A-Za-z]+)(/?)");
         ADMIN_ENTITY_C = Pattern.compile("/admin/c/([A-Za-z]+)(/?)");
-        ADMIN_ENTITY_U = Pattern.compile("/admin/u/([A-Za-z]+)/([-\\w]+)?(/?)");
-        ADMIN_ENTITY_R = Pattern.compile("/admin/r/([A-Za-z]+)/([-\\w]+)?(/?)");
-        ADMIN_ENTITY_D = Pattern.compile("/admin/d/([A-Za-z]+)/([-\\w]+)?(/?)");
-        ADMIN_LOGIN = Pattern.compile("/admin/login/");
-        ADMIN_LOGOUT = Pattern.compile("/admin/logout/");
+        ADMIN_ENTITY_U = Pattern.compile("/admin/u/([A-Za-z]+)(/?)");
+        ADMIN_ENTITY_R = Pattern.compile("/admin/r/([A-Za-z]+)(/?)");
+        ADMIN_ENTITY_D = Pattern.compile("/admin/d/([A-Za-z]+)(/?)");
+        ADMIN_LOGIN = Pattern.compile("/admin/login(/?)");
+        ADMIN_LOGOUT = Pattern.compile("/admin/logout(/?)");
 
         String pathInfo = request.getRequestURI().substring(request.getContextPath().length());
 
@@ -154,9 +154,6 @@ public class RouterAdminServlet extends HttpServlet {
 
             request.setAttribute("entityName", entityName);
             request.setAttribute("action", "delete");
-            System.out.println("*****************************");
-            System.out.println("*****  OUT            *******");
-            System.out.println("*****************************");
             getServletContext()
                     .getNamedDispatcher("EntityActionServlet")
                     .forward(request, response);
@@ -183,7 +180,7 @@ public class RouterAdminServlet extends HttpServlet {
         }
 
         System.out.println("********************************************");
-        System.out.println("***************THE SHIT*************************");
+        System.out.println("****************404*************************");
         System.out.println("********************************************");
         // why i'm here D:
         response.sendError(HttpServletResponse.SC_NOT_FOUND);

@@ -413,18 +413,11 @@ public final class HelperSQL {
             System.out.println(sql);
 
             PreparedStatement exc = coneccion.prepareStatement(sql);
-            for (int i = 0; i < values.size(); i++) {
-                System.out.println(values.get(i) + "::: index " + i);
-            }
-
+            
             Integer index = 1;
             Integer count = 0;
 
             for (HashMap<Integer, String> hashMap : indexName) {
-                System.out.println(hashMap.toString() + " HERE ");
-                System.out.println("INDEX : " + index);
-                System.out.println("COUNT : " + count);
-
                 if (index <= indexName.size()) {
                     for (Map.Entry<Integer, String> entry : hashMap.entrySet()) {
                         String nombre = entry.getValue();
@@ -434,26 +427,12 @@ public final class HelperSQL {
                             tipo = entidad.getCols().get(nombre + "_fk");
                         }
 
-                        System.out.println("size: " + indexName.size());
-                        System.out.println("cols: " + entidad.getColsName().length);
-                        System.out.println("values: " + entidad.getColsName().length);
-
-                        System.out.println(index + "::: nombre " + nombre
-                                + "::: value " + values.get(count) + " ::: "
-                                + tipo + " ::: count ::: " + count);
-
                         switch (tipo) {
                             case "Integer":
                                 exc.setInt(index, Integer.valueOf(values.get(count)));
-                                System.out.println(index + "::: valor "
-                                        + values.get(count)
-                                        + "::: count ::: " + count);
                                 break;
                             case "String":
                                 exc.setString(index, values.get(count));
-                                System.out.println(index + "::: valor "
-                                        + values.get(count)
-                                        + "::: count ::: " + count);
                                 break;
                         }
 
