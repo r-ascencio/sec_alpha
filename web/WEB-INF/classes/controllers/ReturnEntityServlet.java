@@ -10,7 +10,7 @@ import java.io.PrintWriter;
 public class ReturnEntityServlet extends HttpServlet {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = -4174315124441136689L;
 
@@ -19,27 +19,18 @@ public class ReturnEntityServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-    {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
         models.Tabla tabla = new models.Tabla();
-        
+
         String entityName = (String) request.getAttribute("entityName");
 
         tabla.setTableName(entityName);
-        
-        if (request.getAttribute("entityID") != null) {
-            out.print(
-                    tabla.filaJSON("codigo", (String) request.getAttribute("entityID"))
-                    );
-        } else {
-            System.out.println("This is my json mothefucker");
-            out.print(
-                    tabla.filasJSON(entityName)
-                    );
-        }
+
+        System.out.println("This is my json mothefucker");
+        out.print(
+                tabla.filasJSON(entityName));
         out.flush();
     }
-
 }

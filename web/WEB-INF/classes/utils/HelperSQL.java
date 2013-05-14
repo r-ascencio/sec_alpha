@@ -343,7 +343,7 @@ public final class HelperSQL {
     }
 
     public static void actualizarCampos(String tabla, String[] cols,
-            ArrayList<String> values) {
+            ArrayList<String> values, String Key) {
 
         Pattern fk = Pattern.compile("([_A-Za-z0-9]+)(_fk)$");
         Matcher fk_matcher;
@@ -408,7 +408,7 @@ public final class HelperSQL {
                 indexName.add(registro);
             }
 
-            sql += " WHERE codigo=" + values.get(0) + "";
+            sql += " WHERE " + Key + " =  "+ values.get(0);
 
             System.out.println(sql);
 

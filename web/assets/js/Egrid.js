@@ -1,7 +1,7 @@
 $(document)
         .ready(
         function() {
-            var crudServiceBaseUrl = "/admin", dataSource = new kendo.data.DataSource(
+            var crudServiceBaseUrl = BaseUrl + "/admin", dataSource = new kendo.data.DataSource(
                     {
                         transport: {
                             read: {

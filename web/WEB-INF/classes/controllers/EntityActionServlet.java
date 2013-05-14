@@ -40,7 +40,6 @@ public class EntityActionServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("You're here mothefucker....");
 
         if (request.getAttribute("entityName") != null) {
             try {

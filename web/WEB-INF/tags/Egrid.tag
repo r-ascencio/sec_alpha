@@ -7,5 +7,8 @@
                 pageContext.request.requestURI, 
                 pageContext.request.contextPath)}" />
 
+<script  type="text/javascript">
+    var BaseUrl = "${baseURL}";
+</script>
 <script type="text/javascript" src="${baseURL}/assets/js/Egrid.js"></script>
 </script>

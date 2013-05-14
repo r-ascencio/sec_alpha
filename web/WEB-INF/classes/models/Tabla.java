@@ -77,7 +77,7 @@ public class Tabla {
 
         boolean response;
         response = HelperSQL.borrarFila(this.getTableName(), params);
-        
+
         if (response) {
             System.out.println("This shit works :D ");
         } else {
@@ -109,7 +109,20 @@ public class Tabla {
     }
 
     public void actualizarCampos(ArrayList<String> values) {
-        HelperSQL.actualizarCampos(this.getTableName(), this.getColsName(), values);
+        String key = "codigo";
+        Pattern fk = Pattern.compile("([_A-Za-z0-9]+)(_fk)$");
+        Matcher fk_matcher;
+
+        fk_matcher = fk.matcher(this.getColsName()[0]);
+
+        if (!this.getColsName()[0].equals(key)
+                && fk_matcher.matches()) {
+            key = fk_matcher.group(1);
+        }
+
+        System.out.println(key);
+        HelperSQL.actualizarCampos(this.getTableName(),
+                this.getColsName(), values, key);
     }
 
     public String[] obtenerIds() {
@@ -212,11 +225,11 @@ public class Tabla {
         json.put(jsonObj);
         return json;
     }
-    
+
     /**
-     * Devuelve un HashMap que contiene el nombre y tipo de los campos 
+     * Devuelve un HashMap que contiene el nombre y tipo de los campos
      * declarados.
-     * 
+     *
      * @return HashMap<String, String>
      */
     public HashMap<String, String> getCols() {
