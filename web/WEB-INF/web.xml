@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app id="WebApp_ID" version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
     <display-name>sec_alpha</display-name>
+    
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
         <welcome-file>index.htm</welcome-file>
@@ -33,6 +34,39 @@
         <servlet-name>RouterAdminServlet</servlet-name>
         <url-pattern>/admin/*</url-pattern>
     </servlet-mapping>
+    
+    
+    
+    <servlet>
+        <servlet-name>RouterVotacionServlet</servlet-name>
+        <servlet-class>controllers.RouterVotacionServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RouterVotacionServlet</servlet-name>
+        <url-pattern>/votacion/*</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>ReturnQuestionsServlet</servlet-name>
+        <servlet-class>controllers.ReturnQuestionsServlet</servlet-class>
+    </servlet>
+    
+    <servlet>
+        <servlet-name>SubmitQuestionsServlet</servlet-name>
+        <servlet-class>controllers.ReturnQuestionsServlet</servlet-class>
+    </servlet>
+ 
+    <servlet>
+        <servlet-name>VotacionCompletadaServlet</servlet-name>
+        <servlet-class>controllers.VotacionCompletadaServlet</servlet-class>
+    </servlet>
+    
+       
+    <servlet-mapping>
+        <servlet-name>VotacionCompletadaServlet</servlet-name>
+        <url-pattern>/votacion/completada</url-pattern>
+    </servlet-mapping>
+    
     <jsp-config>
         <jsp-property-group>
             <url-pattern>*.jsp</url-pattern>
