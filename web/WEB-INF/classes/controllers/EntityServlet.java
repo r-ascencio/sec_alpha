@@ -88,21 +88,26 @@ public class EntityServlet extends HttpServlet {
         Matcher fk_matcher;
         Pattern auto = Pattern.compile("([_A-Za-z0-9]+)(_auto)$");
         Matcher auto_matcher;
+        Pattern src = Pattern.compile("([_A-Za-z]+)(_src)$");
+        Matcher src_matcher;
 
+        fk_matcher = fk.matcher(entidad.getColsName()[0]);
+        auto_matcher = auto.matcher(entidad.getColsName()[0]);
+        id = "codigo";
         for (int i = 0; i < entidad.getColsName().length; i++) {
             String field = entidad.getColsName()[i];
-            fk_matcher = fk.matcher(field);
-            
-            if (i == 0 && fk_matcher.matches()) {
+
+            if (i == 0 & fk_matcher.matches()
+                    & !auto_matcher.matches()) {
                 id = fk_matcher.group(1);
             }
-
             hidden_matcher = hidden.matcher(field);
 
             if (!hidden_matcher.matches()) {
 
                 fk_matcher = fk.matcher(field);
                 auto_matcher = auto.matcher(field);
+                src_matcher = src.matcher(field);
 
                 if (fk_matcher.matches()) {
 
@@ -139,15 +144,32 @@ public class EntityServlet extends HttpServlet {
 
 
                     object.append("{ field: \'").append(fk_matcher.group(1))
-                            .append("\', title: \'").append(fk_matcher.group(1)).append("\'")
+                            .append("\', title: \'")
+                            .append(Utils.renderColName(fk_matcher.group(1)))
+                            .append("\'")
                             .append(", values: ").append(arrayValues.toString())
                             .append("},");
 
                 } else if (auto_matcher.matches()) {
                     field = auto_matcher.group(1);
-                    object.append("{ field: \'").append(field).append("\', title: \'").append(field).append("\'},");
+                    object.append("{ field: \'").append(field)
+                            .append("\', title: \'")
+                            .append(Utils.renderColName(field)).append("\'},");
+
+                } else if (src_matcher.matches()) {
+                    String tmp_field = src_matcher.group(1);
+                    object.append("{ field: \'").append(field)
+                            .append("\', title: \'")
+                            .append(Utils.renderColName(tmp_field)).append("\',")
+                            .append("filterable: false, sortable: false, groupable: false,")
+                            .append("template: \'<img src=\"#= imagen_src #\" />\',")
+                            .append("editor: imgEditorCandidato,")
+                            .append("},");
+
                 } else {
-                    object.append("{ field: \'").append(field).append("\', title: \'").append(field).append("\'},");
+                    object.append("{ field: \'").append(field)
+                            .append("\', title: \'")
+                            .append(Utils.renderColName(field)).append("\'},");
                 }
             }
         }

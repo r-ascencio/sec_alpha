@@ -4,6 +4,9 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.http.Part;
 
 public final class Utils {
 
@@ -57,6 +60,18 @@ public final class Utils {
         }
         return retStr.toString();
     }
+//
+//    public static String getNombreArchivo(final Part part, Logger LOGGER) {
+//        final String partHeader = part.getHeader("content-disposition");
+//        LOGGER.log(Level.INFO, "Part Header = {0}", partHeader);
+//        for (String content : part.getHeader("content-disposition").split(";")) {
+//            if (content.trim().startsWith("filename")) {
+//                return content.substring(
+//                        content.indexOf('=') + 1).trim().replace("\"", "");
+//            }
+//        }
+//        return null;
+//    }
 }
 
 final class DateUtils {

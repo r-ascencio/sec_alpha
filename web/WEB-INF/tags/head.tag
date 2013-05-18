@@ -5,8 +5,10 @@
 
 <!DOCTYPE HTML>
 <html lang="en">
-<head>
-<meta charset="UTF-8" />
-<title>${pageTitle}</title>
-<jsp:invoke fragment="assets" />
-</head>
+    <head>
+        <meta charset="UTF-8" />
+        <title>${pageTitle}</title>
+        <t:assets>
+        </t:assets>
+        <jsp:invoke fragment="assets" />
+    </head>

@@ -23,12 +23,8 @@ public class ReturnEntityServlet extends HttpServlet {
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
         models.Tabla tabla = new models.Tabla();
-
         String entityName = (String) request.getAttribute("entityName");
-
         tabla.setTableName(entityName);
-
-        System.out.println("This is my json mothefucker");
         out.print(
                 tabla.filasJSON(entityName));
         out.flush();

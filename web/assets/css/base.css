@@ -19,11 +19,6 @@ body {
        float: left;
 }
 
-.centered {
-	margin-left: auto;
-	margin-right: auto;
-	float: none;
-}
 
 .warp{
        -moz-box-shadow:  0 0 2px #2e2e2e;

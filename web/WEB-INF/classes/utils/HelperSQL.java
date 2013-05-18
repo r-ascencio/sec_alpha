@@ -162,6 +162,7 @@ public final class HelperSQL {
     }
 
     /* TODO: Betters this */
+
     /**
      * getJSON
      *
@@ -408,12 +409,12 @@ public final class HelperSQL {
                 indexName.add(registro);
             }
 
-            sql += " WHERE " + Key + " =  "+ values.get(0);
+            sql += " WHERE " + Key + " =  " + values.get(0);
 
             System.out.println(sql);
 
             PreparedStatement exc = coneccion.prepareStatement(sql);
-            
+
             Integer index = 1;
             Integer count = 0;
 
@@ -454,7 +455,8 @@ public final class HelperSQL {
     // Implementar esta funcion, con trabajadoras del sexo y martini.
     public static void actualizarFila(String tabla, String campo, String valor, String key, String id) {
         String sql = "UPDATE " + tabla + " SET " + campo + " = " + valor
-                + " WHERE " + key + " =" + "id";
+                + " WHERE " + key + " = " + id;
+        System.out.println(sql);
         if (coneccion != null) {
             PreparedStatement comando;
             try {

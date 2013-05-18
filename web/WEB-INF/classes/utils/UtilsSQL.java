@@ -39,7 +39,8 @@ public class UtilsSQL {
             HashMap<String, Object> fila = new HashMap<String, Object>(columnas);
 
             for (int i = 1; i <= columnas; ++i) {
-                fila.put(metadatos.getColumnName(i), rs.getObject(i));
+                
+                fila.put(metadatos.getColumnLabel(i), rs.getObject(i));
             }
 
             lista.add(fila);

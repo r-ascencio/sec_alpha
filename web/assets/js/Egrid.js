@@ -35,16 +35,27 @@ $(document)
                             }
                         },
                         batch: true,
+                        error: function(e) {
+                            console.log("Error " + e.status);
+                        },
+                        requestStart: function(e) {
+                            console.log(e.sender);
+                        },
                         requestEnd: function(e) {
-                            console.log("foo is bar and this sucks :( ");
                             if (e.type !== "read") {
-                                $("#grid").data("kendoGrid").dataSource.read();
+                                console.log("READING MOTHAFUCKA!!");
+                                console.log(e.response);
+                                console.log(e.type);
                             }
+                        },
+                        change: function(e) {
+                            var data = this.data();
+                            console.log(data.length);
                         },
                         pageSize: 10,
                         schema: {
                             model: {
-                                id: "codigo",
+                                id: ID,
                                 fields: Fields
                             }
                         }

@@ -1,36 +1,108 @@
+body {
+    background: url('img/bg.png');
+}
+
 .container {
-       -moz-border-radius: 1px;
-       -webkit-border-radius: 1px;
-       border-radius: 1px;
-       -moz-box-shadow:  0 0 2px #2e2e2e;
-       -webkit-box-shadow:  0 0 2px #2e2e2e;
-       box-shadow:  0 0 2px #2e2e2e;
+    -moz-border-radius: 1px;
+    -webkit-border-radius: 1px;
+    border-radius: 1px;
+    -moz-box-shadow:  0 0 2px #2e2e2e;
+    -webkit-box-shadow:  0 0 2px #2e2e2e;
+    box-shadow:  0 0 2px #2e2e2e;
 }
 
 #main {
-       height: 1200px;
+    height: 1200px;
 }
 
 .left {
-       float: left;
+    float: left;
 }
 
 #sidebar {
-       height: 1200px;
-       background: #FFFFFF;
-       -moz-border-radius: 1px;
-       -webkit-border-radius: 1px;
-       border-radius: 1px;
-       -moz-box-shadow:  0 0 2px #2e2e2e;
-       -webkit-box-shadow:  0 0 2px #2e2e2e;
-       box-shadow:  0 0 2px #2e2e2e;
+    height: 1200px;
+    background: #FFFFFF;
+    -moz-border-radius: 1px;
+    -webkit-border-radius: 1px;
+    border-radius: 1px;
+    -moz-box-shadow:  0 0 2px #2e2e2e;
+    -webkit-box-shadow:  0 0 2px #2e2e2e;
+    box-shadow:  0 0 2px #2e2e2e;
 }
 
 .item {
-       padding: 20px;
-       margin: 0 auto;
+    padding: 20px;
+    margin: 0 auto;
 }
 
 #board {
-       height: 1200px;
+    height: 1200px;
+}
+
+
+#preguntas-container {
+    background: #f7f7f7;
+}
+
+#preguntas-container > form {
+    padding: 20px;
+}
+
+#preguntas-container {
+    padding-bottom: 20px;
+}
+
+.container.normal {
+    box-shadow: none;
+}
+
+.candidato-descripcion {
+    color: #f7f7f7;
+}
+
+.candidato-descripcion dl>dt{
+    color: #f7f7f7;
+}
+
+.candidato-descripcion dl>dd{
+    color: #f7f7f7;
+}
+
+.pregunta {
+    padding-bottom: 40px;
+}
+
+dt, dd { 
+    display: inline; margin: 0; 
+}
+
+dd:after {
+    content: '\A';
+    white-space: pre;
+}
+
+.row.normal {
+    background: none;
+}
+
+.center {
+    margin-left: auto;
+    margin-right: auto;
+    float: none;
+    text-align: center;
+}
+
+
+.candidato-header{
+    background: #2e2e2e;
+    display: block;
+    padding: 10px 0px 10px 0px;
+    margin-bottom: 20px;
+}
+    
+
+@media handheld, only screen and (max-width: 767px) {
+    #poll-header > div {
+        padding: 10px;
+    }
 }

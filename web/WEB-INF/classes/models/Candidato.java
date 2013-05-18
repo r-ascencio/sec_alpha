@@ -3,6 +3,8 @@ package models;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
@@ -10,10 +12,8 @@ import javax.imageio.ImageIO;
 public class Candidato extends Alumno {
 
     private String alumno_fk;
+    private Integer puntaje_auto;
     private String imagen_src;
-    private Integer hidden_puntaje_auto = 0;
-    
-    
     private BufferedImage hidden_foto;
     private static Integer hidden_NCandidato = 24;
     private String hidden_fecha_registro;
@@ -48,11 +48,11 @@ public class Candidato extends Alumno {
      * @return the puntaje
      */
     public Integer getPuntaje() {
-        return hidden_puntaje_auto;
+        return puntaje_auto;
     }
 
     public void agregarPuntaje(Integer puntaje) {
-        this.hidden_puntaje_auto += puntaje;
+        this.puntaje_auto += puntaje;
     }
 
     public static Integer getMaxCandidatos() {
@@ -122,4 +122,6 @@ public class Candidato extends Alumno {
         campos.add(this.getCodigo());
         campos.add(String.valueOf(0));
     }
+
+
 }
