@@ -1,4 +1,4 @@
-package controllers;
+package views;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -140,14 +140,12 @@ public class EntityServlet extends HttpServlet {
 
                         tmpI++;
                     }
-
-
-
                     object.append("{ field: \'").append(fk_matcher.group(1))
                             .append("\', title: \'")
                             .append(Utils.renderColName(fk_matcher.group(1)))
                             .append("\'")
                             .append(", values: ").append(arrayValues.toString())
+                            .append(", editor: fkEditor")
                             .append("},");
 
                 } else if (auto_matcher.matches()) {
@@ -267,53 +265,5 @@ public class EntityServlet extends HttpServlet {
 
         System.out.println("Columnas: " + object.toString());
         return "{" + object.toString() + "}";
-    }
-
-    @SuppressWarnings("unused")
-    private String buildForm(final models.Tabla entidad) {
-        StringBuilder dom = new StringBuilder();
-        String datatype = new String();
-        dom.append("<form method=\"post\" name=\"frm" + entidad.getTableName() + "\" "
-                + "action=\"/sec/admin/" + entidad.getTableName() + "/add/ \">");
-        dom.append("<fieldset>");
-        dom.append("<legend id=\"lengend\">" + entidad.getTableName() + "</legend>");
-        dom.append("<br/>");
-
-        for (Entry<String, String> field : entidad.getCols().entrySet()) {
-
-            if (field.getValue() == "Integer") {
-                datatype = "integer";
-            } else if (field.getValue() == "String") {
-                datatype = "string";
-            } else if (field.getValue() == "Float") {
-                datatype = "float";
-            }
-
-            if (field.getKey() == "codigo" && field.getValue() == "Integer") {
-                dom.append("<input type=\"hidden\" data-type=\"auto_increment\" "
-                        + "name=\"" + field.getKey() + "\" value = \" " + entidad.getCols().size() + 1 + " \" />");
-            } else {
-
-                dom.append("<div class=\"elevencol centered\">");
-                dom.append("<div class=\"twocol last \">");
-                dom.append("<span class=\"prefix\"> " + Utils.renderColName(field.getKey()) + "</span>");
-                dom.append("</div>");
-                dom.append("<div class=\"tencol\">");
-                dom.append("<input type=\"text\" data-type=" + datatype + " name=\"" + field.getKey() + "\" />");
-                dom.append("</div>");
-                dom.append("</div>");
-
-            }
-        }
-        dom.append("<input type=\"hidden\" name=\"" + entidad.getTableName() + "\" />");
-        dom.append("<input type=\"submit\" value=\"Guardar\" class=\"twocol rgt btn success\"/>");
-        dom.append("</fieldset>");
-        dom.append("</form>");
-        dom.append("<script type=\"text/javascript\">");
-        dom.append("Entity = " + entidad.getTableName() + ";");
-        dom.append("</script>");
-        dom.append("</div>");
-        dom.append("<br/>");
-        return dom.toString();
     }
 }

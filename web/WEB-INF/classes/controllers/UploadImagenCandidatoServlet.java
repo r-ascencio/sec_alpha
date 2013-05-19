@@ -8,19 +8,17 @@ package controllers;
 import java.io.*;
 import java.util.*;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.io.output.*;
+import org.json.JSONObject;
 
-public class SubirArchivo extends HttpServlet {
+public class UploadImagenCandidatoServlet extends HttpServlet {
 
     private boolean isMultipart;
     private String filePath;
@@ -28,50 +26,45 @@ public class SubirArchivo extends HttpServlet {
     private int maxMemSize = 4 * 1024;
     private File file;
 
-    public void init() {
-        // Get the file location where it would be stored.
-        filePath =
-                getServletContext().getInitParameter("file-upload");
-    }
-
     public void doPost(HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, java.io.IOException {
-        // Check that we have a file upload request
+        // verificar si es subida
         isMultipart = ServletFileUpload.isMultipartContent(request);
-        response.setContentType("text/plain");
         java.io.PrintWriter out = response.getWriter();
         if (!isMultipart) {
             out.print("No es un archivo");
             return;
         }
         DiskFileItemFactory factory = new DiskFileItemFactory();
-        // maximum size that will be stored in memory
+        // tamaño maximo de la foto
+        // TODO: extender.
         factory.setSizeThreshold(maxMemSize);
-        // Location to save data that is larger than maxMemSize.
+        // Guardar en temporar si es mas pesado.
         factory.setRepository(new File("/tmp/"));
 
-        // Create a new file upload handler
+        // org.apache.fileupload gestiona la subida.
         ServletFileUpload upload = new ServletFileUpload(factory);
-        // maximum file size to be uploaded.
+        // maximo peso ah subir.
         upload.setSizeMax(maxFileSize);
-
+        response.setContentType("application/json");
+        JSONObject _r = new JSONObject();
         try {
-            // Parse the request to get file items.
+            
             List fileItems = upload.parseRequest(request);
 
-            // Process the uploaded file items
+            // procesar a subida
             Iterator i = fileItems.iterator();
             while (i.hasNext()) {
                 FileItem fi = (FileItem) i.next();
                 if (!fi.isFormField()) {
-                    // Get the uploaded file parameters
+                    // obtener parametro individuales.
                     String fieldName = fi.getFieldName();
                     String fileName = fi.getName();
                     String contentType = fi.getContentType();
                     boolean isInMemory = fi.isInMemory();
                     long sizeInBytes = fi.getSize();
-                    // Write the file
+                    // descarga en el servidor
                     if (fileName.lastIndexOf("\\") >= 0) {
                         file = new File(filePath
                                 + fileName.substring(fileName.lastIndexOf("\\")));
@@ -80,30 +73,23 @@ public class SubirArchivo extends HttpServlet {
                                 + fileName.substring(fileName.lastIndexOf("\\") + 1));
                     }
                     fi.write(file);
-                    ///String userPath = System.getenv("PLACE_TO_UPLOAD");
-                    String userPath = "/home/_r/devs/java/sec_alpha/web/assets/uploads/";
-                    System.out.println(userPath);
-                    userPath  =
-                            request.getServletContext().getRealPath("/assets/uploads");
-                    System.out.println(userPath);
-                    if (file.renameTo(new File(userPath + file.getName()))) {
-                        out.print(file.toPath());
-                    } else {
-                        out.print("YOU");
+                    ///String userPath = System.getenv("PLACE_TO_UPLOAD_MOTHEFUCKA");
+                    String relativePath = "/assets/uploads/";
+                    String userPath =
+                            request.getServletContext()
+                            .getRealPath(relativePath) + "/" + file.getName();
+                    String imgPath = request.getServletContext().getContextPath()
+                            + "/" + relativePath + file.getName();
+                    if (file.renameTo(new File(userPath))) {
+                        _r.put("imagen_src", imgPath);
+
                     }
                 }
+                out.println(_r);
+                out.flush();
             }
-            out.flush();
         } catch (Exception ex) {
             System.out.println(ex);
         }
-    }
-
-    public void doGet(HttpServletRequest request,
-            HttpServletResponse response)
-            throws ServletException, java.io.IOException {
-
-        throw new ServletException("GET method used with "
-                + getClass().getName() + ": POST method required.");
     }
 }

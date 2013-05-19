@@ -275,12 +275,9 @@ public class Tabla {
         Pattern hidden = Pattern.compile("^(hidden)[_A-Za-z0-9]+");
         Matcher hidden_matcher;
         String[] cols = new String[this.getCols().size()];
-
         Pattern auto = Pattern.compile("([_A-Za-z0-9]+)(_auto)$");
         Matcher auto_matcher;
-
         int i = 0;
-
         for (Field f : getClass().getDeclaredFields()) {
             hidden_matcher = hidden.matcher(f.getName());
             if (i < cols.length) {

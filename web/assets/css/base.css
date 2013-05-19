@@ -434,28 +434,6 @@ Modifiers
 }
 
 
-/* =============================== */
-/* ! prefixs, and postfix | foundation */
-/* =============================== */
-
-.prefix, .postfix{
-       display: block;
-       height: 30px;
-       line-height: 31px;
-       letter-spacing: 0.7px;
-       padding-bottom: 0;
-       padding-top: 0;
-       position: relative;
-       text-align: center;
-       z-index: 2px;
-}
-
-span .prefix, .postfix{
-       background-color: #f2f2f2;
-       border: 1px solid #cccccc;
-       font-size: 12px;
-}
-
 /* =============================   */
 /* ! alerts                        */
 /* =============================   */

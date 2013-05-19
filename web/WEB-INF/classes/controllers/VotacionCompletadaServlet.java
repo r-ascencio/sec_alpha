@@ -47,18 +47,17 @@ public class VotacionCompletadaServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
             out.println("<title>Servlet VotacionCompletadaServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet GET VotacionCompletadaServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1> CODIGO: "+ request.getSession().getAttribute("voto") +"</h1>");
             out.println("</body>");
             out.println("</html>");
-        } finally {
-            out.close();
+
+        } catch (Exception e) {
         }
 
     }

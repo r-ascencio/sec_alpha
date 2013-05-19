@@ -1,4 +1,4 @@
-package controllers;
+package controllers.routers;
 
 import java.io.IOException;
 import java.util.regex.Matcher;
@@ -22,6 +22,7 @@ public class RouterAdminServlet extends HttpServlet {
     /**
      * URL for administration table, example: /admin/Alumnos/
      */
+    private Pattern           ADMIN_INDEX;
     private Pattern           ADMIN_ENTITY;
 
     /**
@@ -63,6 +64,7 @@ public class RouterAdminServlet extends HttpServlet {
         // '/admin/shit/'
         // see req.getRequestURI()
 
+        ADMIN_INDEX = Pattern.compile("/admin(/?)$");
         ADMIN_ENTITY = Pattern.compile("/admin/([A-Za-z]+)(/?)");
         ADMIN_ENTITY_C = Pattern.compile("/admin/c/([A-Za-z]+)(/?)");
         ADMIN_ENTITY_U = Pattern.compile("/admin/u/([A-Za-z]+)(/?)");
@@ -81,7 +83,21 @@ public class RouterAdminServlet extends HttpServlet {
         // parameterName);
         // }
 
+        
         // ADMIN INDEX:
+        matcher = ADMIN_INDEX.matcher(pathInfo);
+
+        if (matcher.matches()) {
+            
+            getServletContext()
+                    .getNamedDispatcher("AdminDashboardServlet")
+                    .forward(request, response);
+
+            return;
+        }
+        
+        
+        // ADMIN ENTITY :
         matcher = ADMIN_ENTITY.matcher(pathInfo);
 
         if (matcher.matches()) {
@@ -182,7 +198,7 @@ public class RouterAdminServlet extends HttpServlet {
         System.out.println("****************404*************************");
         System.out.println("********************************************");
         // why i'm here D:
-        response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        //response.sendError(HttpServletResponse.SC_NOT_FOUND);
         assert false;
     }
 }

@@ -1,50 +1,57 @@
-<%-- 
-    Document   : votacionIndex
-    Created on : 15-may-2013, 23:03:24
-    Author     : _r
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-<c:set var="baseURL" 
-       value="${fn:replace(pageContext.request.requestURL, 
-                pageContext.request.requestURI, 
-                pageContext.request.contextPath)}" />
+<c:set var="baseURL" value="${fn:replace(pageContext.request.requestURL, 
+                              pageContext.request.requestURI, 
+                              pageContext.request.contextPath)}" />
+
+<%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 
 <!-- 
 <attribute name="adminTitle" required="true"%>
 -->
 
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <c:choose>
-            <c:when test="${logged == true}">
-                <h1>You're a logged mothefucker</h1>
-            </c:when>
-            <c:when test="${logged == false}">
-                <form method="POST" action="${baseURL}/votacion/">
-                    <fieldset>
-                        <legend> Ingresar </legend>
+<t:head pageTitle="Inicio de Votacion">
+    <jsp:attribute name="preassets">
+        <!-- foundation -->
+        <link rel="stylesheet" 
+              href="${baseURL}/assets/css/foundationforms/css/foundation.css" />
+        <!-- /foundation -->
+    </jsp:attribute>
+</t:head>
+
+
+<t:adminbody adminTitle="Votacion" adminDescp="${message}">
+    <jsp:attribute name="sidemenu">
+        <div class="twocol last"></div>
+    </jsp:attribute>
+    <jsp:attribute name="frm">
+        <form method="POST" action="${baseURL}/login/votacion/">
+            <fieldset>
+                <div class="twelvecol">
+                    <div class="threecol last">
+                        <span class="prefix">Carnet</span>
+                    </div>
+                    <div class="ninecol">
                         <input type="text" name="codigo" 
                                value="${fn:escapeXml(htmlCode)}"/>
+                    </div>
+                </div>
+                <div class="twelvecol">
+                    <div class="threecol last">
+                        <span class="prefix">N.I.E.</span>
+                    </div>
+                    <div class="ninecol">
                         <input type="text" name="nie" 
                                value="${fn:escapeXml(htmlCode)}"/> 
-                        <input type="submit" 
-                               value="<c:out value="Ingresar"/>" />
-                    </fieldset>
-                </form> 
-            </c:when>
-        </c:choose>
-    </body>
-</html>
-
-
+                    </div>
+                </div>
+                <input type="submit" 
+                       value="<c:out value="Ingresar"/>" class="btn" />
+            </fieldset>
+        </form>     
+    </jsp:attribute>
+</t:adminbody>
 <!-- TODO: Replace with c:out everywhere -->

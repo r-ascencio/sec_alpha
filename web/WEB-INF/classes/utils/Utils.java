@@ -1,14 +1,15 @@
 package utils;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.servlet.http.Part;
+
 
 public final class Utils {
+    private static Object message;
 
     public static boolean isInt(String s) {
         return s.matches("^\\d+$");
@@ -60,6 +61,32 @@ public final class Utils {
         }
         return retStr.toString();
     }
+    
+    
+
+    public static String encodeToSHA512(String value) {
+        String out = "";
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-512");
+
+            md.update(value.getBytes());
+            byte[] mb = md.digest();
+            for (int i = 0; i < mb.length; i++) {
+                byte temp = mb[i];
+                String s = Integer.toHexString(new Byte(temp));
+                while (s.length() < 2) {
+                    s = "0" + s;
+                }
+                s = s.substring(s.length() - 2);
+                out += s;
+            }
+
+        } catch (NoSuchAlgorithmException e) {
+            System.out.println("ERROR: " + e.getMessage());
+        }
+        return out;
+
+    }
 //
 //    public static String getNombreArchivo(final Part part, Logger LOGGER) {
 //        final String partHeader = part.getHeader("content-disposition");
@@ -73,7 +100,6 @@ public final class Utils {
 //        return null;
 //    }
 }
-
 final class DateUtils {
 
     public final DateFormat df = new SimpleDateFormat("dd/MM/yyyy");

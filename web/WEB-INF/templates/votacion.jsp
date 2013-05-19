@@ -39,8 +39,7 @@
                         <div class="candidato-img fourcol">
                             <div class="onecol"></div>
                             <div class="tencol">
-                                <img src="http://placedog.com/64/64" height="96" alt=""/>
-                                <!-- <img src="${candidato.imagen_src}" height="32" alt=""/> -->
+                                <img src="${candidato.imagen_src}" height="96" alt=""/> 
                             </div>
                             <div class="onecol"></div>
                         </div>
@@ -88,7 +87,7 @@
                                     <div class="center">
                                         <input type="RADIO"
                                                name="<c:out 
-                                                   value="${param.email}${p.codigo}_${candidato.codigo}" 
+                                                   value="${p.codigo}_${candidato.codigo}" 
                                                    />" 
                                                value="<c:out value="1"/>" required/>
                                     </div>
@@ -144,7 +143,6 @@
                         </div>
                     </div>
                 </c:forEach>
-
             </fieldset>
         </c:forEach>
     </jsp:attribute>

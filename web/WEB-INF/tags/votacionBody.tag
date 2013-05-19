@@ -15,7 +15,7 @@
             <div id="preguntas-container" class="eightcol">
                 <form id="preguntas-form" method="POST" action="${baseURL}/votacion/">
                     <jsp:invoke fragment="preguntas"></jsp:invoke>
-                    <input type="submit" class="finish"/>
+                    <input type="submit" class="finish" value="Terminar"/>
                 </form>
             </div>
         </div>

@@ -162,7 +162,6 @@ public final class HelperSQL {
     }
 
     /* TODO: Betters this */
-
     /**
      * getJSON
      *
@@ -302,6 +301,7 @@ public final class HelperSQL {
             String query = "INSERT INTO " + tabla + " " + colsS + " VALUES (" + vals + ")";
             coneccion = obtenerConneccion();
 
+            System.out.println("::::::" + query + ":::::::::::.");
             command = coneccion.prepareStatement(query, values.size());
 
             Integer index = 1;
@@ -311,21 +311,28 @@ public final class HelperSQL {
                         namesCols.get(count));
 
 
-                if (fieldType == null) {
+                Integer i = 0;
+                while(fieldType == null) {
+                    String[] temps = {"_fk", "_auto"};
                     fieldType = entidad.getCols().get(
-                            namesCols.get(count) + "_fk");
+                            namesCols.get(count) + temps[i]);
+                    i++;
                 }
 
-                if (!values.get(count).equals("null")) {
-                    switch (fieldType) {
-                        case "Integer":
-                            command.setInt(index, Integer.valueOf(values.get(count)));
-                            break;
-                        case "String":
-                            command.setString(index, values.get(count));
-                            break;
+                System.out.println("::::::" + values.get(count) + "::::::::::::");
+
+                if (fieldType != null) {
+                    if (!values.get(count).equals("null")) {
+                        switch (fieldType) {
+                            case "Integer":
+                                command.setInt(index, Integer.valueOf(values.get(count)));
+                                break;
+                            case "String":
+                                command.setString(index, values.get(count));
+                                break;
+                        }
+                        index++;
                     }
-                    index++;
                 }
             }
 
@@ -400,7 +407,8 @@ public final class HelperSQL {
                 }
 
                 if (j != (cols.length - 1)
-                        && !auto_matcher.matches()) {
+                        && !auto_matcher.matches()
+                        && !(fieldName == "codigo_auto")) {
                     sql += " , ";
                 } else {
                     sql += " ";
@@ -453,18 +461,20 @@ public final class HelperSQL {
     }
 
     // Implementar esta funcion, con trabajadoras del sexo y martini.
-    public static void actualizarFila(String tabla, String campo, String valor, String key, String id) {
-        String sql = "UPDATE " + tabla + " SET " + campo + " = " + valor
-                + " WHERE " + key + " = " + id;
+    public static void actualizarFila(String tabla, String campo, Object valor, String key, Object id) {
+        String sql = "UPDATE " + tabla + " SET " + campo
+                + " = " + valor + " WHERE " + key + " = ?;";
         System.out.println(sql);
         if (coneccion != null) {
             PreparedStatement comando;
             try {
                 coneccion = obtenerConneccion();
+                //tabla, valor, campo, key, id
                 comando = coneccion.prepareStatement(sql);
+                comando.setObject(1, id);
                 comando.executeUpdate();
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                System.out.println("SQL ERROR:" + e.getMessage());
             }
         } else {
             throw new Error("No existe una coneccion, utilize la funcion conectar()");

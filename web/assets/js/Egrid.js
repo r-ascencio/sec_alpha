@@ -36,16 +36,15 @@ $(document)
                         },
                         batch: true,
                         error: function(e) {
-                            console.log("Error " + e.status);
+                            console.log("Error Status: " + e.status);
                         },
                         requestStart: function(e) {
-                            console.log(e.sender);
+                            console.log("Request Start");
                         },
                         requestEnd: function(e) {
+                            console.log(e.type);
                             if (e.type !== "read") {
-                                console.log("READING MOTHAFUCKA!!");
-                                console.log(e.response);
-                                console.log(e.type);
+                                $("#grid").data("kendoGrid").dataSource.read();
                             }
                         },
                         change: function(e) {
@@ -134,7 +133,10 @@ $(document)
                 },
                 height: 430,
                 columns: Columns,
-                editable: "inline",
+                edit: function(e) {
+                    $("#grid").closest(".k-upload-button").find("span").text("subir...");
+                },
+                editable: "popup",
                 toolbar: [{name: "create", text: "Añadir"}]
             });
         });
