@@ -97,7 +97,7 @@ public final class HelperSQL {
         return DriverManager.getConnection(url, usuario, password);
     }
 
-    private static void desconectar() throws SQLException {
+    public static void desconectar() throws SQLException {
         coneccion.close();
     }
 
@@ -301,7 +301,7 @@ public final class HelperSQL {
             String query = "INSERT INTO " + tabla + " " + colsS + " VALUES (" + vals + ")";
             coneccion = obtenerConneccion();
 
-            System.out.println("::::::" + query + ":::::::::::.");
+            System.out.println(":::::: QUERY " + query + ":::::::::::.");
             command = coneccion.prepareStatement(query, values.size());
 
             Integer index = 1;

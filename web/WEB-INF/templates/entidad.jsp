@@ -7,7 +7,7 @@
                               pageContext.request.requestURI, 
                               pageContext.request.contextPath)}" />
 
-<t:head pageTitle="principal">
+<t:head pageTitle="Administracion ${entityName}">
     <jsp:attribute name="preassets">
         <!-- foundation -->
         <link rel="stylesheet" 
@@ -15,6 +15,7 @@
         <!-- /foundation -->
     </jsp:attribute>
     <jsp:attribute name="assets">
+
         <script type="text/javascript">
             var fkEditor = function(container, options) {
                 console.log(options);
@@ -86,6 +87,53 @@
     <jsp:attribute name="body">
         <!-- here is supposed to be a fucking method to generate the
          fucking forms  -->
+        <c:if test="${entityName == 'Alumno'}">
+            <div class="twelvecol">
+                <div id="instrucciones">
+                    <div class="twelvecol">
+                        <h2> Importar archivo de excel </h2>
+                    </div>
+                    <div class="twelvecol">
+                        <div class="twocol"></div>
+                        <div class="eightcol">
+                            <form method="post" action="submit">
+                                <div class="twelvecol">
+                                    <fieldset>
+                                        <div class="twelvecol">
+                                            <input type="file" name="excelFile"
+                                                   id="excelFile"/>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </form>
+                            <script type="text/javascript">
+                                $("#excelFile").kendoUpload({
+                                    multiple: false,
+                                    showFileList: true,
+                                    async: {
+                                        saveUrl:
+                                                '${baseURL}/admin/import/alumnos',
+                                        autoUpload: true
+                                    },
+                                    success: function(e) {
+                                        alert("Archivo subido con exito,\n\
+                                Boton desactivado");
+                                        $('#excelFile').data("kendoUpload").enable(false);
+                                    }
+                                });
+                                $(".k-upload-button").find("span")
+                                        .text("Subir archivo de excel");
+                                $(".k-upload-button").css("width", "100%");
+                            </script>
+                        </div>
+                        <div class="twocol last"></div>
+                    </div>
+                </div>
+            </div>
+        </c:if>
+
+        <div class="twelvecol" style="margin-bottom: 10px;"></div>
+        <div class="twelvecol" style="margin-top: 10px;"></div>
     </jsp:attribute>
 
     <jsp:attribute name="frm">

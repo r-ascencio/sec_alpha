@@ -5,18 +5,34 @@
 package controllers;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+//Apache/commons
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.json.JSONObject;
+
+// Apache/POI
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+// models
+import models.Alumno;
+import models.Especialidad;
+import utils.HelperSQL;
 
 /**
  *
@@ -57,6 +73,9 @@ public class UploadExcelAlumnoServlet extends HttpServlet {
 
         response.setContentType("application/json");
         JSONObject respuesta = new JSONObject();
+        Especialidad modeloEspecialidad = new Especialidad();
+        Alumno modeloAlumno = new Alumno();
+
         try {
 
             List fileItems = upload.parseRequest(request);
@@ -92,6 +111,157 @@ public class UploadExcelAlumnoServlet extends HttpServlet {
                         String excelFilePath = request.getServletContext().getContextPath()
                                 + "/" + relativePath + xlsxFile.getName();
                         if (xlsxFile.renameTo(new File(userPath))) {
+
+                            try {
+                                // archivo excel 2007+
+                                FileInputStream excelFile = new FileInputStream(
+                                        "/home/_r/devs/java/netbeans/ExcelTest/src/exceltest/datos.xlsx");
+                                XSSFWorkbook wb = new XSSFWorkbook(excelFile);
+                                Sheet sheet = wb.getSheet("Alumnos");
+
+                                //numero de filas.
+                                int nRows = sheet.getLastRowNum();
+
+                                // Se concatenara al nombre de la Especialidad.
+                                HashMap<String, String> romans = new HashMap<>();
+                                romans.put("1", "I");
+                                romans.put("2", "II");
+                                romans.put("3", "III");
+                                romans.put("4", "IV");
+                                romans.put("5", "V");
+
+                                ArrayList<HashMap<String, String>> rowsExcel = new ArrayList<>();
+                                ArrayList<String> nombreEspecialidades = new ArrayList<>();
+
+                                for (int x = 1; x < nRows; x++) {
+                                    //Get the row
+                                    Row row = sheet.getRow(x);
+
+                                    if (row.getCell(7).getStringCellValue().equals("Tercer Año")) {
+
+                                        HashMap<String, String> tmp = new HashMap<String, String>();
+
+                                        tmp.put("codigo", row.getCell(1).getStringCellValue());
+
+                                        tmp.put("NIE", row.getCell(2).getStringCellValue());
+
+                                        String nombre = row.getCell(3).getStringCellValue()
+                                                .concat(" " + row.getCell(4).getStringCellValue()
+                                                .concat(" " + row.getCell(5).getStringCellValue())
+                                                .concat(" " + row.getCell(6).getStringCellValue()));
+
+                                        tmp.put("nombre", nombre);
+
+                                        String especialidadGT = romans.get(
+                                                row.getCell(10).getStringCellValue());
+
+                                        String especialidad = row.getCell(8).getStringCellValue()
+                                                .concat(" " + especialidadGT);
+
+                                        tmp.put("nombreEspecialidad", especialidad);
+                                        // Grupo tecnico;
+
+                                        nombreEspecialidades.add(especialidad);
+
+                                        // Grupo tecnico;
+
+                                        rowsExcel.add(tmp);
+                                    }
+                                }
+
+
+
+                                ArrayList<String> especialidades = new ArrayList<>();
+                                for (int z = 0; z < nombreEspecialidades.size(); z++) {
+                                    String especialidad = nombreEspecialidades.get(z);
+
+                                    //shame on me?
+                                    if (z == 0) {
+                                        especialidades.add(especialidad);
+                                    }
+
+                                    Integer k = 0;
+
+                                    for (int j = 0; j < especialidades.size(); j++) {
+                                        String tmpEspecialidad = especialidades.get(j);
+                                        if (!tmpEspecialidad.equals(especialidad)) {
+                                            k++;
+                                        }
+                                    }
+
+                                    if (k == especialidades.size()) {
+                                        especialidades.add(especialidad);
+                                    }
+
+                                }
+
+
+                                for (int m = 0; m < especialidades.size(); m++) {
+                                    ArrayList<String> values = new ArrayList<>();
+                                    String nombreEspecialidad = especialidades.get(m);
+                                    values.add(nombreEspecialidad);
+                                    // Shame on me?
+                                    values.add("0");
+                                    try {
+                                        HelperSQL.insertarFila(
+                                                modeloEspecialidad.getTableName(),
+                                                modeloEspecialidad.getColsName(),
+                                                values);
+                                    } catch (Exception e) {
+                                        System.out.println("\n\t\tFUUUU!");
+                                        System.out.println("\n\t\t" + e.getMessage());
+                                    }
+                                }
+
+
+                                for (int l = 0; l < rowsExcel.size(); l++) {
+                                    ArrayList<String> values = new ArrayList<>();
+                                    HashMap<String, String> tmpAlumno = rowsExcel.get(l);
+                                    //codigo, NIE, nombre, nombreEspecialidad.
+                                    values.add(tmpAlumno.get("codigo"));
+                                    values.add(tmpAlumno.get("NIE"));
+                                    values.add(tmpAlumno.get("nombre"));
+                                    try {
+                                        ArrayList<String> selectEspecialidad = new ArrayList<>();
+                                        selectEspecialidad.add("codigo");
+                                        System.out.println("\n ::: SELECT ::: \n");
+                                        List<HashMap<String, Object>> tmpCodigoEspecialidad =
+                                                HelperSQL.obtenerFilas(
+                                                modeloEspecialidad.getTableName(),
+                                                selectEspecialidad,
+                                                "WHERE nombre = \'"
+                                                .concat(
+                                                tmpAlumno.get("nombreEspecialidad")
+                                                .concat("\'")));
+                                        //shame on me??
+                                        HelperSQL.desconectar();
+                                        values.add(tmpCodigoEspecialidad
+                                                .get(0).get("codigo").toString());
+                                        tmpCodigoEspecialidad = null;
+                                        System.out.println("\n ::: SELECT ::: \n");
+
+                                        System.out.println("\n ::: INSERT ::: \n");
+                                        HelperSQL.insertarFila(
+                                                modeloAlumno.getTableName(),
+                                                modeloAlumno.getColsName(),
+                                                values);
+                                        //shame on me??
+                                        HelperSQL.desconectar();
+                                        System.out.println("\n ::: INSERT ::: \n");
+
+
+                                    } catch (Exception e) {
+                                        System.out.println("\nError: Actualizaon tabla.");
+                                    }
+                                }
+
+                            } catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+
                             respuesta.put("excelFile", excelFilePath);
                         }
                     }
@@ -102,7 +272,7 @@ public class UploadExcelAlumnoServlet extends HttpServlet {
                             + "compatible con excel 2007+");
                     out.println(respuesta);
                 }
-                
+
                 out.flush();
             }
         } catch (Exception ex) {
