@@ -7,16 +7,15 @@
 
 <!-- fragmest -->
 <%@attribute name="preguntas" fragment="true"%>
+<%@attribute name="listView" fragment="true"%>
 
 <div class="container normal">
     <div class="row normal">
         <div class="twelvecol">
             <div class="twocol"></div>
             <div id="preguntas-container" class="eightcol">
-                <form id="preguntas-form" method="POST" action="${baseURL}/votacion/">
                     <jsp:invoke fragment="preguntas"></jsp:invoke>
-                    <input type="submit" class="finish" value="Terminar"/>
-                </form>
+                <jsp:invoke fragment="listView"></jsp:invoke>
             </div>
         </div>
     </div>

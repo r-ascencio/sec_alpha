@@ -76,6 +76,10 @@ public class AdminLogServlet extends HttpServlet {
                     session.setAttribute("userName", userName);
                     response.sendRedirect(request.getContextPath()
                             + "/admin/");
+                } else {
+                    request.setAttribute("message", "Erroneos");
+                    request.getRequestDispatcher("/WEB-INF/templates/adminLogin.jsp")
+                            .forward(request, response);
                 }
             }
         } else {

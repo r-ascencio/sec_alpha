@@ -312,7 +312,7 @@ public final class HelperSQL {
 
 
                 Integer i = 0;
-                while(fieldType == null) {
+                while (fieldType == null) {
                     String[] temps = {"_fk", "_auto"};
                     fieldType = entidad.getCols().get(
                             namesCols.get(count) + temps[i]);

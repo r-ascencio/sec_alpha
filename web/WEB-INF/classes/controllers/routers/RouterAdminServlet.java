@@ -12,43 +12,39 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * AdminRouterServlet, es un intento por hacer las url's dinamicas.
  */
-
 public class RouterAdminServlet extends HttpServlet {
 
     public RouterAdminServlet() {
         super();
     }
-
     /**
      * URL for administration table, example: /admin/Alumnos/
      */
-    private Pattern           ADMIN_INDEX;
-    private Pattern           ADMIN_ENTITY;
-
+    private Pattern ADMIN_INDEX;
+    private Pattern ADMIN_ENTITY;
+    private Pattern ADMIN_ENTITY_REPORT;
+    private Pattern ADMIN_ENTITY_REPORT_VOTO;
     /**
      * Start and Finish a session based on credentials.
      */
-    private Pattern           ADMIN_LOGIN;
-    private Pattern           ADMIN_LOGOUT;
-
+    private Pattern ADMIN_LOGIN;
+    private Pattern ADMIN_LOGOUT;
     /**
      * Get a table object and create, read/return, update, delete the object and
      * sync in the database, please forgive me i will put a javadoc for each
      * later.
      */
-
-    private Pattern           ADMIN_ENTITY_C;
-    private Pattern           ADMIN_ENTITY_U;
-    private Pattern           ADMIN_ENTITY_R;
-    private Pattern           ADMIN_ENTITY_D;
-
-    /** matcher for the urls patterns. */
-    Matcher                   matcher;
-
+    private Pattern ADMIN_ENTITY_C;
+    private Pattern ADMIN_ENTITY_U;
+    private Pattern ADMIN_ENTITY_R;
+    private Pattern ADMIN_ENTITY_D;
+    /**
+     * matcher for the urls patterns.
+     */
+    Matcher matcher;
     private static final long serialVersionUID = 1L;
 
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-    {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Enumeration enumeration = request.getParameterNames();
         // while (enumeration.hasMoreElements()) {
         // String parameterName = (String) enumeration.nextElement();
@@ -58,23 +54,24 @@ public class RouterAdminServlet extends HttpServlet {
         doGet(request, response);
     }
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-    {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // req.getPathInfo: instead of '/sec_prev/admin/shit/' we get
         // '/admin/shit/'
         // see req.getRequestURI()
 
         ADMIN_INDEX = Pattern.compile("/admin(/?)$");
-        ADMIN_ENTITY = Pattern.compile("/admin/([A-Za-z]+)(/?)");
-        ADMIN_ENTITY_C = Pattern.compile("/admin/c/([A-Za-z]+)(/?)");
-        ADMIN_ENTITY_U = Pattern.compile("/admin/u/([A-Za-z]+)(/?)");
-        ADMIN_ENTITY_R = Pattern.compile("/admin/r/([A-Za-z]+)(/?)");
-        ADMIN_ENTITY_D = Pattern.compile("/admin/d/([A-Za-z]+)(/?)");
+        ADMIN_ENTITY_REPORT = Pattern.compile("/admin/reportes/([A-Za-z]+)(/?)$");
+        ADMIN_ENTITY_REPORT_VOTO = Pattern.compile("/admin/reportes/voto/([A-Za-z]+)(/?)$");
+        ADMIN_ENTITY = Pattern.compile("/admin/([A-Za-z]+)(/?)$");
+        ADMIN_ENTITY_C = Pattern.compile("/admin/c/([A-Za-z]+)(/?)$");
+        ADMIN_ENTITY_U = Pattern.compile("/admin/u/([A-Za-z]+)(/?)$");
+        ADMIN_ENTITY_R = Pattern.compile("/admin/r/([A-Za-z]+)(/?)$");
+        ADMIN_ENTITY_D = Pattern.compile("/admin/d/([A-Za-z]+)(/?)$");
         ADMIN_LOGIN = Pattern.compile("/admin/login(/?)");
         ADMIN_LOGOUT = Pattern.compile("/admin/logout(/?)");
 
         String pathInfo = request.getRequestURI().substring(request.getContextPath().length());
-        
+
         System.out.println("::::: " + pathInfo + " :::::");
         // Enumeration enumeration = request.getParameterNames();
         // while (enumeration.hasMoreElements()) {
@@ -84,25 +81,79 @@ public class RouterAdminServlet extends HttpServlet {
         // }
 
         
+        matcher = ADMIN_LOGOUT.matcher(pathInfo);
+        if (matcher.matches()) {
+
+            request.
+                    getServletContext()
+                    .getNamedDispatcher("AdminEndSessionServlet")
+                    .forward(request, response);
+            return;
+        }
+
         // ADMIN INDEX:
         matcher = ADMIN_INDEX.matcher(pathInfo);
 
         if (matcher.matches()) {
-            
+
             getServletContext()
                     .getNamedDispatcher("AdminDashboardServlet")
                     .forward(request, response);
 
             return;
         }
+
+        // ADMIN INDEX:
+        matcher = ADMIN_ENTITY_REPORT.matcher(pathInfo);
+
+        if (matcher.matches()) {
+            
+            request.setAttribute("entityName", matcher.group(1));
+            System.err.println("::::::"+matcher.group(1) + ":::::::::::");
+            getServletContext()
+                    .getNamedDispatcher("GenerarReportesServlet")
+                    .forward(request, response);
+
+            return;
+        }
+        
+                // ADMIN INDEX:
+        matcher = ADMIN_ENTITY_REPORT.matcher(pathInfo);
+
+        if (matcher.matches()) {
+            
+            request.setAttribute("entityName", matcher.group(1));
+            System.err.println("::::::"+matcher.group(1) + ":::::::::::");
+            getServletContext()
+                    .getNamedDispatcher("GenerarReportesServlet")
+                    .forward(request, response);
+
+            return;
+        }
         
         
+                // ADMIN INDEX:
+        matcher = ADMIN_ENTITY_REPORT_VOTO.matcher(pathInfo);
+
+        if (matcher.matches()) {
+            
+            request.setAttribute("entityName", matcher.group(1));
+            System.err.println("::::::"+matcher.group(1) + ":::::::::::");
+            getServletContext()
+                    .getNamedDispatcher("GenerarReportesServlet")
+                    .forward(request, response);
+
+            return;
+        }
+
         // ADMIN ENTITY :
         matcher = ADMIN_ENTITY.matcher(pathInfo);
 
         if (matcher.matches()) {
 
             request.setAttribute("entityName", matcher.group(1));
+            request.setAttribute("userName", request
+                    .getSession().getAttribute("userName"));
 
             getServletContext()
                     .getNamedDispatcher("EntityServlet")
@@ -148,13 +199,13 @@ public class RouterAdminServlet extends HttpServlet {
 
             final String entityName = matcher.group(1);
             request.setAttribute("entityName", entityName);
-            
+
             System.out.println(entityName);
-            
+
             request.setAttribute("action", "update");
 
             System.out.println(entityName);
-            
+
             getServletContext()
                     .getNamedDispatcher("EntityActionServlet")
                     .forward(request, response);
@@ -184,15 +235,6 @@ public class RouterAdminServlet extends HttpServlet {
             return;
         }
 
-        matcher = ADMIN_LOGOUT.matcher(pathInfo);
-        if (matcher.matches()) {
-
-            request.
-                    getServletContext()
-                    .getNamedDispatcher("AdminSessionServlet")
-                    .forward(request, response);
-            return;
-        }
 
         System.out.println("********************************************");
         System.out.println("****************404*************************");

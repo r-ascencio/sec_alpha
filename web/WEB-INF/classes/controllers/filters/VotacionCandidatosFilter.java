@@ -102,18 +102,28 @@ public class VotacionCandidatosFilter implements Filter {
         HttpServletRequest httpReq = (HttpServletRequest) request;
         HttpServletResponse httpRes = (HttpServletResponse) response;
 
-        if (httpReq.getSession().getAttribute("codigo") == null
-                || httpReq.getSession().getAttribute("nie") == null
-                || httpReq.getSession().getAttribute("voto") == null
-                || httpReq.getSession().getAttribute("voto") == 1
-                || httpReq.getSession().getAttribute("voto") == true) {
-            httpRes.sendRedirect(httpReq.getContextPath() + "/login/votacion/");
+        if (request.getParameter("eleccionPresidente") != null) {
+            
+            if (httpReq.getSession().getAttribute("codigo") == null
+                    || httpReq.getSession().getAttribute("nie") == null
+                    || httpReq.getSession().getAttribute("votoP") == null
+                    || httpReq.getSession().getAttribute("votoP") == 1
+                    || httpReq.getSession().getAttribute("votoP") == true) {
+                httpRes.sendRedirect(httpReq.getContextPath() + "/login/votacion/presidente");
+            } else {
+                chain.doFilter(request, response);
+            }
         } else {
-            System.out.println("VOTO: " 
-                    +httpReq.getSession().getAttribute("voto"));
-            chain.doFilter(request, response);
+            if (httpReq.getSession().getAttribute("codigo") == null
+                    || httpReq.getSession().getAttribute("nie") == null
+                    || httpReq.getSession().getAttribute("voto") == null
+                    || httpReq.getSession().getAttribute("voto") == 1
+                    || httpReq.getSession().getAttribute("voto") == true) {
+                httpRes.sendRedirect(httpReq.getContextPath() + "/login/votacion/");
+            } else {
+                chain.doFilter(request, response);
+            }
         }
-
         if (debug) {
             log("VotacionCandidatosFilter:doFilter()");
         }

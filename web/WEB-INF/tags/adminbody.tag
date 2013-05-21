@@ -1,5 +1,12 @@
 <%@tag description="required assets" pageEncoding="UTF-8"%>
 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+
+<c:set var="baseURL" value="${fn:replace(pageContext.request.requestURL, 
+                              pageContext.request.requestURI, 
+                              pageContext.request.contextPath)}" />
+
 
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 
@@ -14,7 +21,23 @@
 
 <body>
     <div class="container">
-        <div class="row navbar"></div>
+        <div class="row navbar" style="padding: 15px 0px;">
+            <div class="fourcol">
+                <div class="fivecol"></div>
+                <div class="sixcol last">
+                    ${userName}
+                </div>
+            </div>
+            <div class="fourcol"></div>
+            <div class="fourcol last">
+                <div class="fivecol"></div>
+                <div class="sixcol last">
+                    <a href="${baseURL}/admin/logout/">
+                        Cerrar Session.
+                    </a>
+                </div>
+            </div>
+        </div>
         <div class="row main">
             <jsp:invoke fragment="sidemenu"></jsp:invoke>
                 <div id="base" class="ninecol">

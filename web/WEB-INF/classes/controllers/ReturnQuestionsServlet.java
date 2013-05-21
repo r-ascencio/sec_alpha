@@ -35,6 +35,7 @@ public class ReturnQuestionsServlet extends HttpServlet {
         // shame on me :(
         values.add("a.nombre as nombre");
         values.add("c.alumno as codigo");
+        values.add("a.especialidad as especialidadAlumno");
         values.add("c.imagen_src as imagen_src");
         values.add("e.nombre as especialidad");
         String condicion = " c  "
@@ -42,7 +43,9 @@ public class ReturnQuestionsServlet extends HttpServlet {
                 + " ON a.codigo = c.alumno"
                 + " JOIN Especialidad e "
                 + " ON e.codigo = a.especialidad"
-                + " WHERE c.alumno";
+                + " WHERE a.especialidad = "
+                + "(SELECT especialidad FROM Alumno WHERE codigo  = "
+                + request.getSession().getAttribute("codigo").toString()+")";
         List<HashMap<String, Object>> candidatos = HelperSQL.obtenerFilas(
                 candidato.getTableName(), values, condicion);
         values.clear();
