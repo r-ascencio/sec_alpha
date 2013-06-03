@@ -32,7 +32,10 @@
             <div id="preguntas-Notitle">
             </div>
             
-            <h1> ${displayme} </h1>
+            <c:if test="${candidatos.lenght == 0}">
+                
+            </c:if>
+            
             <c:forEach items="${candidatos}" var="candidato">
                 <fieldset>
                     <div class="twelvecol  candidato-header">
