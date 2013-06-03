@@ -87,7 +87,7 @@ body {
 .navbar{
        background: #2e2e2e;
        top: 0;
-       height: 40px;
+       height: auto;
        display: block;
 }
 

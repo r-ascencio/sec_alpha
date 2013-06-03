@@ -50,6 +50,7 @@ public class EntityServlet extends HttpServlet {
         } catch (ClassNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
         try {
             entidad = (Tabla) entidadNombre.newInstance();

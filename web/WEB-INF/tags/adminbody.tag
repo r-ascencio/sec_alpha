@@ -40,7 +40,7 @@
         </div>
         <div class="row main">
             <jsp:invoke fragment="sidemenu"></jsp:invoke>
-                <div id="base" class="ninecol">
+                <div id="base" class="tencol last">
                     <div class="header">
                         <div class="title">${adminTitle}</div>
                     <p>${adminDescp}</p>

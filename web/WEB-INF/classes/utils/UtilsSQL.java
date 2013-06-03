@@ -26,7 +26,7 @@ public class UtilsSQL {
         ResultSetMetaData metadatos = rs.getMetaData();
 
         int columnas = metadatos.getColumnCount();
-        ArrayList<HashMap<String, Object>> lista = new ArrayList<HashMap<String, Object>>();
+        ArrayList<HashMap<String, Object>> lista = new ArrayList<>();
 
         while (rs.next()) {
 

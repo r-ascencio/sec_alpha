@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -102,28 +100,17 @@ public class VotacionCandidatosFilter implements Filter {
         HttpServletRequest httpReq = (HttpServletRequest) request;
         HttpServletResponse httpRes = (HttpServletResponse) response;
 
-        if (request.getParameter("eleccionPresidente") != null) {
-            
-            if (httpReq.getSession().getAttribute("codigo") == null
-                    || httpReq.getSession().getAttribute("nie") == null
-                    || httpReq.getSession().getAttribute("votoP") == null
-                    || httpReq.getSession().getAttribute("votoP") == 1
-                    || httpReq.getSession().getAttribute("votoP") == true) {
-                httpRes.sendRedirect(httpReq.getContextPath() + "/login/votacion/presidente");
-            } else {
-                chain.doFilter(request, response);
-            }
+
+        if (httpReq.getSession().getAttribute("codigo") == null
+                || httpReq.getSession().getAttribute("NIE") == null
+                || httpReq.getSession().getAttribute("voto") == null
+                || httpReq.getSession().getAttribute("voto") == 1
+                || httpReq.getSession().getAttribute("voto") == true) {
+            httpRes.sendRedirect(httpReq.getContextPath() + "/login/votacion/");
         } else {
-            if (httpReq.getSession().getAttribute("codigo") == null
-                    || httpReq.getSession().getAttribute("nie") == null
-                    || httpReq.getSession().getAttribute("voto") == null
-                    || httpReq.getSession().getAttribute("voto") == 1
-                    || httpReq.getSession().getAttribute("voto") == true) {
-                httpRes.sendRedirect(httpReq.getContextPath() + "/login/votacion/");
-            } else {
-                chain.doFilter(request, response);
-            }
+            chain.doFilter(request, response);
         }
+
         if (debug) {
             log("VotacionCandidatosFilter:doFilter()");
         }

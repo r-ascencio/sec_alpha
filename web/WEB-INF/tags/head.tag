@@ -3,7 +3,6 @@
 <%@attribute name="pageTitle" required="true"%>
 <%@attribute name="assets" fragment="true"%>
 <%@attribute name="preassets" fragment="true"%>
-
 <!DOCTYPE HTML>
 <html lang="en">
     <head>

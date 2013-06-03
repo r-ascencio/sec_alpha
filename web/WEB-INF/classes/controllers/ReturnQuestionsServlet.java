@@ -24,14 +24,17 @@ import utils.HelperSQL;
 public class ReturnQuestionsServlet extends HttpServlet {
 
     private Pregunta pregunta = new Pregunta();
-    private Candidato candidato = new Candidato();    
+    private Candidato candidato = new Candidato();
     private Alumno alumno = new Alumno();
-
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        System.out.println("HERE GET RETURNQUESTIONSERVLET");
+
         ArrayList<String> values = new ArrayList<>();
+        
         // shame on me :(
         values.add("a.nombre as nombre");
         values.add("c.alumno as codigo");
@@ -45,25 +48,36 @@ public class ReturnQuestionsServlet extends HttpServlet {
                 + " ON e.codigo = a.especialidad"
                 + " WHERE a.especialidad = "
                 + "(SELECT especialidad FROM Alumno WHERE codigo  = "
-                + request.getSession().getAttribute("codigo").toString()+")";
+                + request.getSession().getAttribute("codigo").toString() + ")";
+
         List<HashMap<String, Object>> candidatos = HelperSQL.obtenerFilas(
                 candidato.getTableName(), values, condicion);
+
         values.clear();
         values.add("codigo");
         values.add("descripcion");
+
         List<HashMap<String, Object>> preguntasFilas =
                 HelperSQL.obtenerFilas(pregunta.getTableName(), values, "");
+
         request.setAttribute("candidatos",
                 candidatos);
+
         request.setAttribute("preguntas",
                 preguntasFilas);
+        
+        request.setAttribute("displayme", "FOO");
+        
         request.getRequestDispatcher("/WEB-INF/templates/votacion.jsp")
                 .forward(request, response);
+
+        return;
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        System.out.println("HERE POSTRETURNQUESTIONSERVLET");
         // NO FUCKING CACHE (1.1)
         response.setHeader("Cache-Control", "private, no-store, no-cache, must-revalidate");
         // NO FUCKING CACHE (1.0)
@@ -123,6 +137,9 @@ public class ReturnQuestionsServlet extends HttpServlet {
             session.setAttribute("voto", 1);
             response.sendRedirect(request.getContextPath()
                     + "/votacion/completada/");
+        } else {
+            response.sendRedirect(request.getContextPath()
+                    + "/votacion/");
         }
     }
 }

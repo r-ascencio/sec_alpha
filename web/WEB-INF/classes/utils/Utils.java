@@ -6,9 +6,12 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public final class Utils {
+
     private static Object message;
 
     public static boolean isInt(String s) {
@@ -61,8 +64,6 @@ public final class Utils {
         }
         return retStr.toString();
     }
-    
-    
 
     public static String encodeToSHA512(String value) {
         String out = "";
@@ -99,7 +100,69 @@ public final class Utils {
 //        }
 //        return null;
 //    }
+
+    public static String buildForm(final models.Tabla entidad, String action) {
+        StringBuilder dom = new StringBuilder();
+        String datatype = new String();
+        Pattern fk = Pattern.compile("([_A-Za-z0-9]+)(_fk)$");
+        Matcher fk_matcher;
+        Pattern auto = Pattern.compile("([_A-Za-z0-9]+)(_auto)$");
+        Matcher auto_matcher;
+
+        dom.append("<form method=\"POST\" name=\"frm" + entidad.getTableName() + "\" "
+                + "action=\"" + action + "\">");
+        dom.append("<fieldset>");
+        dom.append("<legend id=\"lengend\"> " + entidad.getTableName() + "</legend>");
+        dom.append("<br/>");
+
+        for (Map.Entry<String, String> field : entidad.getCols().entrySet()) {
+            String key = field.getKey();
+            String type = "text";
+            auto_matcher = auto.matcher(key);
+            fk_matcher = fk.matcher(key);
+
+
+            if (field.getValue() == "Integer") {
+                datatype = "integer";
+            } else if (field.getValue() == "String") {
+                datatype = "string";
+            } else if (field.getValue() == "Float") {
+                datatype = "float";
+            }
+
+            if (fk_matcher.matches()) {
+                key = fk_matcher.group(1);
+            } else if (auto_matcher.matches()) {
+                key = auto_matcher.group(1);
+                type = "password";
+            }
+
+            if (key == "codigo" && field.getValue() == "Integer") {
+                dom.append("<input type=\"hidden\" data-type=\"auto_increment\" "
+                        + "name=\"" + key + "\" value = \" " + entidad.getCols().size() + 1 + " \" />");
+            } else {
+
+                dom.append("<div class=\"elevencol centered\">");
+                dom.append("<div class=\"twocol last \">");
+                dom.append("<span class=\"prefix\"> " + Utils.renderColName(key) + "</span>");
+                dom.append("</div>");
+                dom.append("<div class=\"tencol\">");
+                dom.append("<input type=\"" + type + "\" data-type=" + datatype + " name=\"" + key + "\" />");
+                dom.append("</div>");
+                dom.append("</div>");
+
+            }
+        }
+        dom.append("<input type=\"hidden\" name=\"" + entidad.getTableName() + "\" />");
+        dom.append("<input type=\"submit\" value=\"Guardar\" class=\"twocol rgt btn success\"/>");
+        dom.append("</fieldset>");
+        dom.append("</form>");
+        dom.append("</div>");
+        dom.append("<br/>");
+        return dom.toString();
+    }
 }
+
 final class DateUtils {
 
     public final DateFormat df = new SimpleDateFormat("dd/MM/yyyy");

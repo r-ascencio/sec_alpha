@@ -44,7 +44,7 @@
                         <span class="prefix">N.I.E.</span>
                     </div>
                     <div class="ninecol">
-                        <input type="text" name="nie" 
+                        <input type="text" name="NIE" 
                                value="${fn:escapeXml(htmlCode)}"/> 
                     </div>
                 </div>

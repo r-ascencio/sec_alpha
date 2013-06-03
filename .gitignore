@@ -1,6 +1,11 @@
+.externalToolBuilders/
+.settings/
+.classpath/
 classpath/
 conf/
 dist/
 nbproject/
 resources/
 build/
+*.war
+*.class

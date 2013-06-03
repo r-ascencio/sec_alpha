@@ -1,6 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <c:set var="baseURL" value="${fn:replace(pageContext.request.requestURL, 
@@ -8,12 +8,7 @@
                               pageContext.request.contextPath)}" />
 
 <t:head pageTitle="Administracion ${entityName}">
-    <jsp:attribute name="preassets">
-        <!-- foundation -->
-        <link rel="stylesheet" 
-              href="${baseURL}/assets/css/foundationforms/css/foundation.css" />
-        <!-- /foundation -->
-    </jsp:attribute>
+        
     <jsp:attribute name="assets">
     </jsp:attribute>
 

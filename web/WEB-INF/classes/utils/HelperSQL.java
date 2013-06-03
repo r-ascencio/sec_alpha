@@ -17,8 +17,6 @@ import models.Tabla;
 
 import org.json.JSONArray;
 
-import utils.Utils;
-
 public final class HelperSQL {
 
     private static Connection coneccion = null;
@@ -127,7 +125,7 @@ public final class HelperSQL {
             String condicion) {
 
         /**/
-        List<HashMap<String, Object>> resultados = new ArrayList<HashMap<String, Object>>();
+        List<HashMap<String, Object>> resultados = new ArrayList<>();
         try {
 
             String listaCampos = " ";
@@ -147,11 +145,11 @@ public final class HelperSQL {
             System.out.println("SELECT: " + sql);
 
             coneccion = obtenerConneccion();
-            Statement comando = coneccion.createStatement();
-            ResultSet rs = comando.executeQuery(sql);
-            // se convierte el resultset a List
-            resultados = UtilsSQL.convertirResultSetaLista(rs);
-            comando.close();
+            try (Statement comando = coneccion.createStatement()) {
+                ResultSet rs = comando.executeQuery(sql);
+                // se convierte el resultset a List
+                resultados = UtilsSQL.convertirResultSetaLista(rs);
+            }
             desconectar();
 
         } catch (SQLException exc) {
@@ -240,10 +238,8 @@ public final class HelperSQL {
         }
         try {
             entidad = (Tabla) entidadNombre.newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+        } catch (InstantiationException | IllegalAccessException e) {
+            System.out.println(e.getMessage());
         }
 
 
@@ -482,6 +478,7 @@ public final class HelperSQL {
     }
 
     // Pasar un String con el query, y los parametros.
+    // also params is stupid, it should be a constant.
     public static boolean borrarFila(String tabla, ArrayList<String> params,
             String id) {
         Boolean response = false;
@@ -499,5 +496,20 @@ public final class HelperSQL {
             Logger.getLogger(HelperSQL.class.getName()).log(Level.SEVERE, null, ex);
         }
         return response;
+    }
+
+    /**
+     *
+     */
+    public static void callProc(String procName) {
+        try {
+            coneccion = obtenerConneccion();
+            CallableStatement callableStatement;
+            String proc = "{call ".concat(procName).concat("}");
+            callableStatement = coneccion.prepareCall(proc);
+            callableStatement.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(HelperSQL.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

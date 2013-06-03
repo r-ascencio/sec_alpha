@@ -9,14 +9,20 @@
 
 <t:head pageTitle="Administracion ${entityName}">
     <jsp:attribute name="preassets">
+        <c:set var="foundation" value="/foo.css"/>
+        <c:if test="${entityName == 'Nuevo usuario'}">
+            <c:set var="foundation" value="/assets/css/foundationforms/css/foundation.css"/>
+        </c:if>
         <!-- foundation -->
         <link rel="stylesheet" 
-              href="${baseURL}/assets/css/foundationforms/css/foundation.css" />
+              href="${baseURL}${foundation}" />
         <!-- /foundation -->
     </jsp:attribute>
+
     <jsp:attribute name="assets">
 
         <script type="text/javascript">
+
             var fkEditor = function(container, options) {
                 console.log(options);
                 $('<input data-text-field="text" data-value-field="value" data-bind="value:' + options.field + '" />')
@@ -62,7 +68,7 @@
                 // Array with information about the uploaded files
                 var files = e.files;
 
-                if (e.operation == "upload") {
+                if (e.operation === "upload") {
                     alert("Failed to uploaded " + files.length + " files");
                     alert(e.XMLHttpRequest.responseText + " : TEXT");
                     alert(e.XMLHttpRequest.statusText + " : STATUS");
@@ -87,6 +93,34 @@
     <jsp:attribute name="body">
         <!-- here is supposed to be a fucking method to generate the
          fucking forms  -->
+        <c:if test="${entityName == 'Especialidad'}">
+            <div class="twelvecol">
+                <div class="fourcol"></div>
+                <div class="fourcol">
+                    <form id="act" action="${baseURL}/admin/Especialidad/act" 
+                          method="POST">
+                        <input type="submit" class="btn" 
+                               value="Actualizar Total Alumnos"></input>
+                    </form>
+                </div>
+                <div class="fourcol last"></div>
+            </div>
+            <script type="text/javascript">
+                $("#act").submit(function(e)
+                {
+                    e.preventDefault();
+                    var $this = $(this),
+                            url = $this.attr('action');
+
+                    var posting = $.post(url);
+                    
+                    posting.done(function() {
+                        $("#grid").data("kendoGrid").dataSource.read();
+                    });
+                    
+                })
+            </script>
+        </c:if>
         <c:if test="${entityName == 'Alumno'}">
             <div class="twelvecol">
                 <div id="instrucciones">
@@ -119,8 +153,18 @@
                                         alert("Archivo subido con exito,\n\
                                 Boton desactivado");
                                         $('#excelFile').data("kendoUpload").enable(false);
+                                    },
+                                    upload: function(e) {
+                                        var files = e.files;
+                                        $.each(files, function() {
+                                            if (this.extension !== ".xlsx") {
+                                                alert("El archivo debe ser un libro de excel");
+                                                e.preventDefault();
+                                            }
+                                        });
                                     }
                                 });
+
                                 $(".k-upload-button").find("span")
                                         .text("Subir archivo de excel");
                                 $(".k-upload-button").css("width", "100%");
@@ -131,7 +175,6 @@
                 </div>
             </div>
         </c:if>
-
         <div class="twelvecol" style="margin-bottom: 10px;"></div>
         <div class="twelvecol" style="margin-top: 10px;"></div>
     </jsp:attribute>

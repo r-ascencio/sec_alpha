@@ -22,8 +22,8 @@ public class UploadImagenCandidatoServlet extends HttpServlet {
 
     private boolean isMultipart;
     private String filePath;
-    private int maxFileSize = 50 * 1024;
-    private int maxMemSize = 4 * 1024;
+    private int maxFileSize = 100 * 1024;
+    private int maxMemSize = 50 * 1024;
     private File file;
 
     public void doPost(HttpServletRequest request,
@@ -31,7 +31,9 @@ public class UploadImagenCandidatoServlet extends HttpServlet {
             throws ServletException, java.io.IOException {
         // verificar si es subida
         isMultipart = ServletFileUpload.isMultipartContent(request);
+        
         java.io.PrintWriter out = response.getWriter();
+        
         if (!isMultipart) {
             out.print("No es un archivo");
             return;

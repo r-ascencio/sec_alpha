@@ -31,7 +31,8 @@
 
             <div id="preguntas-Notitle">
             </div>
-
+            
+            <h1> ${displayme} </h1>
             <c:forEach items="${candidatos}" var="candidato">
                 <fieldset>
                     <div class="twelvecol  candidato-header">

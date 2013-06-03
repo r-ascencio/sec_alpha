@@ -9,7 +9,7 @@
                 pageContext.request.requestURI, 
                 pageContext.request.contextPath)}" />
 
-<div id="sidebar" class="twocol">
+<div id="sidebar" class="twocol last">
 	<div class="item">
 		<a href="${baseURL}/admin/" class="icon"> 
                     <span class="entypo home"></span>
