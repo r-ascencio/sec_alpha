@@ -33,7 +33,7 @@ public class PresidenteVotacionServlet extends HttpServlet {
         // NO FUCKING CACHE (1.0)
         response.setHeader("Pragma", "no-cache");
         response.setDateHeader("Expires", 0);
-
+        
         request.setAttribute("entityName", "Nuevo usuario");
         request.setAttribute("adminDesc", "Añada un nuevo usuario");
         request.setAttribute("eleccionPresidente", "not null");

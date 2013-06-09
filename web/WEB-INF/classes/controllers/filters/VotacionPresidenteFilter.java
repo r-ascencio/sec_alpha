@@ -104,7 +104,7 @@ public class VotacionPresidenteFilter implements Filter {
         if (httpReq.getSession().getAttribute("codigo") == null
                 || httpReq.getSession().getAttribute("NIE") == null
                 || httpReq.getSession().getAttribute("voto_p") == null) {
-            httpRes.sendRedirect(httpReq.getContextPath() + "/login/votacion/presidente");
+            httpRes.sendRedirect(httpReq.getContextPath() + "/login/votacion/presidente/");
         } else {
             if (httpReq.getSession().getAttribute("voto_p") == 1
                     || httpReq.getSession().getAttribute("voto_p") == true) {

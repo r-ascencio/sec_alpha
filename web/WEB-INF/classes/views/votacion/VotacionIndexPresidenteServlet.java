@@ -1,11 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package views.votacion;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -86,15 +81,16 @@ public class VotacionIndexPresidenteServlet extends HttpServlet {
                 + alumnoCodigo);
 //shame on me.
         if (alumnos.size() == 1) {
+            System.out.println("\n FOO IS BAR BUT BAR IS NOT FOO \n");
             HttpSession session = request.getSession(true);
             session.setAttribute("codigo", alumnos.get(0).get("codigo"));
-            session.setAttribute("nie", alumnos.get(0).get("NIE"));
-            session.setAttribute("votoP", alumnos.get(0).get("voto_p"));
+            session.setAttribute("NIE", alumnos.get(0).get("NIE"));
+            session.setAttribute("voto_p", alumnos.get(0).get("voto_p"));
             response.sendRedirect(request.getContextPath()
                     + "/votacion/presidente");
         } else {
             response.sendRedirect(request.getContextPath()
-                    + "/login/votacion/presidente");
+                    + "/login/votacion/presidente/");
         }
 
     }
