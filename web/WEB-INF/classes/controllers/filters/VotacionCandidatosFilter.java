@@ -103,12 +103,20 @@ public class VotacionCandidatosFilter implements Filter {
 
         if (httpReq.getSession().getAttribute("codigo") == null
                 || httpReq.getSession().getAttribute("NIE") == null
-                || httpReq.getSession().getAttribute("voto") == null
-                || httpReq.getSession().getAttribute("voto") == 1
-                || httpReq.getSession().getAttribute("voto") == true) {
+                || httpReq.getSession().getAttribute("voto") == null) {
+
+
             httpRes.sendRedirect(httpReq.getContextPath() + "/login/votacion/");
+
+
         } else {
-            chain.doFilter(request, response);
+
+            if (httpReq.getSession().getAttribute("voto") == 1
+                    || httpReq.getSession().getAttribute("voto") == true) {
+                httpRes.sendRedirect(httpReq.getContextPath() + "/votacion/completada/");
+            } else {
+                chain.doFilter(request, response);
+            }
         }
 
         if (debug) {

@@ -9,6 +9,12 @@
        value="${fn:replace(pageContext.request.requestURL,
                 pageContext.request.requestURI, pageContext.request.contextPath)}" />
 
+<!-- javascripts globals -->
+<script type="text/javascript">
+    Globals = {};
+    Globals.baseURL = "${baseURL}";
+</script>
+
 <!--  base css  -->
 <link rel="stylesheet" href="${baseURL}/assets/css/grid.css" />
 <link rel="stylesheet" href="${baseURL}/assets/css/fonts.css" />

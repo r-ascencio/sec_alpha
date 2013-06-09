@@ -14,7 +14,9 @@
         <div class="twelvecol">
             <div class="twocol"></div>
             <div id="preguntas-container" class="eightcol">
-                    <jsp:invoke fragment="preguntas"></jsp:invoke>
+                <!-- wtf, i did this why i just not... -->
+                <!-- this is stupid -->
+                <jsp:invoke fragment="preguntas"></jsp:invoke>
                 <jsp:invoke fragment="listView"></jsp:invoke>
             </div>
         </div>
