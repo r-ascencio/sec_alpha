@@ -83,7 +83,6 @@ public class RouterAdminServlet extends HttpServlet {
         
         matcher = ADMIN_LOGOUT.matcher(pathInfo);
         if (matcher.matches()) {
-
             request.
                     getServletContext()
                     .getNamedDispatcher("AdminEndSessionServlet")

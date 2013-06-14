@@ -1,3 +1,4 @@
+
 $('#preguntas-form').stepy({
     description: false,
     legend: false,
@@ -6,10 +7,13 @@ $('#preguntas-form').stepy({
     validate: true,
     transition: 'fade',
     block: true,
-    back: function(){ 
-        return false; },
+    back: function(){ return false; },
     titleTarget: '#preguntas-Notitle'
 });
 
+// find a better way...
+jQuery.extend(jQuery.validator.messages, {
+    required: "Este campo es requerido."
+});
 
 $('.button-back').remove();

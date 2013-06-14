@@ -1,9 +1,13 @@
+<!-- SERVLET : ReturnQuestionServlet -->
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-<c:set var="baseURL" value="${fn:replace(pageContext.request.requestURL, pageContext.request.requestURI, pageContext.request.contextPath)}" />
+<c:set var="baseURL" 
+       value="${fn:replace(pageContext.request.requestURL, 
+                pageContext.request.requestURI, pageContext.request.contextPath)}" />
 
 <t:head pageTitle="Votacion">
     <jsp:attribute name="assets">       
@@ -11,7 +15,7 @@
               href="${baseURL}/assets/css/foundationforms/css/foundation.min.css" />
         <link rel="stylesheet" href="${baseURL}/assets/css/main.css" />
 
-        <script src="${baseURL}/assets/js/stepy/js/jquery.stepy.min.js" 
+        <script src="${baseURL}/assets/js/stepy/js/jquery.stepy.js" 
         type="text/javascript"></script>
 
         <script src="${baseURL}/assets/js/stepy/js/jquery.validate.min.js" 
@@ -23,26 +27,28 @@
     <jsp:attribute name="preguntas">
 
         <!-- TODO : FIXTHIS -->
-        <c:if test="${candidatos.size() <= 0}">
+        <c:if test="${cantidad}">
+
             <div class="twelvecol">
                 <div class="hero">
                     <div class="twocol"></div>
                     <div class="eightcol">
-                        
+
                         <div class="eightcol">
-                            El numero de candidatos tiene que ser igual a 3.
+                            ${message}
                         </div>
-                        
+
                         <div class="threecol">
-                            <a href="${baseURL}/login/votacion/" class="btn">
+                            <a href="${baseURL}/votacion/login/" class="btn">
                                 Salir
                             </a>
                         </div>
-                        
+
                     </div>
                     <div class="twocol last"></div>
                 </div>
             </div>
+
         </c:if>
         <!-- /TODO -->
 
@@ -82,6 +88,7 @@
                             <div class="twocol last"></div>
                         </div>
                         <c:forEach items="${preguntas}" var="p" varStatus="loopStatus">
+                            
                             <div class="pregunta twelvecol">
                                 <div class="twelvecol">
                                     <div class="onecol">
@@ -104,6 +111,7 @@
                                     </div>
                                 </div>
                                 <div class="twelvecol">
+                                    <br/><br/><br/> <!-- you silly stupid men -->
                                     <div class="pregunta-respuesta">
                                         <div class="threecol pregunta-opcion">
                                             <div class="twelvecol center">

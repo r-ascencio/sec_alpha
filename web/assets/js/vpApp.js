@@ -7,7 +7,7 @@
 var dataSource = new kendo.data.DataSource({
     transport: {
         read: {
-            url: Globals.baseURL + "/r/presidente",
+            url: Globals.baseURL + "/votacion/presidente/electos",
             dataType: "json"
         }
     }

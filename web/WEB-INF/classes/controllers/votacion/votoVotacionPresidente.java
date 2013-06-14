@@ -54,7 +54,7 @@ public class votoVotacionPresidente extends HttpServlet {
         String dataUID = request.getParameter("cUID");
         
         
-        response.sendRedirect(request.getContextPath() + "/login/votacion/");
+        response.sendRedirect(request.getContextPath() + "/votacion/completada");
 //
 //        request.getRequestDispatcher("/WEB-INF/templates/votacionPresidenteFin.jsp")
 //                .forward(request, response);

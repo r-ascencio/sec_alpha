@@ -100,13 +100,6 @@ dd:after {
     margin-bottom: 20px;
 }
     
-/* ================================== */
-/*            Candidato               */ 
-/* ================================== */
-
-.candidato {
-    margin: 20px auto;
-}
 
 @media handheld, only screen and (max-width: 767px) {
     #poll-header > div {

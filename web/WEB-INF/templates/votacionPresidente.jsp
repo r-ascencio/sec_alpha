@@ -54,7 +54,7 @@
                         <div class="sevencol last">
                             <div class="sixcol">
                                 <form id="tothechosenone" method="POST"
-                                      action="${baseURL}/votacion/presidente/voto/">
+                                      action="${baseURL}/votacion/presidente/voto">
                                     
                                     <input type="hidden"
                                            id="cName"
@@ -108,7 +108,8 @@
         <script type="text/x-kendo-tmpl" id="template">
 
 
-            <div class="sixcol last hero candidato" id="#:alumno#">
+            <div class="twelvecol hero candidato" id="#:alumno#"
+            >
             <div class="twelvecol">
             <div class="threecol"></div>
             <div class="sixcol">

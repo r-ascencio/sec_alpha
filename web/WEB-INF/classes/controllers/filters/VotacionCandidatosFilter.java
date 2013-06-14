@@ -106,7 +106,7 @@ public class VotacionCandidatosFilter implements Filter {
                 || httpReq.getSession().getAttribute("voto") == null) {
 
 
-            httpRes.sendRedirect(httpReq.getContextPath() + "/login/votacion/");
+            httpRes.sendRedirect(httpReq.getContextPath() + "/votacion/login/");
 
 
         } else {

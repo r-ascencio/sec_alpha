@@ -4,45 +4,41 @@ import java.util.ArrayList;
 
 public class Electo extends Tabla {
 
+    private String alumno_auto;
     private String alumno_fk;
     private String cargo;
-    private String  hidden_fecha_registro;
+    private String hidden_fecha_registro;
 
     public Electo(String codigo, String cargo) {
         this.setCargo(cargo);
         this.setCodigo(codigo);
         this.setTableName("Electo");
     }
-    
+
     public Electo() {
         this.setTableName("Electo");
     }
 
-    public String getCodigo()
-    {
+    public String getCodigo() {
         return alumno_fk;
     }
 
-    public void setCodigo(String codigo)
-    {
+    public void setCodigo(String codigo) {
         this.alumno_fk = codigo;
     }
 
-    public String getCargo()
-    {
+    public String getCargo() {
         return cargo;
     }
 
-    public void setCargo(String cargo)
-    {
+    public void setCargo(String cargo) {
         this.cargo = cargo;
     }
 
     /**
      * Save by getting it's parameters.
      */
-    public void guardar()
-    {
+    public void guardar() {
         ArrayList<String> campos = new ArrayList<String>();
         construirLista(campos);
         this.insertar(campos);
@@ -53,13 +49,11 @@ public class Electo extends Tabla {
      * @param valor
      * @param key
      */
-    public void Actualizar(String campo, String valor, String key)
-    {
+    public void Actualizar(String campo, String valor, String key) {
         this.Actualizar(campo, valor, key, this.getCodigo());
     }
 
-    public void get()
-    {
+    public void get() {
         try {
             this.fila = this.obtener(this.getCodigo());
         } catch (Exception exc) {
@@ -67,23 +61,19 @@ public class Electo extends Tabla {
         }
     }
 
-    public void Borrar()
-    {
+    public void Borrar() {
         this.Borrar(this.getCodigo());
     }
 
-    public void getAll()
-    {
+    public void getAll() {
         filas = obtener();
     }
 
     /**
      * @param campos
      */
-    public void construirLista(ArrayList<String> campos)
-    {
+    public void construirLista(ArrayList<String> campos) {
         campos.add(this.getCodigo());
         campos.add(this.getCargo());
     }
-
 }

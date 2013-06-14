@@ -208,6 +208,7 @@ DROP PROCEDURE numeroAlumnos;
 -- WHERE e.codigo = @nEspecialidad;
 
 CALL actualizarCAlm;
+
 DROP PROCEDURE IF EXISTS actualizarCAlm;
 USE sec_alpha;
 DESC Especialidad;
@@ -216,7 +217,7 @@ DELIMITER //
 CREATE PROCEDURE actualizarCAlm()
 BEGIN
 
-  DECLARE done           INT DEFAULT 0;
+  DECLARE done          INT DEFAULT 0;
   DECLARE nAlumnos      INT DEFAULT 0;
   DECLARE cEspecialidad INT DEFAULT 0;
 
@@ -238,8 +239,51 @@ END
 
 -- PROCEDURE UNLOCK PRESIDENTE
 
--- Lo pienso de la siguiente manera :
 -- Un procedimiento que evalue si los votos han sido completos en cada Especialidad
 -- Un disparador que se ejecute al actualizar la columno puntajeP de la tabla 
 -- Electo.
 
+-- SET Consejo
+
+DELIMITER $$
+CREATE PROCEDURE declararConsejo()
+BEGIN
+  DECLARE done          INT DEFAULT 0;
+
+  DECLARE cursorCandidatos CURSOR FOR SELECT codigo 
+							  FROM Candidato ORDER BY puntaje DESC LIMIT 12;
+
+  DECLARE CONTINUE HANDLER FOR SQLSTATE '02000' SET done = 1;
+
+
+  OPEN cursorCandidatos;
+  REPEAT
+	FETCH cursorCandidatos INTO cCodigo;
+	INSERT INTO Electo (alumno) VALUES (cCodigo);
+  UNTIL done END REPEAT;
+  CLOSE cursorCandidatos;
+END
+$$
+
+
+-- set presidente
+DELIMITER $$
+CREATE PROCEDURE declararConsejo()
+BEGIN
+
+  DECLARE done				INT DEFAULT 0;
+  DECLARE cCodigo			VARCHAR(8);
+  DECLARE cursorCandidatos	CURSOR FOR SELECT alumno
+							  FROM  Electo ORDER BY puntajeP DESC LIMIT 1;
+
+  DECLARE CONTINUE HANDLER FOR SQLSTATE '02000' SET done = 1;
+
+
+  OPEN cursorCandidatos;
+  REPEAT
+	FETCH cursorCandidatos INTO cCodigo;
+	UPDATE Electo SET cargo = 'Presidente' WHERE alumno = cCodigo;
+  UNTIL done END REPEAT;
+  CLOSE cursorCandidatos;
+END
+$$

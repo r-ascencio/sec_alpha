@@ -1,3 +1,6 @@
+
+<!-- servlet: views.admin.AdminDashboardServlet.java -->
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -8,8 +11,24 @@
                               pageContext.request.contextPath)}" />
 
 <t:head pageTitle="Administracion ${entityName}">
-        
+
     <jsp:attribute name="assets">
+
+        <script type="text/javascript"
+                src="${baseURL}/assets/js/jquery-ui/js/jquery-ui-1.10.3.custom.min.js">
+        </script>
+
+        <link rel="stylesheet" 
+              href="${baseURL}/assets/js/jquery-ui/css/smoothness/jquery-ui-1.10.3.custom.min.css" />
+
+        <style type="text/css">
+
+            .progressbar-container {
+                margin: 10px auto;
+            }
+
+        </style>
+
     </jsp:attribute>
 
 </t:head>
@@ -21,26 +40,50 @@
     </jsp:attribute>
 
     <jsp:attribute name="body">
-        <!-- here is supposed to be a fucking method to generate the
-         fucking forms  -->
-        <h2> <a href="${baseURL}/admin/Usuario">Usuarios</a></h2>
-        <h2> <a href="${baseURL}/admin/Usuario/nuevo">Nuevo usuario</a></h2>
-        <h2> 
-            <a href="${baseURL}/admin/reportes/Candidato"> 
-                Reporte de candidatos 
-            </a>
-        </h2>
-        <h2> 
-            <a href="${baseURL}/admin/reportes/Alumno"> 
-                Reporte de alumnos
-            </a>
-        </h2>
-        <h2> 
-            <a href="${baseURL}/admin/reportes/Pregunta"> 
-                Reporte de preguntas
-            </a>
-        </h2>
 
-    </jsp:attribute>
-</t:adminbody>
-<t:footer></t:footer>
+        <div class="twelvecol">            
+
+            <div id="candidatoPie" class="k-content sevencol">
+                <div class="candidatoPie-wrapper">
+                    <div id="candidatoGrafica" style="background: center no-repeat url(${baseURL}/assets/img/bg.png">
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="fivecol last" style="text-align: center">
+
+                <div class="twelvecol">
+                    <h3> Proceso de votacion </h3>
+                </div>
+
+                <div  class="twelvecol">
+                    <div class="fourcol"> <h4>Especialidad</h4> </div>
+                    <div class="twocol"> <h4>%</h4> </div>
+                    <div class="sixcol last"></div>
+                </div>
+
+                <div class="twelvecol" id="progress-cont">
+                    <!-- here you will see the processs. -->
+                </div>
+
+            </div>
+
+
+
+        </jsp:attribute>
+    </t:adminbody>
+    <t:footer>
+        <jsp:attribute name="foot">
+            <!-- i should write a script for init and shit -->
+
+            <script>
+                var data = ${dataCandidatos};
+                var dataVotacion = ${dataVotacion};
+            </script>
+
+            <script src="${baseURL}/assets/js/charts.js">
+            </script>
+
+        </jsp:attribute>
+    </t:footer>

@@ -23,18 +23,15 @@ import utils.HelperSQL;
  */
 public class ReturnQuestionsServlet extends HttpServlet {
 
-    private Pregunta pregunta = new Pregunta();
-    private Candidato candidato = new Candidato();
-    private Alumno alumno = new Alumno();
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        System.out.println("\n\n HERE GET RETURNQUESTIONSERVLET \n\n");
-
-        ArrayList<String> values = new ArrayList<>();
+        Pregunta pregunta = new Pregunta();
+        Candidato candidato = new Candidato();
+        Alumno alumno = new Alumno();
         
+        ArrayList<String> values = new ArrayList<>();
+
         // shame on me :(
         values.add("a.nombre as nombre");
         values.add("c.alumno as codigo");
@@ -60,14 +57,19 @@ public class ReturnQuestionsServlet extends HttpServlet {
         List<HashMap<String, Object>> preguntasFilas =
                 HelperSQL.obtenerFilas(pregunta.getTableName(), values, "");
 
+        if (candidatos.size() != 3) {
+            request.setAttribute("cantidad", true);
+            request.setAttribute("message",
+                    "No existe la candidad necesaria de candidatos.");
+        }
+
         request.setAttribute("candidatos",
                 candidatos);
 
         request.setAttribute("preguntas",
                 preguntasFilas);
-        
-        request.setAttribute("displayme", "FOO");
-        
+
+
         request.getRequestDispatcher("/WEB-INF/templates/votacion.jsp")
                 .forward(request, response);
 
@@ -78,6 +80,10 @@ public class ReturnQuestionsServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         System.out.println("\n\nHERE POSTRETURNQUESTIONSERVLET\n\n");
+
+        Pregunta pregunta = new Pregunta();
+        Candidato candidato = new Candidato();
+        Alumno alumno = new Alumno();
         
         String nombreParam;
         Boolean imok = false;
@@ -87,16 +93,16 @@ public class ReturnQuestionsServlet extends HttpServlet {
         ArrayList<String> values = new ArrayList<>();
         // shame on me :(
         values.add("alumno as codigo");
-        
+
         List<HashMap<String, Object>> candidatos = HelperSQL.obtenerFilas(
                 candidato.getTableName(), values, "");
         values.clear();
-        
+
         values.add("codigo as codigo");
-        
+
         List<HashMap<String, Object>> preguntas = HelperSQL.obtenerFilas(
                 pregunta.getTableName(), values, "");
-        
+
         maxPuntaje = (preguntas.size() * 4);
         for (int i = 0; i < candidatos.size(); i++) {
             String codigoParam = "";

@@ -75,10 +75,11 @@
                 }
             }
 
-            var Entidad = "${entityName}";
-            var Fields = ${fields};
-            var Columns = ${columns};
-            var ID = "${ID}";
+            var Entidad = "${entityName}",
+                    Fields = ${fields},
+                    Columns = ${columns},
+                    ID = "${ID}";
+
         </script>
     </jsp:attribute>
 
@@ -93,6 +94,67 @@
     <jsp:attribute name="body">
         <!-- here is supposed to be a fucking method to generate the
          fucking forms  -->
+        <c:if test="${entityName == 'Electo'}">
+            <div class="twelvecol">
+                <div class="fourcol"></div>
+                <div class="fourcol">
+                    <c:if test="${electos == 'true'}">
+
+                        <form id="act" 
+                              action="${baseURL}/admin/Electo/setPresidente" 
+                              method="POST">
+                            <input type="submit" class="btn" 
+                                   value="Actualizar Presidente"></input>
+                        </form>
+
+                        <script type="text/javascript">
+                            $("#act").submit(function(e)
+                            {
+                                e.preventDefault();
+                                var $this = $(this),
+                                        url = $this.attr('action');
+
+                                var posting = $.post(url);
+
+                                posting.done(function() {
+                                    $("#grid").data("kendoGrid").dataSource.read();
+                                });
+
+                            })
+                        </script>
+
+                    </c:if>
+                        
+                    <c:if test="${electos == 'false'}">
+
+                        <form id="act" action="${baseURL}/admin/Electo/set" 
+                              method="POST">
+                            <input type="submit" class="btn" 
+                                   value="Actualizar Candidatos"></input>
+                        </form>
+
+                        <script type="text/javascript">
+                            $("#act").submit(function(e)
+                            {
+                                e.preventDefault();
+                                var $this = $(this),
+                                        url = $this.attr('action');
+
+                                var posting = $.post(url);
+
+                                posting.done(function() {
+                                    $("#grid").data("kendoGrid").dataSource.read();
+                                });
+
+                            })
+                        </script>
+
+                    </c:if>
+                </div>
+                <div class="fourcol last"></div>
+            </div>
+        </c:if>
+
         <c:if test="${entityName == 'Especialidad'}">
             <div class="twelvecol">
                 <div class="fourcol"></div>
@@ -113,11 +175,11 @@
                             url = $this.attr('action');
 
                     var posting = $.post(url);
-                    
+
                     posting.done(function() {
                         $("#grid").data("kendoGrid").dataSource.read();
                     });
-                    
+
                 })
             </script>
         </c:if>

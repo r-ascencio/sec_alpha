@@ -5,12 +5,16 @@
 package views.admin;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import models.Alumno;
+import models.Candidato;
+import models.Especialidad;
+import org.json.JSONArray;
+import utils.HelperSQL;
 
 /**
  *
@@ -18,7 +22,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class AdminDashboardServlet extends HttpServlet {
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP
      * <code>GET</code> method.
@@ -31,6 +34,10 @@ public class AdminDashboardServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        request.setAttribute("dataCandidatos", dataCandidatos());
+        request.setAttribute("dataVotacion", dataVotacion());
+        
         request.getRequestDispatcher("/WEB-INF/templates/adminDashboard.jsp")
                 .forward(request, response);
     }
@@ -47,7 +54,7 @@ public class AdminDashboardServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        doGet(request, response);
     }
 
     /**
@@ -59,4 +66,69 @@ public class AdminDashboardServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    
+    private JSONArray dataVotacion() {
+
+        /*
+         * SELECT e.nombre, COUNT(*),
+         * SUM( CASE WHEN voto != 0 THEN 1 ELSE 0 END ) 
+         * FROM Especialidad as e 
+         * INNER JOIN Alumno a ON a.especialidad = e.codigo 
+         * GROUP BY especialidad;   */
+        
+        Especialidad especialidad = new Especialidad();
+        Alumno alumno = new Alumno();
+
+        ArrayList<String> values = new ArrayList<>();
+
+        // shame on me :(
+
+        values.add("e.nombre as nombre");
+        // cantidad de alumnos
+        values.add("COUNT(*) as alumnos");
+        // cantidad de votacion realizadas
+        values.add("SUM( CASE WHEN voto != 0 THEN 1 ELSE 0 END )"
+                + "as votaciones_realizadas");
+
+        String condicion = " as e  "
+                + " INNER JOIN " + alumno.getTableName() + " as a "
+                + " ON a.especialidad = e.codigo "
+                + " GROUP BY a.especialidad ";
+
+        return HelperSQL.getJSON(
+                especialidad.getTableName(), values, condicion);
+        
+    }
+
+    /**
+     * This method just return the points of each candidate as JSONArray for use
+     * with KendoUI Charts. [{ category: "Nombre Candidato", value:
+     * puntaje_candidato } ...]
+     * 
+     * @return a JSONArray with candidates score.
+     */
+    
+    private JSONArray dataCandidatos() {
+
+        // SELECT a.nombre, c.puntaje FROM Alumno a 
+        // JOIN Candidato c ON c.alumno = a.codigo;
+
+        Candidato candidato = new Candidato();
+        Alumno alumno = new Alumno();
+
+        ArrayList<String> values = new ArrayList<>();
+
+        // shame on me :(
+
+        values.add("a.nombre as nombre");
+        values.add("c.puntaje as puntaje");
+
+        String condicion = " AS a  "
+                + " JOIN " + candidato.getTableName() + " AS c "
+                + " ON c.alumno = a.codigo";
+
+        return HelperSQL.getJSON(
+                alumno.getTableName(), values, condicion);
+    }
 }

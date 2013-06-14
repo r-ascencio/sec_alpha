@@ -5,11 +5,15 @@
 package views.votacion;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import models.Alumno;
+import utils.HelperSQL;
 
 /**
  *
@@ -17,21 +21,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class VotacionCompletadaServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP
-     * <code>GET</code> and
-     * <code>POST</code> methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP
      * <code>GET</code> method.
@@ -45,19 +34,42 @@ public class VotacionCompletadaServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
         try {
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet VotacionCompletadaServlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1> CODIGO: "+ request.getSession().getAttribute("voto") +"</h1>");
-            out.println("</body>");
-            out.println("</html>");
-            out.close();
+            Alumno alumno = new Alumno();
+
+            ArrayList<String> values = new ArrayList<>();
+
+            values.add("a.nombre as nombre");
+            values.add("a.codigo as codigo");
+            values.add("a.especialidad as Aespecialidad");
+            values.add("e.nombre as especialidad");
+            String condicion = " a  "
+                    + " INNER JOIN Especialidad e "
+                    + " ON a.especialidad = e.codigo"
+                    + " WHERE a.codigo = "
+                    + request.getSession().getAttribute("codigo");
+
+            List<HashMap<String, Object>> alumnos = HelperSQL.obtenerFilas(
+                    alumno.getTableName(), values, condicion);
+
+            request.setAttribute("nombre",
+                    alumnos.get(0).get("nombre"));
+
+            request.setAttribute("codigo",
+                    alumnos.get(0).get("codigo"));
+
+            request.setAttribute("especialidad",
+                    alumnos.get(0).get("especialidad"));
+
+            request.getRequestDispatcher(
+                    "/WEB-INF/templates/votacionCompletada.jsp")
+                    .forward(request, response);
+
         } catch (Exception e) {
+            request.setAttribute("error", "No se encuentra el codigo");
+            request.getRequestDispatcher(
+                    "/WEB-INF/templates/votacionCompletada.jsp")
+                    .forward(request, response);
         }
 
     }
@@ -65,22 +77,7 @@ public class VotacionCompletadaServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        try {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet VotacionCompletadaServlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet  POST VotacionCompletadaServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        } finally {
-            out.close();
-        }
+        doGet(request, response);
     }
 
     /**
@@ -91,5 +88,5 @@ public class VotacionCompletadaServlet extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }
 }

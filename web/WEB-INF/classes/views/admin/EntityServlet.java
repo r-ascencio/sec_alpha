@@ -60,6 +60,26 @@ public class EntityServlet extends HttpServlet {
             e.printStackTrace();
         }
 
+        request.setAttribute("foo", entidad.getTableName());
+        if ("Electo" == entidad.getTableName()) {
+            ArrayList<String> values = new ArrayList<>();
+
+            values.add("*");
+            
+            List<HashMap<String, Object>> vals = HelperSQL.obtenerFilas(
+                    "Electos",
+                    values,
+                    "ORDER BY puntaje DESC LIMIT 12");
+            
+            if (vals.size() > 10) { 
+                request.setAttribute("electos", true);   
+            } else {
+                request.setAttribute("electos", false);
+            }
+            
+        
+        }
+
         request.setAttribute("adminDesc", "Administracion");
         request.setAttribute("fields", buildFields(entidad));
         request.setAttribute("columns", buildColumns(entidad));

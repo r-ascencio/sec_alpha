@@ -28,7 +28,7 @@
         <div class="twocol last"></div>
     </jsp:attribute>
     <jsp:attribute name="frm">
-        <form method="POST" action="${baseURL}/login/votacion/presidente/">
+        <form method="POST" action="${baseURL}/votacion/presidente/login">
             <fieldset>
                 <div class="twelvecol">
                     <div class="threecol last">

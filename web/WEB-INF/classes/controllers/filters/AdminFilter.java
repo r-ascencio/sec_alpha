@@ -22,7 +22,9 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author _r
  */
+
 @WebFilter(filterName = "AdminFilter", urlPatterns = {"/admin/*"})
+
 public class AdminFilter implements Filter {
 
     private static final boolean debug = true;
@@ -107,7 +109,9 @@ public class AdminFilter implements Filter {
         HttpServletResponse httpRes = (HttpServletResponse) response;
         Throwable problem = null;
         
-        if (httpReq.getSession().getAttribute("userName") != null) {
+        assert httpReq.getSession().getAttribute("userName") !=null;
+        
+        if  ( httpReq.getSession().getAttribute("userName") == null) {
             try {
                 chain.doFilter(request, response);
             } catch (Throwable t) {

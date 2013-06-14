@@ -63,25 +63,28 @@ public class VotacionIndexPresidenteServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        System.out.println("\n\nBAYBE DON?T HURRS ME BAYBE DON?T HURS ME\n\n");
         
+        /*  SELECT to Alumno */ 
         Alumno alumno = new Alumno();
         ArrayList<String> values = new ArrayList<>();
         values.add("*");
         String alumnoCodigo = "";
+        
+        // this is from the form?
         if (request.getParameter("codigo") != null) {
             alumnoCodigo = request.getParameter("codigo");
         } else {
+            // go to login if you don't exists.
             response.sendRedirect(request.getContextPath()
-                    + "/login/votacion/presidente");
+                    + "/votacion/presidente/login/");
         }
+        
+        // getting the "alumno"
         List<HashMap<String, Object>> alumnos = HelperSQL.obtenerFilas(
                 alumno.getTableName(), values, "WHERE codigo = "
                 + alumnoCodigo);
 //shame on me.
         if (alumnos.size() == 1) {
-            System.out.println("\n FOO IS BAR BUT BAR IS NOT FOO \n");
             HttpSession session = request.getSession(true);
             session.setAttribute("codigo", alumnos.get(0).get("codigo"));
             session.setAttribute("NIE", alumnos.get(0).get("NIE"));
@@ -89,8 +92,9 @@ public class VotacionIndexPresidenteServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath()
                     + "/votacion/presidente");
         } else {
+            // not a valid student.
             response.sendRedirect(request.getContextPath()
-                    + "/login/votacion/presidente/");
+                    + "/votacion/presidente/login");
         }
 
     }
