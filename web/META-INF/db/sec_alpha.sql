@@ -59,6 +59,7 @@ FOREIGN KEY (especialidad) REFERENCES Especialidad(codigo) ON DELETE CASCADE ON 
 CREATE TABLE IF NOT EXISTS Candidato (
   alumno VARCHAR(8) UNIQUE NOT NULL,
   imagen_src VARCHAR(250),
+  especialidad tinyint NOT NULL,
   fecha_registro DATE,
   fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   puntaje smallint DEFAULT 0 NOT NULL
@@ -79,6 +80,12 @@ PRIMARY KEY (alumno);
 ALTER TABLE Candidato
 ADD CONSTRAINT candidato_codigo_fk
 FOREIGN KEY (alumno) REFERENCES Alumno (codigo) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+
+ALTER TABLE Candidato
+ADD CONSTRAINT candidato_especialidad_fk
+FOREIGN KEY (especialidad) REFERENCES Especialidad (codigo) ON DELETE RESTRICT ON UPDATE RESTRICT ON DELETE RESTRICT;
+ 
 
 /**
  * /Candidato
