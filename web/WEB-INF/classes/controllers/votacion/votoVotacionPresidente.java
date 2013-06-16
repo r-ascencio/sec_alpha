@@ -39,7 +39,7 @@ public class votoVotacionPresidente extends HttpServlet {
         
         String NIE = (String) request.getSession().getAttribute("NIE");
         HelperSQL.actualizarFila("Alumno", "voto_p", 1, "NIE", NIE);
-        request.getSession().invalidate();
+        
         //codigo, nombre, data-uid
 
         String codigo = request.getParameter("cAlumnus");

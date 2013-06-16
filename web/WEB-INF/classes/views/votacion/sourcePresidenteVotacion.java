@@ -39,22 +39,25 @@ public class sourcePresidenteVotacion extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        //SELECT a.nombre, c.imagen_src, a.codigo  FROM Electo e  
+        //INNER JOIN Candidato c ON e.alumno =  c.alumno 
+        //JOIN Alumno a ON a.codigo = e.alumno LIMIT 1 \G
+
+        
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
         models.Tabla tabla = new models.Tabla();
-        tabla.setTableName("Candidato");
+        tabla.setTableName("Electo");
         ArrayList<String> values = new ArrayList<>();
         // shame on me :(
         values.add("a.nombre as nombre");
-        values.add("c.alumno as alumno");
         values.add("c.imagen_src as imagen_src");
-        values.add("e.nombre as especialidad");
-        String condicion = " c  "
-                + " INNER JOIN Alumno a "
-                + " ON a.codigo = c.alumno"
-                + " JOIN Especialidad e "
-                + " ON e.codigo = a.especialidad"
-                + " WHERE c.alumno";
+        values.add("e.alumno as alumno");
+        String condicion = " as e  "
+                + " INNER JOIN Candidato as c "
+                + " ON e.alumno =  c.alumno "
+                + " JOIN Alumno as a"
+                + " ON a.codigo = e.alumno ";
 
 
         out.print(

@@ -109,10 +109,11 @@ public class AdminFilter implements Filter {
         HttpServletResponse httpRes = (HttpServletResponse) response;
         Throwable problem = null;
         
-        assert httpReq.getSession().getAttribute("userName") !=null;
+//        assert httpReq.getSession().getAttribute("userName") !=null;
         
-        if  ( httpReq.getSession().getAttribute("userName") == null) {
+        if  ( httpReq.getSession().getAttribute("userName") != null) {
             try {
+                httpReq.setAttribute("admin", 1);
                 chain.doFilter(request, response);
             } catch (Throwable t) {
                 // If an exception is thrown somewhere down the filter chain,

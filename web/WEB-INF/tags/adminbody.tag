@@ -21,22 +21,37 @@
 
 <body>
     <div class="container">
-        <div class="row navbar" style="padding: 15px 0px;">
+        <div class="row navbar" style="padding: 15px 0px; background: #676F73">
             <div class="fourcol">
-                <div class="fivecol"></div>
+                <div class="onecol"></div>
+                <div class="fivecol" style="
+                     text-align: center;
+                     line-height: 20px;">
+                    ${adminTitle}
+                </div>
                 <div class="sixcol last">
-                    ${userName}
                 </div>
             </div>
             <div class="fourcol"></div>
-            <div class="fourcol last">
-                <div class="fivecol"></div>
-                <div class="sixcol last">
-                    <a href="${baseURL}/admin/logout/">
-                        Cerrar Session.
-                    </a>
+
+            <c:if test="${admin == 1}">
+                
+                <div class="fourcol last">
+                    <div class="fivecol"></div>
+                    <div class="fivecol">
+                        <span class="rgt" style="line-height: 20px;">
+                            ${userName}
+                        </span>
+                    </div>
+                    <div class="onecol last">
+                        <div class="btn icon" style="padding: 8px;">
+                            <div class="entypo cog" style="color: #676F73"></div>
+                        </div>
+                    </div>
                 </div>
-            </div>
+
+            </c:if>
+
         </div>
         <div class="row main">
             <jsp:invoke fragment="sidemenu"></jsp:invoke>

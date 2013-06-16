@@ -31,7 +31,7 @@ public class VotacionIndexPresidenteServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String message = "DONT HURS ME DONT HURS ME PLEASE";
+        String message = "Ingrese los siguientes datos para proceder a la votacion";
         String votacion_realizada;
         votacion_realizada =
                 String.valueOf(request.getSession().getAttribute("voto_p"));
@@ -41,7 +41,8 @@ public class VotacionIndexPresidenteServlet extends HttpServlet {
                 message = "El alumno "
                         + request.getSession().getAttribute("codigo")
                         + " ya ha realizado la votacion";
-                request.getSession().invalidate();
+                request.getSession().setAttribute("codigo", null);
+                request.getSession().setAttribute("NIE", null);
             }
         }
 

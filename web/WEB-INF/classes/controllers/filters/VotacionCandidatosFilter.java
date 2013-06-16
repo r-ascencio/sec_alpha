@@ -101,9 +101,9 @@ public class VotacionCandidatosFilter implements Filter {
         HttpServletResponse httpRes = (HttpServletResponse) response;
 
 
-        if (httpReq.getSession().getAttribute("codigo") == null
-                || httpReq.getSession().getAttribute("NIE") == null
-                || httpReq.getSession().getAttribute("voto") == null) {
+        if ((httpReq.getSession().getAttribute("codigo") == null
+                || httpReq.getSession().getAttribute("NIE") == null)
+                && httpReq.getSession().getAttribute("voto") == null) {
 
 
             httpRes.sendRedirect(httpReq.getContextPath() + "/votacion/login/");
@@ -112,9 +112,13 @@ public class VotacionCandidatosFilter implements Filter {
         } else {
 
             if (httpReq.getSession().getAttribute("voto") == 1
+                    || httpReq.getSession().getAttribute("voto") == "true"
                     || httpReq.getSession().getAttribute("voto") == true) {
                 httpRes.sendRedirect(httpReq.getContextPath() + "/votacion/completada/");
             } else {
+                
+                System.out.println("VOTO: " + httpReq.getSession().getAttribute("voto"));
+                
                 chain.doFilter(request, response);
             }
         }

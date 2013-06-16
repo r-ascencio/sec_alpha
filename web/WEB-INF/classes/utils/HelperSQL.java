@@ -20,10 +20,10 @@ import org.json.JSONArray;
 public final class HelperSQL {
 
     private static Connection coneccion = null;
-    protected static String base = "sec_alpha";
-    protected static String usuario = "_r";
-    protected static String password = "foo45";
-    protected static String url = "jdbc:mysql://127.0.0.1:3306/" + base + "";
+    protected static String base = "sec";
+    protected static String usuario = "adminGIIl3aU";
+    protected static String password = "rXzS2A1jHrmy";
+    protected static String url = "jdbc:mysql://127.3.105.130:3306/" + base + "";
 
     static {
         try {

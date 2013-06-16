@@ -7,6 +7,7 @@ public class Electo extends Tabla {
     private String alumno_auto;
     private String alumno_fk;
     private String cargo;
+    private Integer puntaje_auto;
     private String hidden_fecha_registro;
 
     public Electo(String codigo, String cargo) {

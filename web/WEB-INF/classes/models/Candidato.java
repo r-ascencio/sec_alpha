@@ -14,6 +14,7 @@ public class Candidato extends Alumno {
     private String alumno_fk;
     private Integer puntaje_auto;
     private String imagen_src;
+    private Integer especialidad_fk;
     private BufferedImage hidden_foto;
     private static Integer hidden_NCandidato = 24;
     private String hidden_fecha_registro;

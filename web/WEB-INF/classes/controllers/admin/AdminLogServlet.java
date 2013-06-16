@@ -37,12 +37,9 @@ public class AdminLogServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String message = "Ingrese su usuario y codigo de seguridad";
-        String userName =
-                (String) request.getSession().getAttribute("userName");
-        if (userName != null) {
-            message = "El usuario " + userName + " mantiene una sesion activa";
-        }
+
         request.setAttribute("message", message);
+
         request.getRequestDispatcher("/WEB-INF/templates/adminLogin.jsp")
                 .forward(request, response);
     }
@@ -83,7 +80,9 @@ public class AdminLogServlet extends HttpServlet {
                 }
             }
         } else {
-            response.sendRedirect(request.getContextPath() + "/login/admin");
+            request.setAttribute("message", "Erroneos");
+            request.getRequestDispatcher("/WEB-INF/templates/adminLogin.jsp")
+                    .forward(request, response);
         }
     }
 

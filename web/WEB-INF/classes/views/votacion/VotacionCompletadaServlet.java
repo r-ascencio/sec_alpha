@@ -41,6 +41,8 @@ public class VotacionCompletadaServlet extends HttpServlet {
 
             values.add("a.nombre as nombre");
             values.add("a.codigo as codigo");
+            values.add("a.voto as voto");
+            values.add("a.voto_p as voto_p");
             values.add("a.especialidad as Aespecialidad");
             values.add("e.nombre as especialidad");
             String condicion = " a  "
@@ -61,6 +63,15 @@ public class VotacionCompletadaServlet extends HttpServlet {
             request.setAttribute("especialidad",
                     alumnos.get(0).get("especialidad"));
 
+            request.getSession().setAttribute("codigo", null);
+            request.getSession().setAttribute("NIE", null);
+            
+            request.getSession().setAttribute("voto", 
+                    alumnos.get(0).get("voto"));
+            
+            request.getSession().setAttribute("voto", 
+                    alumnos.get(0).get("voto_p"));
+            
             request.getRequestDispatcher(
                     "/WEB-INF/templates/votacionCompletada.jsp")
                     .forward(request, response);

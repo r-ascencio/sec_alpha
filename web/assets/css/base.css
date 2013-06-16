@@ -392,11 +392,11 @@ Modifiers
 /* ----------------------------------------- */
 
 .btn{
-    background-color: #406f87;
+    background-color: #F3F3F4;
     text-align: center;
     text-decoration: none;
-    color: #fafafa;
-    border: 1px solid #406f87;
+    color: #515967;
+    border: 1px solid #F9F9FA;
     display: inline-block;
     cursor: pointer;
     width: 100%;
@@ -411,8 +411,16 @@ Modifiers
     padding: 10px;
 }
 
+
+.btn.icon:hover  {
+    background: #F9F9FA;
+    border: 1px solid #F9F9FA;
+}
+
+
 .btn:hover{
     background-color: #316782;
+    color: #F3F3F4;
     border-color: #316782;
 }
 
@@ -421,6 +429,7 @@ Modifiers
     border-color: #38593d;
     color: #ffffff;
 }
+
 
 .btn.success:hover{
     background-color: #38593d;

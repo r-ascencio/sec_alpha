@@ -65,19 +65,19 @@ public class EntityServlet extends HttpServlet {
             ArrayList<String> values = new ArrayList<>();
 
             values.add("*");
-            
+
             List<HashMap<String, Object>> vals = HelperSQL.obtenerFilas(
                     "Electos",
                     values,
                     "ORDER BY puntaje DESC LIMIT 12");
-            
-            if (vals.size() > 10) { 
-                request.setAttribute("electos", true);   
+
+            if (vals.size() > 10) {
+                request.setAttribute("electos", true);
             } else {
                 request.setAttribute("electos", false);
             }
-            
-        
+
+
         }
 
         request.setAttribute("adminDesc", "Administracion");
@@ -165,9 +165,14 @@ public class EntityServlet extends HttpServlet {
                             .append("\', title: \'")
                             .append(Utils.renderColName(fk_matcher.group(1)))
                             .append("\'")
-                            .append(", values: ").append(arrayValues.toString())
-                            .append(", editor: fkEditor")
-                            .append("},");
+                            .append(", values: ").append(arrayValues.toString());
+
+                    if (!(entidad.getTableName().equals("Candidato")
+                            && fk_matcher.group(1).equals("especialidad"))) {
+                        object.append(", editor: fkEditor");
+                    }
+
+                    object.append("},");
 
                 } else if (auto_matcher.matches()) {
                     field = auto_matcher.group(1);
@@ -256,7 +261,7 @@ public class EntityServlet extends HttpServlet {
                 type = "";
                 validation = "required: true";
 
-            } else if (fieldValue == "Date") {
+            } else if ("Date".equals(fieldValue)) {
                 type = "type: \"date\" ,";
                 validation = "editable: true";
             }
@@ -267,6 +272,9 @@ public class EntityServlet extends HttpServlet {
 
                 fk_matcher = fk.matcher(fieldName);
                 if (fk_matcher.matches()) {
+                    if (entidad.getTableName().equals("Candidato")) {
+                        validation = "editable: false, nullable: true";
+                    }
                     fieldName = fk_matcher.group(1);
                 } else if (auto_matcher.matches()) {
                     fieldName = auto_matcher.group(1);

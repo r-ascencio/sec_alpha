@@ -173,12 +173,11 @@ IF  countCandidato > 0 THEN
   FETCH cursorCandidato INTO CurrentCandidato;
   SET currentCandidatoEsp = (SELECT especialidad FROM Alumno WHERE codigo = NEW.alumno);
   SET Nespecialidad = (SELECT especialidad FROM Alumno WHERE codigo = CurrentCandidato);
-  INSERT INTO debug (id, debug_output) VALUES (currentCandidatoEsp, Nespecialidad);
   IF (Nespecialidad = currentCandidatoEsp) THEN
 	SET nCandidatos = nCandidatos + 1;	
   END IF; 
   SELECT alumno INTO CurrentCandidato FROM Candidato LIMIT 1;
-
+  SET NEW.especialidad = ( SELECT especialidad FROM Alumno WHERE codigo = NEW.alumno ) ;
   UNTIL done END REPEAT;
   CLOSE cursorCandidato;
 

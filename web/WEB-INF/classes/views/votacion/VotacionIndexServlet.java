@@ -14,9 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import models.Alumno;
-import models.Candidato;
-import models.Pregunta;
-import java.lang.IndexOutOfBoundsException;
 import utils.HelperSQL;
 
 /**
@@ -29,9 +26,7 @@ public class VotacionIndexServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        System.out.println("HERE GET VOTACIONINDEX");
 
-        
         String message = (String) request.getSession().getAttribute("message");
         if (message == null) {
             message = "Ingrese los siguientes datos: ";
@@ -46,7 +41,11 @@ public class VotacionIndexServlet extends HttpServlet {
                 message = "El alumno "
                         + request.getSession().getAttribute("codigo")
                         + " ya ha realizado la votacion";
-                request.getSession().invalidate();
+
+                request.getSession().setAttribute("codigo", null);
+                request.getSession().setAttribute("NIE", null);
+                request.getSession().setAttribute("voto", 1);
+
             }
         }
 
@@ -70,7 +69,7 @@ public class VotacionIndexServlet extends HttpServlet {
             String alumnoNIE;
             alumnoCodigo = request.getParameter("codigo");
             alumnoNIE = request.getParameter("NIE");
-            
+
             List<HashMap<String, Object>> alumnos = HelperSQL.obtenerFilas(
                     alumno.getTableName(), values, "WHERE codigo = "
                     + alumnoCodigo + "  AND NIE = " + alumnoNIE);
@@ -89,26 +88,36 @@ public class VotacionIndexServlet extends HttpServlet {
                         + "/votacion/");
                 return;
             } else {
-                System.out.println("\nNo EXISTE EL ALUMNO \n");
-                String message;
-                request.getSession().invalidate();
+
+                String message = "";
+
+                request.getSession().setAttribute("codigo", null);
+                request.getSession().setAttribute("NIE", null);
+
                 if (alumnos.get(0).get("NIE") != null
                         && alumnos.get(0).get("codigo") != null) {
                     message = "El alumno : ".concat(
                             (String) alumnos.get(0).get("nombre"))
                             .concat(" ya ha realizado la votacion");
 
+                    request.getSession().setAttribute("codigo", null);
+                    request.getSession().setAttribute("NIE", null);
+
+
                 } else {
-                    request.setAttribute("message", "Los datos ingresados son incorrectos");
+                    message = "Los datos ingresados son incorrectos";
                 }
+
+                request.setAttribute("message", message);
+
                 request.getRequestDispatcher("/WEB-INF/templates/votacionIndex.jsp")
                         .forward(request, response);
 
             }
-        } catch (IOException | ServletException e)  {
+        } catch (IOException | ServletException e) {
             // TODO: Fix this.
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
-        } catch (IndexOutOfBoundsException  e) {
+        } catch (IndexOutOfBoundsException e) {
             // TODO: Fix this
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }

@@ -29,7 +29,7 @@ public class ReturnQuestionsServlet extends HttpServlet {
         Pregunta pregunta = new Pregunta();
         Candidato candidato = new Candidato();
         Alumno alumno = new Alumno();
-        
+
         ArrayList<String> values = new ArrayList<>();
 
         // shame on me :(
@@ -79,12 +79,11 @@ public class ReturnQuestionsServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("\n\nHERE POSTRETURNQUESTIONSERVLET\n\n");
 
         Pregunta pregunta = new Pregunta();
         Candidato candidato = new Candidato();
         Alumno alumno = new Alumno();
-        
+        Integer count = 0;
         String nombreParam;
         Boolean imok = false;
         Pattern codigo_pregunta = Pattern.compile("^([0-9]+_)([0-9]+)");
@@ -94,8 +93,17 @@ public class ReturnQuestionsServlet extends HttpServlet {
         // shame on me :(
         values.add("alumno as codigo");
 
+        String condicion = " c  "
+                + " INNER JOIN Alumno a "
+                + " ON a.codigo = c.alumno"
+                + " JOIN Especialidad e "
+                + " ON e.codigo = a.especialidad"
+                + " WHERE a.especialidad = "
+                + "(SELECT especialidad FROM Alumno WHERE codigo  = "
+                + request.getSession().getAttribute("codigo").toString() + ")";
+
         List<HashMap<String, Object>> candidatos = HelperSQL.obtenerFilas(
-                candidato.getTableName(), values, "");
+                candidato.getTableName(), values, condicion);
         values.clear();
 
         values.add("codigo as codigo");
@@ -129,24 +137,32 @@ public class ReturnQuestionsServlet extends HttpServlet {
             if (puntajeAdquirido <= maxPuntaje
                     && puntajeAdquirido > 0) {
                 imok = true;
-                System.out.println("CODIGO: " + codigoCandidato);
                 values.add("codigo as codigo");
                 HelperSQL.actualizarFila(candidato.getTableName(), "puntaje",
                         "puntaje + " + puntajeAdquirido, "alumno", codigoCandidato);
+                System.out.println("\n");
             } else {
+
                 imok = false;
             }
+           
         }
+
+
         if (imok == true) {
+
+            
             HelperSQL.actualizarFila(alumno.getTableName(), "voto",
                     1, "codigo", request.getSession().getAttribute("codigo"));
-            HttpSession session = request.getSession(true);
-            session.setAttribute("voto", 1);
+            request.getSession().setAttribute("voto", 1);
             response.sendRedirect(request.getContextPath()
                     + "/votacion/completada/");
+
         } else {
-            response.sendRedirect(request.getContextPath()
-                    + "/votacion/");
+            
+                        response.sendRedirect(request.getContextPath()
+                    + "/votacion/login/");
+            
         }
     }
 }

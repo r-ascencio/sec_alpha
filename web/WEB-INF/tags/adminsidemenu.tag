@@ -35,4 +35,9 @@
                     <span class="entypo help"></span>
 		</a>
 	</div>
+	<div class="item">
+		<a href="${baseURL}/admin/Electo/" class="icon"> 
+                    <span class="entypo add-user"></span>
+		</a>
+	</div>
 </div>
