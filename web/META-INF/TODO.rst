@@ -18,4 +18,4 @@ Task to do for sec_alpha
         controllers.admin.EspecialidadNAlumnus, 
         controllers.admin.setConsejo, 
         controllers.admin.setPresidente.
-+ *FIX* : field especialidad in candidato should be readonly.
++ **FIX** : field especialidad in candidato should be readonly.
