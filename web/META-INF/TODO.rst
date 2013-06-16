@@ -11,10 +11,10 @@ Task to do for sec_alpha
 + **FIX**: i18n in admin section.
 + BUG: we need the images in the "voto presidente". 
 + DO: a router for votacion, i can't stand with the web.xml file.
-+ *+FIX**: rename some serlvets. (that means router too).
++ **FIX**: rename some serlvets. (that means router too).
 + **DO**: Check js/*.js to build a utils.js later.
 + **FIX**: now wee need go down and go up in "voto presidente".
-+ **DO**: A SERVLET named : AdminActions, that should contain :
++ **DO**: A SERVLET named  AdminActions, that should contain 
         controllers.admin.EspecialidadNAlumnus, 
         controllers.admin.setConsejo, 
         controllers.admin.setPresidente.
