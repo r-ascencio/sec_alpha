@@ -1,15 +1,24 @@
+http://sec-rscnt.rhcloud.com/
 
 MySQL 5.1 database added.  Please make note of these credentials:
-       Root User: adminGIIl3aU
-   Root Password: rXzS2A1jHrmy
+       Root User: adminRGTB9Uq
+   Root Password: Gx791NCp7K2q
    Database Name: sec
 Connection URL: mysql://$OPENSHIFT_MYSQL_DB_HOST:$OPENSHIFT_MYSQL_DB_PORT/
 You can manage your new MySQL database by also embedding phpmyadmin-3.4.
 The phpmyadmin username and password will be the same as the MySQL credentials above.
 
 phpMyAdmin added.  Please make note of these MySQL credentials again:
-   Root User: adminGIIl3aU
-   Root Password: rXzS2A1jHrmy
+   Root User: adminRGTB9Uq
+   Root Password: Gx791NCp7K2q
 URL: https://sec-rscnt.rhcloud.com/phpmyadmin/
 
+rhc cartridge list
 
+rhc cartridge start -a sec -c mysql-5.1
+rhc cartridge stop -a sec -c mysql-5.1
+rhc cartridge restart -a sec -c mysql-5.1
+rhc cartridge reload -a sec -c mysql-5.1
+rhc cartridge status -a sec -c mysql-5.1
+
+rhc cartridge remove -a sec -c mysql-5.1

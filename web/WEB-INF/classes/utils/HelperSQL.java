@@ -21,12 +21,22 @@ public final class HelperSQL {
 
     private static Connection coneccion = null;
     protected static String base = "sec";
-    protected static String usuario = "adminGIIl3aU";
-    protected static String password = "rXzS2A1jHrmy";
-    protected static String url = "jdbc:mysql://127.3.105.130:3306/" + base + "";
+    protected static String usuario = "adminRGTB9Uq";
+    protected static String password = "Gx791NCp7K2q";
+    private static String host = "127.0.0.1";
+    private static String port = "3306";
+    protected static String url = "";
 
     static {
         try {
+
+            if (System.getenv("$OPENSHIFT_INTERNAL_IP") != null
+                    && System.getenv("$OPENSHIFT_MYSQLDB_DB_PORT") != null) {
+                host = System.getenv("$OPENSHIFT_INTERNAL_IP");
+                port = System.getenv("$OPENSHIFT_MYSQLDB_DB_PORT");
+            }
+
+            url = "jdbc:mysql://"+host+":"+port+"/" + base + "";
 
             Class.forName("com.mysql.jdbc.Driver");
 
@@ -123,6 +133,8 @@ public final class HelperSQL {
      */
     public static List<HashMap<String, Object>> obtenerFilas(String tabla, ArrayList<String> campos,
             String condicion) {
+        
+        System.out.println( getUrl() );
 
         /**/
         List<HashMap<String, Object>> resultados = new ArrayList<>();
