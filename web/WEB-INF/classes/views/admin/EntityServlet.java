@@ -167,11 +167,7 @@ public class EntityServlet extends HttpServlet {
                             .append("\'")
                             .append(", values: ").append(arrayValues.toString());
 
-                    if (!(entidad.getTableName().equals("Candidato")
-                            && fk_matcher.group(1).equals("especialidad"))) {
-                        object.append(", editor: fkEditor");
-                    }
-
+                    object.append(", editor: fkEditor");
                     object.append("},");
 
                 } else if (auto_matcher.matches()) {
@@ -264,9 +260,6 @@ public class EntityServlet extends HttpServlet {
             } else if ("Date".equals(fieldValue)) {
                 type = "type: \"date\" ,";
                 validation = "editable: true";
-            } else if (entidad.getTableName().equals("Candidato")
-                    && fieldName.equals("especialidad")) {
-                validation = "editable: false";
             }
 
             matcher = hidden.matcher(field.getKey());
@@ -275,9 +268,6 @@ public class EntityServlet extends HttpServlet {
 
                 fk_matcher = fk.matcher(fieldName);
                 if (fk_matcher.matches()) {
-                    if (entidad.getTableName().equals("Candidato")) {
-                        validation = "editable: false, nullable: true";
-                    }
                     fieldName = fk_matcher.group(1);
                 } else if (auto_matcher.matches()) {
                     fieldName = auto_matcher.group(1);
