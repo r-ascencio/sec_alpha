@@ -1,3 +1,7 @@
+/*
+ * Entity Grid.
+ * It's used on entidad.jsp 
+ */
 $(document)
         .ready(
         function() {
@@ -103,17 +107,17 @@ $(document)
                                 },
                                 //filter menu for "date" type columns
                                 date: {
-                                    eq: "Custom Equal to",
-                                    neq: "Custom Not equal to",
-                                    gte: "Custom Is after or equal to",
-                                    gt: "Custom Is after",
-                                    lte: "Custom Is before or equal to",
-                                    lt: "Custom Is before"
+                                    eq: " Igual a ",
+                                    neq: " Diferente de ",
+                                    gte: " Mayor o igual a ",
+                                    gt: " Mayor a ",
+                                    lte: " Menor o igual a ",
+                                    lt: " Menor a "
                                 },
                                 //filter menu for foreign key values
                                 enums: {
-                                    eq: "custom Is Equal to",
-                                    neq: "custom Is Not equal to"
+                                    eq: " Igual a ",
+                                    neq: " Diferente de "
                                 }
                             }
                         },

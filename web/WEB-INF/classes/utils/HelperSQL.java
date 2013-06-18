@@ -23,21 +23,24 @@ public final class HelperSQL {
     protected static String base = "sec";
     protected static String usuario = "adminRGTB9Uq";
     protected static String password = "Gx791NCp7K2q";
-    private static String host = "127.0.0.1";
-    private static String port = "3306";
-    protected static String url = "";
+    private static String host = System.getenv("OPENSHIFT_MYSQL_DB_HOST");
+    private static String port = System.getenv("OPENSHIFT_MYSQL_DB_PORT");
+    protected static String url = "jdbc:mysql://"+host+":"+port+"/" + base;
 
     static {
         try {
 
-            if (System.getenv("$OPENSHIFT_INTERNAL_IP") != null
-                    && System.getenv("$OPENSHIFT_MYSQLDB_DB_PORT") != null) {
-                host = System.getenv("$OPENSHIFT_INTERNAL_IP");
-                port = System.getenv("$OPENSHIFT_MYSQLDB_DB_PORT");
+            if (System.getenv("OPENSHIFT_MYSQL_DB_HOST") == null
+                    && System.getenv("OPENSHIFT_MYSQL_DB_PORT") == null){
+                
+                host = "127.0.0.1";
+                port = "3306";
+                
+                url = "jdbc:mysql://"+host+":"+port+"/" + base;
             }
-
-            url = "jdbc:mysql://"+host+":"+port+"/" + base + "";
-
+            
+            System.out.println(url);
+            
             Class.forName("com.mysql.jdbc.Driver");
 
         } catch (ClassNotFoundException e) {

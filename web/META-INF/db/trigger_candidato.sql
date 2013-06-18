@@ -38,6 +38,7 @@
 -- END
 -- GO
 
+use sec;
 DELIMITER $$
 CREATE TRIGGER tresCandidatos BEFORE INSERT ON Candidato FOR EACH ROW BEGIN
 DECLARE done 					INT DEFAULT 0;

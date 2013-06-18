@@ -392,11 +392,12 @@ Modifiers
 /* ----------------------------------------- */
 
 .btn{
+    
     background-color: #F3F3F4;
     text-align: center;
     text-decoration: none;
     color: #515967;
-    border: 1px solid #F9F9FA;
+    border: 2px solid #E9E9E9;
     display: inline-block;
     cursor: pointer;
     width: 100%;

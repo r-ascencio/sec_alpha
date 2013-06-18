@@ -27,5 +27,6 @@
 <link rel="stylesheet" href="${baseURL}/assets/js/kendo/styles/kendo.silver.min.css" />
 <script type="text/javascript" src="${baseURL}/assets/js/kendo/js/jquery.min.js"></script>
 <script type="text/javascript" src="${baseURL}/assets/js/kendo/js/kendo.all.min.js"></script>
+<script type="text/javascript" src="${baseURL}/assets/js/kendo/lang/kendo.es-MX.js"></script>
 <script type="text/javascript" src="${baseURL}/assets/js/kendo/js/cultures/kendo.culture.es-SV.min.js"></script>
 <!--  /kendoUI -->

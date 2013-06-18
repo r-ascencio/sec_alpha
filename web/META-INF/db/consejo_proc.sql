@@ -1,4 +1,4 @@
-USE sec_alpha;
+USE sec;
 
 DELIMITER $$
 CREATE PROCEDURE declararConsejo()

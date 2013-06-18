@@ -1,4 +1,9 @@
-function createChart() {
+/*
+ * Charts
+ * Used in adminDashboard.
+ * @returns {undefined}
+ */
+function makePie() {
     $("#candidatoGrafica").kendoChart({
         title: {
             position: "top",
@@ -34,28 +39,66 @@ function createChart() {
     });
 }
 
+function makeBar() {
+    $("#Barchart").kendoChart({
+        title: {
+            text: "Proceso de votacion."
+        },
+        legend: {
+            visible: false
+        },
+        seriesDefaults: {
+            type: "bar"
+        },
+        series: [{
+                name: "Porcentaje",
+                data: espPrcnt
+            }],
+        valueAxis: {
+            max: 100,
+            line: {
+                visible: false
+            },
+            minorGridLines: {
+                visible: true
+            }
+        },
+        categoryAxis: {
+            categories: espArr,
+            majorGridLines: {
+                visible: false
+            }
+        },
+        tooltip: {
+            visible: true,
+            template: "#= series.name #: #= value #"
+        }
+    });
+}
+
 $(document).ready(function() {
     setTimeout(function() {
         // Initialize the chart with a delay to make sure
         // the initial animation is visible
-        createChart();
+        makePie();
 
-        $("#candidatoPie").bind("kendo:skinChange", function(e) {
-            createChart();
-        });
 
         // this is about 
 
-        for (var especialidad in dataVotacion) {
+//        for (var especialidad in dataVotacion) {
+//
+//            buildProgress(
+//                    dataVotacion[especialidad]
+//                    );
+//        }
 
-            buildProgress(
-                    dataVotacion[especialidad]
-                    );
-        }
+
+        // kendo bar charts.
+        makeBar();
 
         // this is about 
 
-    }, 400);
+    }, 80);
 
 });
 
@@ -93,6 +136,7 @@ function buildProgress(settings) {
 
         progressEspecialidad.setAttribute("class", "pEspecialidad fourcol");
 
+
 //        progressEspecialidad.setAttribute("style", "position: relative");
 
         // this is ugly and stupid as fuck.
@@ -107,10 +151,13 @@ function buildProgress(settings) {
         progressbarLabel.setAttribute("class", "twocol");
 
         progressbarLabel.innerHTML = value;
-        
+
         progressbarLabel.setAttribute("style", "line-height: 30px;");
 
         $progressbar = $(progressbar);
+
+        $progressbar.append(progressbarLabel);
+
         $container = $(container);
 
         $progressbar.progressbar({
@@ -124,6 +171,7 @@ function buildProgress(settings) {
                     + Math.floor(Math.random() * 16777215).toString(16)
         });
 
+        $container.append("<br/><br/>");
         $container.append(
                 $(progressEspecialidad)
                 );
@@ -131,7 +179,7 @@ function buildProgress(settings) {
         $container.append(
                 $(progressbarLabel)
                 );
-                    
+
         $container.append(
                 $progressbar
                 );
@@ -145,15 +193,5 @@ function buildProgress(settings) {
 
     } else {
         return false;
-    }
-}
-
-// utils.js ?
-function getPercent(t, p) {
-    if (p === 0) {
-        return 0;
-    }
-    else {
-        return ((p / t) * 100);
     }
 }

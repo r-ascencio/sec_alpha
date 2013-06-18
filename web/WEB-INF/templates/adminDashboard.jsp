@@ -15,12 +15,9 @@
     <jsp:attribute name="assets">
 
         <script type="text/javascript"
-                src="${baseURL}/assets/js/jquery-ui/js/jquery-ui-1.10.3.custom.min.js">
+                src="${baseURL}/assets/js/utils.js">
         </script>
-
-        <link rel="stylesheet" 
-              href="${baseURL}/assets/js/jquery-ui/css/smoothness/jquery-ui-1.10.3.custom.min.css" />
-
+        
         <style type="text/css">
 
             .progressbar-container {
@@ -53,14 +50,18 @@
 
             <div class="fivecol last" style="text-align: center">
 
+
+
                 <div class="twelvecol">
                     <h3> Proceso de votacion </h3>
                 </div>
 
                 <div  class="twelvecol">
-                    <div class="fourcol"> <h4>Especialidad</h4> </div>
-                    <div class="twocol"> <h4>%</h4> </div>
-                    <div class="sixcol last"></div>
+
+                    <div class="Barchart-wrapper" style='height: 400px;'>
+                        <div id="Barchart" sstyle="background: center no-repeat url('${baseURL}/assets/img/bg.png')"></div>
+                    </div>
+
                 </div>
 
                 <div class="twelvecol" id="progress-cont">
@@ -78,8 +79,24 @@
             <!-- i should write a script for init and shit -->
 
             <script>
-                var data = ${dataCandidatos};
-                var dataVotacion = ${dataVotacion};
+                var data = ${dataCandidatos},
+                        dataVotacion = ${dataVotacion},
+                        espArr = [],
+                        espPrcnt = [],
+                        n = 0;
+
+                for (var i = 0; i < dataVotacion.length; i++) {
+
+                    espArr[i] = dataVotacion[i].nombre;
+
+                    espPrcnt[i] = getPercent(
+                            dataVotacion[i].alumnos,
+                            dataVotacion[i].votaciones_realizadas
+                            );
+                                
+                    n++;
+                }
+
             </script>
 
             <script src="${baseURL}/assets/js/charts.js">

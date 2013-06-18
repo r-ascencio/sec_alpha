@@ -105,11 +105,11 @@ public class EntityServlet extends HttpServlet {
         StringBuilder object = new StringBuilder();
         Pattern hidden = Pattern.compile("^(hidden)[_A-Za-z0-9]+");
         Matcher hidden_matcher;
-        Pattern fk = Pattern.compile("([_A-Za-z0-9]+)(_fk)$");
+        Pattern fk = Pattern.compile("([_A-Za-z0-9]+)(_fk)");
         Matcher fk_matcher;
-        Pattern auto = Pattern.compile("([_A-Za-z0-9]+)(_auto)$");
+        Pattern auto = Pattern.compile("([_A-Za-z0-9]+)(_auto)");
         Matcher auto_matcher;
-        Pattern src = Pattern.compile("([_A-Za-z]+)(_src)$");
+        Pattern src = Pattern.compile("([_A-Za-z]+)(_src)");
         Matcher src_matcher;
 
         fk_matcher = fk.matcher(entidad.getColsName()[0]);
@@ -264,6 +264,9 @@ public class EntityServlet extends HttpServlet {
             } else if ("Date".equals(fieldValue)) {
                 type = "type: \"date\" ,";
                 validation = "editable: true";
+            } else if (entidad.getTableName().equals("Candidato")
+                    && fieldName.equals("especialidad")) {
+                validation = "editable: false";
             }
 
             matcher = hidden.matcher(field.getKey());

@@ -71,10 +71,8 @@
         <servlet-class>controllers.admin.EntityActionServlet</servlet-class>
     </servlet>
 
-    <servlet>
-        <servlet-name>GenerarReportesServlet</servlet-name>
-        <servlet-class>views.admin.GenerarReportesServlet</servlet-class>
-    </servlet>
+    
+
 
     <servlet>
         <servlet-name>VotacionIndexPresidente</servlet-name>

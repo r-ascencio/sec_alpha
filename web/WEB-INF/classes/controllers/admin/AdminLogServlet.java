@@ -56,34 +56,69 @@ public class AdminLogServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Usuario usuario = new Usuario();
-        String userName = (String) request.getParameter("userName");
-        String userPass = (String) request.getParameter("userPass");
-        ArrayList<String> values = new ArrayList<>();
-        values.add("*");
-        if (userName != null
-                && userPass != null) {
-            String encriptedPass = Utils.encodeToSHA512(userPass);
-            List<HashMap<String, Object>> selectUser = HelperSQL
-                    .obtenerFilas(usuario.getTableName(), values,
-                    "WHERE nombre = \'" + userName + "\'");
-            if (selectUser.size() == 1) {
-                if (encriptedPass.equals(selectUser.get(0).get("pass"))) {
-                    HttpSession session = request.getSession(true);
-                    session.setAttribute("userName", userName);
-                    response.sendRedirect(request.getContextPath()
-                            + "/admin/");
-                } else {
-                    request.setAttribute("message", "Erroneos");
-                    request.getRequestDispatcher("/WEB-INF/templates/adminLogin.jsp")
-                            .forward(request, response);
+        try {
+            Usuario usuario = new Usuario();
+            String userName = (String) request.getParameter("userName");
+            String userPass = (String) request.getParameter("userPass");
+            ArrayList<String> values = new ArrayList<>();
+            values.add("*");
+            if (userName != null
+                    && userPass != null) {
+
+                String encriptedPass = Utils.encodeToSHA512(userPass);
+
+                List<HashMap<String, Object>> selectUser = HelperSQL
+                        .obtenerFilas(usuario.getTableName(), values,
+                        "WHERE nombre = \'" + userName + "\'");
+
+                if (selectUser.size() == 1) {
+                    if (encriptedPass.equals(selectUser.get(0).get("pass"))) {
+                        HttpSession session = request.getSession(true);
+                        session.setAttribute("userName", userName);
+                        response.sendRedirect(request.getContextPath()
+                                + "/admin/");
+                    } else {
+
+                        System.out.println(selectUser.get(0).get("pass"));
+                        System.out.println(encriptedPass);
+
+                        request.setAttribute("message",
+                                "<br/><br/>"
+                                + "<span class=\" alert critical\">"
+                                + "nombre de usuario o contrase&nacute;a erroneos."
+                                + "</span> "
+                                + "<br/><br/>");
+
+                        request.getRequestDispatcher("/WEB-INF/templates/adminLogin.jsp")
+                                .forward(request, response);
+                    }
                 }
+            } else {
+
+                request.setAttribute("message",
+                        "<br/><br/>"
+                        + "<span class=\" alert critical\">"
+                        + "nombre de usuario o contrase&nacute;a erroneos."
+                        + "</span> "
+                        + "<br/><br/>");
+
+                request.getRequestDispatcher("/WEB-INF/templates/adminLogin.jsp")
+                        .forward(request, response);
             }
-        } else {
-            request.setAttribute("message", "Erroneos");
+        } catch (Exception e) {
+            
+            request.setAttribute("message",
+                    "<br/><br/>"
+                    + "<span class=\" alert critical\">"
+                    + "Ha ocurrido un error en la conexion."
+                    + "</span> "
+                    + "<br/><br/>");
+
             request.getRequestDispatcher("/WEB-INF/templates/adminLogin.jsp")
                     .forward(request, response);
+
         }
+
     }
 
     /**
