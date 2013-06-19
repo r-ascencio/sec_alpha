@@ -6,7 +6,8 @@ TODO
 
 + **DEL**:      Spaghetti **js from *.jsps** and put them in assets/app/<foo>.js each.
 + **DEL**:      Spaghetti **css from *.jsps** and put them in assets/css/<foo>.css each.
-+ **UPDATE**:   HelperSQl callProc - build it rigth.
++ **UPD**:      HelperSQl callProc - build it rigth.
++ **ADD**:      Procedure to upadate modification dates.
 + **ADD**:      An App whit views and models and shits for voto presidente.
 + **FIX**:      i18n in admin section.
 + **FIX**:      Rename some serlvets. (that means router too).
@@ -17,11 +18,13 @@ TODO
                         controllers.admin.setConsejo, 
                         controllers.admin.setPresidente.
 + **FIX** :     Field especialidad in candidato should be readonly.
-+ **ADD** :     An Index Page.
 + **FIX** :     Electo procedure.
 + **FIX** :     Comment more code and put info in package-info.java.
 + **FIX** :     ( better way of manage the source ¿maven?)
-
++ **FIX** :     Upload on *Openshift*.
++ **FIX** :     Organize templates.
++ **FIX** :     I'm a very stupid person. check Uploads controllers.
++ **FIX** :     Give that routers a 404. check.
 
 DONE
 -----
@@ -30,5 +33,6 @@ DONE
 + ADD:          "especialidad" column to Candidato Admin.
 + BUG:          We need the images in the "voto presidente". 
 + DO:           A router for votacion, i can't stand with the web.xml file.
-+ TEST:         "votacion".
++ TST:          "votacion".
 + DO:           Check js/*.js to build a utils.js later.
++ ADD:          An Index Page.
