@@ -5,14 +5,6 @@
 
     <!-- misc -->
 
-    <servlet>
-        <servlet-name>RouterVotacionServlet</servlet-name>
-        <servlet-class>controllers.routers.RouterVotacionServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>setPresidente</servlet-name>
-        <servlet-class>controllers.admin.setPresidente</servlet-class>
-    </servlet>
     <servlet-mapping>
         <servlet-name>GenerarReportesVotoServlet</servlet-name>
         <url-pattern>/admin/reportes/voto</url-pattern>
@@ -20,20 +12,22 @@
 
     <!-- /misc -->
 
+    
+    <welcome-file-list>
+        <welcome-file>/WEB-INF/templates/index.jsp</welcome-file>
+    </welcome-file-list>
+
+    <!-- admin controller -->
+    
     <servlet-mapping>
         <servlet-name>setPresidente</servlet-name>
         <url-pattern>/admin/Electo/setPresidente</url-pattern>
     </servlet-mapping>
-    <welcome-file-list>
-        <welcome-file>index.html</welcome-file>
-        <welcome-file>index.htm</welcome-file>
-        <welcome-file>index.jsp</welcome-file>
-        <welcome-file>default.html</welcome-file>
-        <welcome-file>default.htm</welcome-file>
-        <welcome-file>default.jsp</welcome-file>
-    </welcome-file-list>
-
-    <!-- admin controller -->
+    
+    <servlet>
+        <servlet-name>setPresidente</servlet-name>
+        <servlet-class>controllers.admin.setPresidente</servlet-class>
+    </servlet>
     
     <servlet>
         <servlet-name>setConsejo</servlet-name>
@@ -197,6 +191,10 @@
 
     <!-- votacion mapping -->
 
+    <servlet>
+        <servlet-name>RouterVotacionServlet</servlet-name>
+        <servlet-class>controllers.routers.RouterVotacionServlet</servlet-class>
+    </servlet>
 
   <servlet-mapping>
         <servlet-name>RouterVotacionServlet</servlet-name>
@@ -291,7 +289,7 @@
 
     --&gt;
 
-<servlet-name>setConsejo</servlet-name>
+    <servlet-name>setConsejo</servlet-name>
 
     --&gt;
 
