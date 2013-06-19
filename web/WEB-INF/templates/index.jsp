@@ -3,24 +3,27 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-<c:set var="baseURL" value="${fn:replace(pageContext.request.requestURL, 
-                              pageContext.request.requestURI, 
-                              pageContext.request.contextPath)}" />
+<c:set var="baseURL" 
+       value="${fn:replace(pageContext.request.requestURL,
+                pageContext.request.requestURI, 
+                pageContext.request.contextPath)}" />
 
 <c:set var="iwantnav" value="true"></c:set>
 
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 
-
-<t:head pageTitle="Inicio de Votacion">
-    <jsp:attribute name="preassets">
-        <!-- foundation -->
-        <link rel="stylesheet" 
-              href="${baseURL}/assets/css/foundationforms/css/foundation.css" />
-        <!-- /foundation -->
-    </jsp:attribute>
-</t:head>
-
+<head>
+    <title>
+        sec - inicio
+    </title>
+    <c:if test="${baseURL == 'http://sec-rscnt.rhcloud.com/'}">
+        <c:set var="baseURL" value="''"></c:set>
+    </c:if>
+    <link rel="stylesheet" href="${baseURL}/assets/css/grid.css" />
+    <link rel="stylesheet" href="${baseURL}/assets/css/fonts.css" />
+    <link rel="stylesheet" href="${baseURL}/assets/css/entypo.css" />
+    <link rel="stylesheet" href="${baseURL}/assets/css/base.css" />
+</head>
 
 <t:adminbody
     adminTitle="Sistema de elecciones estudiantiles."  
