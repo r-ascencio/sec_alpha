@@ -18,41 +18,43 @@
 <!--  parameters  -->
 <%@attribute name="adminTitle" required="true"%>
 <%@attribute name="adminDescp" required="true"%>
+<%@attribute name="iwantnav" required="false"%>
 
 <body>
     <div class="container">
-        <div class="row navbar" style="padding: 15px 0px; background: #676F73">
-            <div class="fourcol">
-                <div class="onecol"></div>
-                <div class="fivecol" style="
-                     text-align: center;
-                     line-height: 20px;">
-                    ${adminTitle}
-                </div>
-                <div class="sixcol last">
-                </div>
-            </div>
-            <div class="fourcol"></div>
-
-            <c:if test="${admin == 1}">
-                
-                <div class="fourcol last">
-                    <div class="fivecol"></div>
-                    <div class="fivecol">
-                        <span class="rgt" style="line-height: 20px;">
-                            ${userName}
-                        </span>
+        <c:if test="${iwantnav == null}">
+            <div class="row navbar" style="padding: 15px 0px; background: #676F73">
+                <div class="sevencol">
+                    <div class="onecol"></div>
+                    <div class="sevencol" style="
+                         line-height: 20px;">
+                        ${adminTitle}
                     </div>
-                    <div class="onecol last">
-                        <div class="btn icon" style="padding: 8px;">
-                            <div class="entypo cog" style="color: #676F73"></div>
+                    <div class="fivecol last">
+                    </div>
+                </div>
+                <div class="onecol"></div>
+
+                <c:if test="${admin == 1}">
+
+                    <div class="fourcol last">
+                        <div class="fivecol"></div>
+                        <div class="fivecol">
+                            <span class="rgt" style="line-height: 20px;">
+                                ${userName}
+                            </span>
+                        </div>
+                        <div class="onecol last">
+                            <div class="btn icon" style="padding: 0px 8px 8px 8px;">
+                                <div class="entypo cog" style="color: #676F73"></div>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-            </c:if>
+                </c:if>
 
-        </div>
+            </div>
+        </c:if>
         <div class="row main">
             <jsp:invoke fragment="sidemenu"></jsp:invoke>
                 <div id="base" class="tencol last">
