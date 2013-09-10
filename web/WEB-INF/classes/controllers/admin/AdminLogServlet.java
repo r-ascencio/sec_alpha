@@ -92,6 +92,19 @@ public class AdminLogServlet extends HttpServlet {
                         request.getRequestDispatcher("/WEB-INF/templates/adminLogin.jsp")
                                 .forward(request, response);
                     }
+                } else {
+                    //ANOTHER STUPID SHIT 
+
+                    request.setAttribute("message",
+                            "<br/><br/>"
+                            + "<span class=\" alert critical\">"
+                            + "nombre de usuario o contrase&nacute;a erroneos."
+                            + "</span> "
+                            + "<br/><br/>");
+
+                    request.getRequestDispatcher("/WEB-INF/templates/adminLogin.jsp")
+                            .forward(request, response);
+
                 }
             } else {
 
@@ -106,7 +119,7 @@ public class AdminLogServlet extends HttpServlet {
                         .forward(request, response);
             }
         } catch (Exception e) {
-            
+
             request.setAttribute("message",
                     "<br/><br/>"
                     + "<span class=\" alert critical\">"

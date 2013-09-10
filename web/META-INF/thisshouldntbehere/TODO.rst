@@ -12,7 +12,6 @@ TODO
 + **FIX**:      i18n in admin section.
 + **FIX**:      Rename some serlvets. (that means router too).
 + **DO**:       Check js/*.js to put things on utils.js later.
-+ **FIX**:      Now wee need go down and go up in "voto presidente".
 + **DO**:       A SERVLET named  AdminActions, that should contain what's in
                         controllers.admin.EspecialidadNAlumnus, 
                         controllers.admin.setConsejo, 
@@ -24,7 +23,9 @@ TODO
 + **FIX** :     Upload on *Openshift*.
 + **FIX** :     Organize templates.
 + **FIX** :     I'm a very stupid person. check Uploads controllers.
-+ **FIX** :     Give that routers a 404. check.
++ **FIX** :     Index on openshift.
++ **FIX** :     Admin login bad user and password.
+
 
 DONE
 -----
@@ -36,3 +37,4 @@ DONE
 + TST:          "votacion".
 + DO:           Check js/*.js to build a utils.js later.
 + ADD:          An Index Page.
++ FIX :         Give that routers a 404. check.

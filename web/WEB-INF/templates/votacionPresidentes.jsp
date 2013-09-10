@@ -13,15 +13,14 @@
 
 <t:votacionBody>
     <jsp:attribute name="listView">
-        <div class="elevencol header">
-            <div twelvecol>
-                <h1> Instrucciones </h1>
-                <p>
-                    Para <span class="alert">votar</span>
-                    realize <span class="alert success">doble click</span> sobre el candidato.
+
+        <div class="twelvecol">
+            <div class="twelvecol header" style="padding: 0px;">
+                <h1 style="padding: 20px 10px 10px 15px;"> Instrucciones </h1>
+                <p style="padding: 2px 10px 20px 15px;">
+                    Para <span class="alert warning">votar</span>
+                    por el Presidente realize <span class="alert success">doble click</span> sobre el candidato.
                 </p>
-            </div>
-            <div twelvecol>
             </div>
         </div>
 
@@ -41,6 +40,7 @@
                         <div id="cImage" class="fivecol">
                             <img alt="#" src="#" />
                         </div>
+
                         <h3 class="sevencol last">
                             <div class="twelvecol">
                                 <div class="twocol">Nombre: </div>
@@ -51,36 +51,37 @@
                                 <div class="ninecol" id="cAlumno"></div>
                             </div>
                         </h3>
+
                         <div class="fivecol"></div>
                         <div class="sevencol last">
                             <div class="sixcol">
                                 <form id="tothechosenone" method="POST"
-                                      action="${baseURL}/votacion/presidente/voto">
-                                    
+                                      action="${baseURL}/votacion/presidentes/voto">
+
                                     <input type="hidden"
                                            id="cName"
                                            name="cName"
                                            value="${fn:escapeXml(htmlCode)}" />
-                                    
+
                                     <input type="hidden" 
                                            id="cAlumnus"
                                            name="cAlumnus"
                                            value="${fn:escapeXml(htmlCode)}" />
-                                    
+
                                     <input type="hidden" 
                                            id="cImg"
                                            name="cImg"
                                            value="${fn:escapeXml(htmlCode)}" />
-                                    
+
                                     <input type="hidden" 
                                            id="cUID"
                                            name="cUID"
                                            value="${fn:escapeXml(htmlCode)}" />
-                                    
+
                                     <input type="submit" class="btn success"
                                            id="votar" value="Votar">
                                     </input>
-                                    
+
                                 </form>
                             </div>
                             <div class="sixcol last">
@@ -107,13 +108,12 @@
     <jsp:attribute name="foot">
         <script type="text/x-kendo-tmpl" id="template">
 
-
-            <div class="twelvecol hero candidato" id="#:alumno#"
-            >
+            <div class="fourcol hero candidato" id="#:alumno#"
+            style="margin: 10px 0px;">
             <div class="twelvecol">
             <div class="threecol"></div>
             <div class="sixcol">
-            <img src="#:imagen_src#" alt="#:nombre# image" />
+            <img style="height: 150px; width: 150px;" src="#:imagen_src#" alt="#:nombre# image" />
             </div>
             <div class="threecol last"></div>
             </div>
@@ -127,11 +127,11 @@
             </div>
 
             <style type="text/css"> 
-            .k-widget { border: none; background: none; } 
+            .k-widget { border: none; background: none;} 
             </style>
         </script>
 
-        <script type="text/javascript" src="${baseURL}/assets/js/vpApp.js">
+        <script type="text/javascript" src="${baseURL}/assets/js/vpApps.js">
         </script>
     </jsp:attribute>
 </t:footer>

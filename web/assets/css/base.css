@@ -75,7 +75,7 @@ body {
 }
 
 
- .header {
+.header {
     background: #e5e6e7;
     border: 1px solid #e2e3e4;
     margin: 10px auto;
@@ -101,16 +101,32 @@ body {
 }
 
 .navbar{
-    background: #2e2e2e;
+    background: #F7F7F7;
+    background-image: url("img/header_bgr.jpg");
+    background-repeat: no-repeat;
+    background-position: center center;
     top: 0;
-    height: auto;
+    height: 160px;
     display: block;
 }
 
+.barheader {
+    height: 36px;
+    background-image: url("img/barraheader.jpg");
+    line-height: 35px;
+    font-size:  12px;
+    color: #f7f7f7;
+}
+
+.barheader * {
+    text-decoration: none;
+    font-size:  14px;
+    color: #f7f7f7;
+}
 
 .navbar *{
     line-height: 5px;
-    color: #f7f7f7;
+    color: #F3F3F4;
 }
 
 .item{
@@ -392,7 +408,7 @@ Modifiers
 /* ----------------------------------------- */
 
 .btn{
-    
+
     background-color: #F3F3F4;
     text-align: center;
     text-decoration: none;

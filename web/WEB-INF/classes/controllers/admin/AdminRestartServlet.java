@@ -2,29 +2,23 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package views.votacion;
-
-import utils.HelperSQL;
+package controllers.admin;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.JSONObject;
+import utils.HelperSQL;
 
 /**
  *
  * @author _r
  */
-public class sourcePresidenteVotacion extends HttpServlet {
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.sendError(HttpServletResponse.SC_NOT_FOUND);
-    }
+public class AdminRestartServlet extends HttpServlet {
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 
     /**
      * Handles the HTTP
@@ -38,29 +32,36 @@ public class sourcePresidenteVotacion extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.sendError(HttpServletResponse.SC_NOT_FOUND);
+    }
 
-        //SELECT a.nombre, c.imagen_src, a.codigo  FROM Electo e  
-        //INNER JOIN Candidato c ON e.alumno =  c.alumno 
-        //JOIN Alumno a ON a.codigo = e.alumno LIMIT 1 \G
-
+    /**
+     * Handles the HTTP
+     * <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         
         response.setContentType("application/json");
-        PrintWriter out = response.getWriter();
-        models.Tabla tabla = new models.Tabla();
-        tabla.setTableName("Candidato");
-        ArrayList<String> values = new ArrayList<>();
-        // shame on me :(
-        values.add("a.nombre as nombre");
-        values.add("c.imagen_src as imagen_src");
-        values.add("c.alumno as alumno");
-        String condicion = " as c  "
-                + " JOIN Alumno as a"
-                + " ON a.codigo = c.alumno ";
+        JSONObject res = new JSONObject();
+        java.io.PrintWriter out = response.getWriter();
 
-
-        out.print(
-                HelperSQL.getJSON(tabla.getTableName(), values, condicion));
+        try {
+            HelperSQL.callProc("reiniciarElecciones");
+            res.append("response", "success");
+        } catch (Exception e) {
+            res.append("response", "fail");
+        }
+        out.println(res);
         out.flush();
+        return;
+        
     }
 
     /**

@@ -12,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import models.Alumno;
 import utils.HelperSQL;
 
@@ -19,7 +20,7 @@ import utils.HelperSQL;
  *
  * @author _r
  */
-public class PresidenteVotacionServlet extends HttpServlet {
+public class VotacionPresidenteServlet extends HttpServlet {
 
     /**
      * Handles the HTTP
@@ -33,18 +34,11 @@ public class PresidenteVotacionServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-                String alumnoCodigo = null;
-                
-        // NO FUCKING CACHE (1.1)
-        response.setHeader("Cache-Control", "private, no-store, no-cache, must-revalidate");
-        // NO FUCKING CACHE (1.0)
-        response.setHeader("Pragma", "no-cache");
-        response.setDateHeader("Expires", 0);
-        
+
+        String alumnoCodigo = null;
         request.setAttribute("entityName", "Nuevo usuario");
         request.setAttribute("adminDesc", "Añada un nuevo usuario");
         request.setAttribute("eleccionPresidente", "not null");
-
         
         
         /*  SELECT to Alumno */ 
@@ -53,15 +47,12 @@ public class PresidenteVotacionServlet extends HttpServlet {
         values.add("*");
         
         
+        HttpSession session = request.getSession();
         // this is from the form?
-        if (request.getParameter("codigo") != null) {
-            alumnoCodigo = request.getParameter("codigo");
-        } else {
-            // go to login if you don't exists.
-            response.sendRedirect(request.getContextPath()
-                    + "/votacion/presidentes/login/");
-        }
-        
+        if (session.getAttribute("codigo") != null) {
+            alumnoCodigo = String.valueOf(session.getAttribute("codigo"));
+            
+            
         // getting the "alumno"
         List<HashMap<String, Object>> alumnos = HelperSQL.obtenerFilas(
                 alumno.getTableName(), values, "WHERE codigo = "
@@ -70,11 +61,20 @@ public class PresidenteVotacionServlet extends HttpServlet {
         
         if (alumnos.size() == 1
                 || alumnos.get(0).get("voto_p").equals("false")
-                || alumnos.get(0).get("voto_p") == 0) {
+                || alumnos.get(0).get("voto_p") == 0
+                || alumnos.get(0).get("voto_p") == false) {
             
-        request.getRequestDispatcher("/WEB-INF/templates/votacionPresidentes.jsp")
+            System.out.println(alumnos.get(0).get("voto_p"));
+            
+            request.getRequestDispatcher("/WEB-INF/templates/votacionPresidentes.jsp")
                 .forward(request, response);
             
+        }
+            
+        } else {
+            // go to login if you don't exists.
+            response.sendRedirect(request.getContextPath()
+                    + "/votacion/presidentes/login/");
         }
         
         return;

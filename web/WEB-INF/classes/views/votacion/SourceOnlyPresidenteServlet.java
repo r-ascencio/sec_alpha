@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author _r
  */
-public class sourcePresidenteVotacion extends HttpServlet {
+public class SourceOnlyPresidenteServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -47,15 +47,15 @@ public class sourcePresidenteVotacion extends HttpServlet {
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
         models.Tabla tabla = new models.Tabla();
-        tabla.setTableName("Candidato");
+        tabla.setTableName("Presidente");
         ArrayList<String> values = new ArrayList<>();
         // shame on me :(
         values.add("a.nombre as nombre");
-        values.add("c.imagen_src as imagen_src");
-        values.add("c.alumno as alumno");
-        String condicion = " as c  "
+        values.add("p.imagen_src as imagen_src");
+        values.add("p.alumno as alumno");
+        String condicion = " as p "
                 + " JOIN Alumno as a"
-                + " ON a.codigo = c.alumno ";
+                + " ON a.codigo = p.alumno ";
 
 
         out.print(

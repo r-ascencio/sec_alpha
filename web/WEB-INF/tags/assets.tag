@@ -9,6 +9,7 @@
        value="${fn:replace(pageContext.request.requestURL,
                 pageContext.request.requestURI, pageContext.request.contextPath)}" />
 
+
 <!-- javascripts globals -->
 <script type="text/javascript">
     Globals = {};

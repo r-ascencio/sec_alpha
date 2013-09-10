@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package controllers.admin;
 
 import java.io.File;
@@ -32,6 +28,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 // models
 import models.Alumno;
 import models.Especialidad;
+import org.apache.poi.ss.usermodel.Cell;
 import utils.HelperSQL;
 
 /**
@@ -104,18 +101,23 @@ public class UploadExcelAlumnoServlet extends HttpServlet {
                         }
                         fi.write(xlsxFile);
                         ///String userPath = System.getenv("PLACE_TO_UPLOAD_MOTHEFUCKA");
-                        String relativePath = "/assets/uploads/excel/";
-                        String userPath =
-                                request.getServletContext()
-                                .getRealPath(relativePath) + "/" + xlsxFile.getName();
-                        String excelFilePath = request.getServletContext().getContextPath()
-                                + "/" + relativePath + xlsxFile.getName();
-                        if (xlsxFile.renameTo(new File(userPath))) {
+                     
+                        
+
+                        String httpPath = xlsxFile.getName();
+
+                        System.out.println("httpPath: " + httpPath);
+
+                        String excelFilePath = request.getServletContext().getContextPath() + xlsxFile.getName();
+
+                        System.out.println("excelPath: " + excelFilePath);
+
+                        if (xlsxFile.renameTo(new File(httpPath))) {
 
                             try {
                                 // archivo excel 2007+
                                 FileInputStream excelFile = new FileInputStream(
-                                        "/home/_r/devs/java/netbeans/ExcelTest/src/exceltest/datos.xlsx");
+                                        httpPath);
                                 XSSFWorkbook wb = new XSSFWorkbook(excelFile);
                                 Sheet sheet = wb.getSheet("Alumnos");
 
@@ -137,36 +139,36 @@ public class UploadExcelAlumnoServlet extends HttpServlet {
                                     //Get the row
                                     Row row = sheet.getRow(x);
 
-                                    if (row.getCell(7).getStringCellValue().equals("Tercer Año")) {
+                                    HashMap<String, String> tmp = new HashMap<>();
+                                    // this.
+                                    row.getCell(1).setCellType(Cell.CELL_TYPE_STRING);
+                                    tmp.put("CARNET", row.getCell(1).getStringCellValue());
+                                    
+                                    row.getCell(2).setCellType(Cell.CELL_TYPE_STRING);
+                                    tmp.put("NIE", row.getCell(2).getStringCellValue());
 
-                                        HashMap<String, String> tmp = new HashMap<String, String>();
+                                    String nombre = row.getCell(3).getStringCellValue()
+                                            .concat(" " + row.getCell(4).getStringCellValue()
+                                            .concat(" " + row.getCell(5).getStringCellValue())
+                                            .concat(" " + row.getCell(6).getStringCellValue()));
 
-                                        tmp.put("codigo", row.getCell(1).getStringCellValue());
+                                    tmp.put("nombre", nombre);
 
-                                        tmp.put("NIE", row.getCell(2).getStringCellValue());
+                                    row.getCell(9).setCellType(Cell.CELL_TYPE_STRING);
+                                    String especialidadGT = romans.get(
+                                            row.getCell(9).getStringCellValue());
 
-                                        String nombre = row.getCell(3).getStringCellValue()
-                                                .concat(" " + row.getCell(4).getStringCellValue()
-                                                .concat(" " + row.getCell(5).getStringCellValue())
-                                                .concat(" " + row.getCell(6).getStringCellValue()));
+                                    String especialidad = row.getCell(8).getStringCellValue()
+                                            .concat(" " + especialidadGT);
 
-                                        tmp.put("nombre", nombre);
+                                    tmp.put("nombreEspecialidad", especialidad);
+                                    // Grupo tecnico;
 
-                                        String especialidadGT = romans.get(
-                                                row.getCell(10).getStringCellValue());
+                                    nombreEspecialidades.add(especialidad);
 
-                                        String especialidad = row.getCell(8).getStringCellValue()
-                                                .concat(" " + especialidadGT);
+                                    // Grupo tecnico;
 
-                                        tmp.put("nombreEspecialidad", especialidad);
-                                        // Grupo tecnico;
-
-                                        nombreEspecialidades.add(especialidad);
-
-                                        // Grupo tecnico;
-
-                                        rowsExcel.add(tmp);
-                                    }
+                                    rowsExcel.add(tmp);
                                 }
 
 
@@ -208,7 +210,7 @@ public class UploadExcelAlumnoServlet extends HttpServlet {
                                                 modeloEspecialidad.getColsName(),
                                                 values);
                                     } catch (Exception e) {
-                                        System.out.println("\n\t\tFUUUU!");
+                                        System.out.println("\n\t\tERROR.");
                                         System.out.println("\n\t\t" + e.getMessage());
                                     }
                                 }
@@ -218,7 +220,7 @@ public class UploadExcelAlumnoServlet extends HttpServlet {
                                     ArrayList<String> values = new ArrayList<>();
                                     HashMap<String, String> tmpAlumno = rowsExcel.get(l);
                                     //codigo, NIE, nombre, nombreEspecialidad.
-                                    values.add(tmpAlumno.get("codigo"));
+                                    values.add(tmpAlumno.get("CARNET"));
                                     values.add(tmpAlumno.get("NIE"));
                                     values.add(tmpAlumno.get("nombre"));
                                     try {
@@ -251,7 +253,12 @@ public class UploadExcelAlumnoServlet extends HttpServlet {
 
 
                                     } catch (Exception e) {
-                                        System.out.println("\nError: Actualizaon tabla.");
+                                        System.out.println("\n::::::::::\n");
+                                        System.out.println("\nError: Actualizacion tabla.");
+                                        System.out.println("\n::::::::::\n");
+                                    }
+                                    finally {
+                                        HelperSQL.desconectar();
                                     }
                                 }
 

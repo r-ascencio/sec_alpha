@@ -124,7 +124,8 @@ public class EntityServlet extends HttpServlet {
             }
             hidden_matcher = hidden.matcher(field);
 
-            if (!hidden_matcher.matches()) {
+            if (!hidden_matcher.matches() && 
+                    !field.equals("pass_auto")) {
 
                 fk_matcher = fk.matcher(field);
                 auto_matcher = auto.matcher(field);

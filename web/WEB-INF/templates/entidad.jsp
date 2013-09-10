@@ -23,62 +23,98 @@
 
         <script type="text/javascript">
 
-            var fkEditor = function(container, options) {
-                console.log(options);
-                $('<input data-text-field="text" data-value-field="value" data-bind="value:' + options.field + '" />')
-                        .appendTo(container)
-                        .kendoComboBox({
-                    autoBind: false,
-                    dataSource: options.values
-                });
-            };
-            var imgEditorCandidato = function(container, options) {
-                if (options.model.imagen_src) {
-                    $('<img src="' + options.model.imagen_src + '" />').appendTo(container);
-                }
+            <c:choose>
+                <c:when test="${entityName == 'Candidato' || 
+                                entityName == 'Presidente' ||
+                                entityName == 'Votantes'}">
+                        var fkEditor = function(container, options) {
+                            if (options.field === "especialidad") {                                
+                                $('<input data-text-field="text" data-value-field="value" data-bind="value:' + options.field + '" />')
+                                        .appendTo(container)
+                                        .kendoComboBox({
+                                    autoBind: false,
+                                    dataSource: options.values,
+                                    enable: false,
+                                    text: "",
+                                    index: 0
+                                });
+                            } else {
+                                $('<input data-text-field="text" data-value-field="value" data-bind="value:' + options.field + '" />')
+                                        .appendTo(container)
+                                        .kendoComboBox({
+                                    autoBind: false,
+                                    dataSource: options.values,
+                                    enable: true,
+                                    text: "",
+                                    index: 0
+                                });                                
+                            }
+                };
+                
+               </c:when>
+                <c:otherwise>
+                                        
+                        var fkEditor = function(container, options) {
+                    console.log(options);
+                    $('<input data-text-field="text" data-value-field="value" data-bind="value:' + options.field + '" />')
+                            .appendTo(container)
+                            .kendoComboBox({
+                        autoBind: false,
+                        dataSource: options.values,
+                        enable: true,
+                        text: "",
+                        index: 0
+                    });
+                };
+                </c:otherwise>
+            </c:choose>
+                var imgEditorCandidato = function(container, options) {
+                    if (options.model.imagen_src) {
+                        $('<img src="' + options.model.imagen_src + '" />').appendTo(container);
+                    }
 
-                $('<input name="files" type="file" />').appendTo(container).kendoUpload({
-                    success: function(e) {
-                        if (e.operation == "upload") {
-                            container.html('<img src="' + e.response.imagen_src + '" />');
-                            options.model.set(options.field, e.response.imagen_src);
+                    $('<input name="files" type="file" />').appendTo(container).kendoUpload({
+                        success: function(e) {
+                            if (e.operation == "upload") {
+                                container.html('<img src="' + e.response.imagen_src + '" />');
+                                options.model.set(options.field, e.response.imagen_src);
+                            }
+                        },
+                        upload: onUpload,
+                        error: onError,
+                        multiple: false,
+                        showFileList: false,
+                        async: {
+                            saveUrl: '${baseURL}/uploads',
+                            autoUpload: true
                         }
-                    },
-                    upload: onUpload,
-                    error: onError,
-                    multiple: false,
-                    showFileList: false,
-                    async: {
-                        saveUrl: '${baseURL}/uploads',
-                        autoUpload: true
-                    }
-                });
-            };
-            function onUpload(e) {
-                var files = e.files;
-                $.each(files, function() {
-                    if (this.extension !== ".jpg"
-                            && this.extension !== ".png") {
-                        alert("Solo .jpg y .png");
-                        e.preventDefault();
-                    }
-                });
-            }
-            function onError(e) {
-                // Array with information about the uploaded files
-                var files = e.files;
-
-                if (e.operation === "upload") {
-                    alert("Failed to uploaded " + files.length + " files");
-                    alert(e.XMLHttpRequest.responseText + " : TEXT");
-                    alert(e.XMLHttpRequest.statusText + " : STATUS");
+                    });
+                };
+                function onUpload(e) {
+                    var files = e.files;
+                    $.each(files, function() {
+                        if (this.extension !== ".jpg"
+                                && this.extension !== ".png") {
+                            alert("Solo .jpg y .png");
+                            e.preventDefault();
+                        }
+                    });
                 }
-            }
+                function onError(e) {
+                    // Array with information about the uploaded files
+                    var files = e.files;
 
-            var Entidad = "${entityName}",
-                    Fields = ${fields},
-                    Columns = ${columns},
-                    ID = "${ID}";
+                    if (e.operation === "upload") {
+                        alert("Failed to uploaded " + files.length + " files");
+                        alert(e.XMLHttpRequest.responseText + " : TEXT");
+                        alert(e.XMLHttpRequest.statusText + " : STATUS");
+                    }
+                }
+
+                var Entidad = "${entityName}",
+                        Fields = ${fields},
+                        Columns = ${columns},
+                        ID = "${ID}";
 
         </script>
     </jsp:attribute>
@@ -94,6 +130,18 @@
     <jsp:attribute name="body">
         <!-- here is supposed to be a fucking method to generate the
          fucking forms  -->
+        <c:if test="${entityName == 'Usuario'}">
+
+            <div class="twelvecol">
+                <div class="fourcol"></div>
+                <div class="fourcol">
+                    <a href="/admin/Usuario/nuevo" class="btn">
+                        Agregar Usuario
+                    </a>    
+                </div>
+                <div class="fourcol"></div>
+            </div>
+        </c:if>
         <c:if test="${entityName == 'Electo'}">
             <div class="twelvecol">
                 <div class="fourcol"></div>
@@ -124,7 +172,7 @@
                         </script>
 
                     </c:if>
-                        
+
                     <c:if test="${electos == 'false'}">
 
                         <form id="act" action="${baseURL}/admin/Electo/set" 
@@ -212,8 +260,7 @@
                                         autoUpload: true
                                     },
                                     success: function(e) {
-                                        alert("Archivo subido con exito,\n\
-                                Boton desactivado");
+                                        alert("Archivo subido con exito.");
                                         $('#excelFile').data("kendoUpload").enable(false);
                                     },
                                     upload: function(e) {

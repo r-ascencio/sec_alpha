@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package views.admin;
 
 import java.io.IOException;
@@ -13,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 import models.Alumno;
 import models.Candidato;
 import models.Especialidad;
+import models.Presidente;
+import models.Votantes;
 import org.json.JSONArray;
 import utils.HelperSQL;
 
@@ -78,7 +76,7 @@ public class AdminDashboardServlet extends HttpServlet {
          * GROUP BY especialidad;   */
         
         Especialidad especialidad = new Especialidad();
-        Alumno alumno = new Alumno();
+        Votantes alumno = new Votantes();
 
         ArrayList<String> values = new ArrayList<>();
 
@@ -88,7 +86,7 @@ public class AdminDashboardServlet extends HttpServlet {
         // cantidad de alumnos
         values.add("COUNT(*) as alumnos");
         // cantidad de votacion realizadas
-        values.add("SUM( CASE WHEN voto != 0 THEN 1 ELSE 0 END )"
+        values.add("SUM( CASE WHEN voto_realizado != 0 THEN 1 ELSE 0 END )"
                 + "as votaciones_realizadas");
 
         String condicion = " as e  "
@@ -114,7 +112,7 @@ public class AdminDashboardServlet extends HttpServlet {
         // SELECT a.nombre, c.puntaje FROM Alumno a 
         // JOIN Candidato c ON c.alumno = a.codigo;
 
-        Candidato candidato = new Candidato();
+        Presidente candidato = new Presidente();
         Alumno alumno = new Alumno();
 
         ArrayList<String> values = new ArrayList<>();

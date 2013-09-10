@@ -37,9 +37,7 @@
     </jsp:attribute>
 
     <jsp:attribute name="body">
-
-        <div class="twelvecol">            
-
+        <div class="twelvecol">
             <div id="candidatoPie" class="k-content sevencol">
                 <div class="candidatoPie-wrapper">
                     <div id="candidatoGrafica" style="background: center no-repeat url(${baseURL}/assets/img/bg.png">
@@ -47,31 +45,16 @@
                     </div>
                 </div>
             </div>
-
             <div class="fivecol last" style="text-align: center">
-
-
-
-                <div class="twelvecol">
-                    <h3> Proceso de votacion </h3>
-                </div>
-
                 <div  class="twelvecol">
-
                     <div class="Barchart-wrapper" style='height: 400px;'>
                         <div id="Barchart" sstyle="background: center no-repeat url('${baseURL}/assets/img/bg.png')"></div>
                     </div>
-
                 </div>
-
                 <div class="twelvecol" id="progress-cont">
                     <!-- here you will see the processs. -->
                 </div>
-
             </div>
-
-
-
         </jsp:attribute>
     </t:adminbody>
     <t:footer>

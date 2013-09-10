@@ -67,25 +67,21 @@ CREATE TABLE IF NOT EXISTS Candidato (
 
 -- SELECT *
 
-SELECT * FROM Candidato;
-
 -- PK
 
 ALTER TABLE Candidato
 ADD CONSTRAINT candidato_codigo_pk
 PRIMARY KEY (alumno);
 
--- FK
+-- FK Candidato
 
 ALTER TABLE Candidato
 ADD CONSTRAINT candidato_codigo_fk
-FOREIGN KEY (alumno) REFERENCES Alumno (codigo) ON DELETE RESTRICT ON UPDATE CASCADE;
+FOREIGN KEY (alumno) REFERENCES Alumno (codigo) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE Candidato
 ADD CONSTRAINT candidato_especialidad_fk
-FOREIGN KEY (especialidad) REFERENCES Especialidad (codigo) ON DELETE RESTRICT ON UPDATE RESTRICT ON DELETE RESTRICT;
- 
-
+FOREIGN KEY (especialidad) REFERENCES Especialidad (codigo) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /**
  * /Candidato
@@ -109,7 +105,7 @@ PRIMARY KEY (alumno);
 
 ALTER TABLE Electo 
 ADD CONSTRAINT electo_codigo_fk
-FOREIGN KEY (alumno) REFERENCES Candidato (alumno) ON DELETE RESTRICT ON UPDATE CASCADE;
+FOREIGN KEY (alumno) REFERENCES Candidato (alumno) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /**
  * /Electo
@@ -159,6 +155,13 @@ on Candidato (alumno);
 
 CREATE INDEX index_pregunta_codigo
 on Pregunta (codigo);
+
+
+CREATE TABLE Presidente (  
+    alumno varchar(8) NOT NULL, 
+    imagen_src VARCHAR(250) NOT NULL, 
+    puntaje int NOT NULL DEFAULT 0, PRIMARY KEY (alumno)
+);
 
 TRUNCATE TABLE Candidato;
 DELIMITER $$
@@ -290,3 +293,22 @@ BEGIN
 END
 //
 
+
+-- PROCEDURE RESTART ELECTIONS
+
+DELIMITER $$
+CREATE PROCEDURE reiniciarElecciones()
+BEGIN
+  TRUNCATE TABLE Electo;
+  TRUNCATE TABLE Presidente;
+  TRUNCATE TABLE Candidato;
+  TRUNCATE TABLE Alumno;
+END
+$$
+
+CREATE TABLE `Presidente` (
+  `alumno` varchar(8) NOT NULL,
+  `imagen_src` varchar(250) NOT NULL,
+  `puntaje` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`alumno`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

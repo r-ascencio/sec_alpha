@@ -71,8 +71,7 @@
                                 <span class="twocol"></span>
                                 <span class="eightcol">
                                     <img 
-                                        src=
-                                        "${baseURL}/assets/img/votation/done2.jpg"
+                                        src="${alumno_imagen}"
                                         />
                                 </span>
                                 <span class="twocol last"></span>
@@ -186,7 +185,7 @@
                                 <span class="twocol"></span>
                                 <span class="eightcol" style="
                                       text-align: center;">
-                                    <a href="${baseURL}/votacion/login/"
+                                    <a href="${baseURL}/votacion/presidentes/login/"
                                        class="btn success">
                                     Aceptar
                                     </a>

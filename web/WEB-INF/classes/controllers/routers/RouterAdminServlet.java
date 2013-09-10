@@ -38,6 +38,7 @@ public class RouterAdminServlet extends HttpServlet {
     private Pattern ADMIN_ENTITY_U;
     private Pattern ADMIN_ENTITY_R;
     private Pattern ADMIN_ENTITY_D;
+    private Pattern ADMIN_SETTINGS;
     /**
      * matcher for the urls patterns.
      */
@@ -67,6 +68,7 @@ public class RouterAdminServlet extends HttpServlet {
         ADMIN_ENTITY_U = Pattern.compile("/admin/u/([A-Za-z]+)(/?)$");
         ADMIN_ENTITY_R = Pattern.compile("/admin/r/([A-Za-z]+)(/?)$");
         ADMIN_ENTITY_D = Pattern.compile("/admin/d/([A-Za-z]+)(/?)$");
+        ADMIN_SETTINGS = Pattern.compile("/admin/configs(/?)");
         ADMIN_LOGIN = Pattern.compile("/admin/login(/?)");
         ADMIN_LOGOUT = Pattern.compile("/admin/logout(/?)");
 
@@ -80,7 +82,7 @@ public class RouterAdminServlet extends HttpServlet {
         // parameterName);
         // }
 
-        
+
         matcher = ADMIN_LOGOUT.matcher(pathInfo);
         if (matcher.matches()) {
             request.
@@ -101,43 +103,51 @@ public class RouterAdminServlet extends HttpServlet {
 
             return;
         }
+        
+        matcher = ADMIN_SETTINGS.matcher(pathInfo);
+        
+        if (matcher.matches()) {
+            getServletContext()
+                    .getNamedDispatcher("ConfiguracionServlet")
+                    .forward(request, response);
+        }
 
         // ADMIN INDEX:
         matcher = ADMIN_ENTITY_REPORT.matcher(pathInfo);
 
         if (matcher.matches()) {
-            
+
             request.setAttribute("entityName", matcher.group(1));
-            System.err.println("::::::"+matcher.group(1) + ":::::::::::");
+            System.err.println("::::::" + matcher.group(1) + ":::::::::::");
             getServletContext()
                     .getNamedDispatcher("GenerarReportesServlet")
                     .forward(request, response);
 
             return;
         }
-        
-                // ADMIN INDEX:
+
+        // ADMIN INDEX:
         matcher = ADMIN_ENTITY_REPORT.matcher(pathInfo);
 
         if (matcher.matches()) {
-            
+
             request.setAttribute("entityName", matcher.group(1));
-            System.err.println("::::::"+matcher.group(1) + ":::::::::::");
+            System.err.println("::::::" + matcher.group(1) + ":::::::::::");
             getServletContext()
                     .getNamedDispatcher("GenerarReportesServlet")
                     .forward(request, response);
 
             return;
         }
-        
-        
-                // ADMIN INDEX:
+
+
+        // ADMIN INDEX:
         matcher = ADMIN_ENTITY_REPORT_VOTO.matcher(pathInfo);
 
         if (matcher.matches()) {
-            
+
             request.setAttribute("entityName", matcher.group(1));
-            System.err.println("::::::"+matcher.group(1) + ":::::::::::");
+            System.err.println("::::::" + matcher.group(1) + ":::::::::::");
             getServletContext()
                     .getNamedDispatcher("GenerarReportesServlet")
                     .forward(request, response);
@@ -199,11 +209,7 @@ public class RouterAdminServlet extends HttpServlet {
             final String entityName = matcher.group(1);
             request.setAttribute("entityName", entityName);
 
-            System.out.println(entityName);
-
             request.setAttribute("action", "update");
-
-            System.out.println(entityName);
 
             getServletContext()
                     .getNamedDispatcher("EntityActionServlet")
@@ -224,7 +230,7 @@ public class RouterAdminServlet extends HttpServlet {
                     .forward(request, response);
             return;
         }
-
+        
         matcher = ADMIN_LOGIN.matcher(pathInfo);
         if (matcher.matches()) {
 
@@ -232,14 +238,13 @@ public class RouterAdminServlet extends HttpServlet {
                     .getNamedDispatcher("AdminSessionServlet")
                     .forward(request, response);
             return;
-        }
+        } 
 
 
-        System.out.println("********************************************");
-        System.out.println("****************404*************************");
-        System.out.println("********************************************");
+        // "********************************************"
+        // "****************404*************************"
+        // "********************************************"
         // why i'm here D:
-        //response.sendError(HttpServletResponse.SC_NOT_FOUND);
-        assert false;
+        response.sendError(HttpServletResponse.SC_NOT_FOUND);
     }
 }

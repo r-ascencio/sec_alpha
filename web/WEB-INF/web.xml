@@ -1,212 +1,181 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app id="WebApp_ID" version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
-
     <display-name>sec_alpha</display-name>
-
     <!-- misc -->
-
     <servlet-mapping>
         <servlet-name>GenerarReportesVotoServlet</servlet-name>
         <url-pattern>/admin/reportes/voto</url-pattern>
     </servlet-mapping>
-
     <!-- /misc -->
-
-    
+    <servlet-mapping>
+        <servlet-name>AdminRestartServlet</servlet-name>
+        <url-pattern>/admin/configs/restart</url-pattern>
+    </servlet-mapping>
     <welcome-file-list>
         <welcome-file>/WEB-INF/templates/index.jsp</welcome-file>
     </welcome-file-list>
-
     <!-- admin controller -->
-    
+    <servlet>
+        <servlet-name>AdminRestartServlet</servlet-name>
+        <servlet-class>controllers.admin.AdminRestartServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>setPresidente</servlet-name>
         <url-pattern>/admin/Electo/setPresidente</url-pattern>
     </servlet-mapping>
-    
     <servlet>
         <servlet-name>setPresidente</servlet-name>
         <servlet-class>controllers.admin.setPresidente</servlet-class>
     </servlet>
-    
     <servlet>
         <servlet-name>setConsejo</servlet-name>
         <servlet-class>controllers.admin.setConsejo</servlet-class>
     </servlet>
-    
     <servlet>
         <servlet-name>EspecialidadNAlumnus</servlet-name>
         <servlet-class>controllers.admin.EspecialidadNAlumnus</servlet-class>
     </servlet>
-
     <servlet>
         <servlet-name>ReturnEntityServlet</servlet-name>
         <servlet-class>views.admin.ReturnEntityServlet</servlet-class>
     </servlet>
-    
-
     <servlet>
         <servlet-name>AdminEndSessionServlet</servlet-name>
         <servlet-class>controllers.admin.AdminEndSessionServlet</servlet-class>
     </servlet>
-
     <servlet>
         <servlet-name>AdminDashboardServlet</servlet-name>
         <servlet-class>views.admin.AdminDashboardServlet</servlet-class>
     </servlet>
-
     <servlet>
         <servlet-name>EntityServlet</servlet-name>
         <servlet-class>views.admin.EntityServlet</servlet-class>
     </servlet>
-
     <servlet>
         <servlet-name>EntityActionServlet</servlet-name>
         <servlet-class>controllers.admin.EntityActionServlet</servlet-class>
     </servlet>
-
-    
-
-
     <servlet>
         <servlet-name>VotacionIndexPresidente</servlet-name>
         <servlet-class>views.votacion.VotacionIndexPresidenteServlet</servlet-class>
     </servlet>
-
     <servlet>
         <servlet-name>PresidenteVotacionServlet</servlet-name>
         <servlet-class>controllers.votacion.PresidenteVotacionServlet</servlet-class>
     </servlet>
-
+    <servlet>
+        <servlet-name>VotacionPresidenteServlet</servlet-name>
+        <servlet-class>controllers.votacion.VotacionPresidenteServlet</servlet-class>
+    </servlet>
     <servlet>
         <servlet-name>sourcePresidenteVotacion</servlet-name>
         <servlet-class>views.votacion.sourcePresidenteVotacion</servlet-class>
     </servlet>
-
+    <servlet>
+        <servlet-name>SourceOnlyPresidenteVotacion</servlet-name>
+        <servlet-class>views.votacion.SourceOnlyPresidenteServlet</servlet-class>
+    </servlet>
     <servlet>
         <servlet-name>GenerarReportesVotoServlet</servlet-name>
         <servlet-class>views.admin.GenerarReportesVotoServlet</servlet-class>
     </servlet>
-
-
     <servlet>
         <servlet-name>AdminLogServlet</servlet-name>
         <servlet-class>controllers.admin.AdminLogServlet</servlet-class>
     </servlet>
-
     <servlet>
         <servlet-name>UploadExcelAlumnoServlet</servlet-name>
         <servlet-class>controllers.admin.UploadExcelAlumnoServlet</servlet-class>
     </servlet>
-
     <servlet>
         <servlet-name>SubirArchivo</servlet-name>
         <servlet-class>controllers.admin.UploadImagenCandidatoServlet</servlet-class>
     </servlet>
-
-
+    <servlet>
+        <servlet-name>ConfiguracionServlet</servlet-name>
+        <servlet-class>controllers.admin.ConfiguracionServlet</servlet-class>
+    </servlet>
     <servlet>
         <servlet-name>RouterAdminServlet</servlet-name>
         <servlet-class>controllers.routers.RouterAdminServlet</servlet-class>
     </servlet>
-
     <!-- /admin controller -->
-
     <!-- adminURLs -->
-
     <servlet-mapping>
         <!-- actualizar el numero de alumnos de las especialidades -->
         <servlet-name>EspecialidadNAlumnus</servlet-name>
         <url-pattern>/admin/Especialidad/act</url-pattern>
     </servlet-mapping>
-
     <servlet-mapping>
         <!-- coloca los 12 candidatos con mayor puntaje -->
         <servlet-name>setConsejo</servlet-name>
         <url-pattern>/admin/Electo/set</url-pattern>
     </servlet-mapping>
-
     <servlet-mapping>
         <servlet-name>SubirArchivo</servlet-name>
         <url-pattern>/uploads</url-pattern>
     </servlet-mapping>
-    
     <servlet-mapping>
         <servlet-name>UploadExcelAlumnoServlet</servlet-name>
         <url-pattern>/admin/import/alumnos</url-pattern>
     </servlet-mapping>
-
-
     <servlet-mapping>
         <servlet-name>AdminLogServlet</servlet-name>
         <url-pattern>/login/admin</url-pattern>
     </servlet-mapping>
-
     <servlet-mapping>
         <servlet-name>RouterAdminServlet</servlet-name>
         <url-pattern>/admin/*</url-pattern>
     </servlet-mapping>
-
     <!-- /adminURLs -->
-
     <!-- votacion controllers -->
-
     <servlet>
         <servlet-name>ReturnQuestionsServlet</servlet-name>
         <servlet-class>controllers.votacion.ReturnQuestionsServlet</servlet-class>
     </servlet>
-
     <servlet>
         <servlet-name>VotacionIndexServlet</servlet-name>
         <servlet-class>views.votacion.VotacionIndexServlet</servlet-class>
     </servlet>
-
     <servlet>
         <servlet-name>VotacionCompletadaServlet</servlet-name>
         <servlet-class>views.votacion.VotacionCompletadaServlet</servlet-class>
     </servlet>
-
     <servlet>
         <servlet-name>VotacionIndexPresidenteServlet</servlet-name>
         <servlet-class>views.votacion.VotacionIndexPresidenteServlet</servlet-class>
     </servlet>
-    
-    
     <servlet>
-        <servlet-name>PresidenteVotacionServlet</servlet-name>
-        <servlet-class>controllers.votacion.PresidenteVotacionServlet</servlet-class>
+        <servlet-name>VotacionPresidenteIndexServlet</servlet-name>
+        <servlet-class>views.votacion.VotacionPresidenteIndexServlet</servlet-class>
     </servlet>
-
     <servlet>
         <servlet-name>votoVotacionPresidente</servlet-name>
         <servlet-class>controllers.votacion.votoVotacionPresidente</servlet-class>
     </servlet>
-
+    <servlet>
+        <servlet-name>votoVotacionPresidentes</servlet-name>
+        <servlet-class>controllers.votacion.votoVotacionPresidentes</servlet-class>
+    </servlet>
     <servlet>
         <servlet-name>RouterVotacionServlet</servlet-name>
         <servlet-class>controllers.routers.RouterVotacionServlet</servlet-class>
     </servlet>
-
-    <!-- /votacion controllers -->
-
-    <!-- votacion mapping -->
-
-    <servlet>
-        <servlet-name>RouterVotacionServlet</servlet-name>
-        <servlet-class>controllers.routers.RouterVotacionServlet</servlet-class>
-    </servlet>
-
-  <servlet-mapping>
+    <servlet-mapping>
         <servlet-name>RouterVotacionServlet</servlet-name>
         <url-pattern>/votacion/*</url-pattern>
     </servlet-mapping>
-
+    <!-- /votacion controllers -->
+    <!-- votacion mapping -->
     <servlet-mapping>
         <servlet-name>votoVotacionPresidente</servlet-name>
         <url-pattern>/votacion/presidente/voto</url-pattern>
     </servlet-mapping>
-
-<!--    <servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>votoVotacionPresidentes</servlet-name>
+        <url-pattern>/votacion/presidentes/voto</url-pattern>
+    </servlet-mapping>
+    <!--    <servlet-mapping>
         <servlet-name>VotacionIndexServlet</servlet-name>
         <url-pattern>/login/votacion</url-pattern>
     </servlet-mapping>
@@ -237,60 +206,52 @@
         <servlet-name>VotacionCompletadaServlet</servlet-name>
         <url-pattern>/votacion/completada</url-pattern>
     </servlet-mapping>-->
-
     <!-- votacion mapping -->
-
     <!-- Filters  -->
-
     <filter>
         <filter-name>VotacionCandidatosFilter</filter-name>
         <filter-class>controllers.filters.VotacionCandidatosFilter</filter-class>
     </filter>
-
     <filter-mapping>
         <filter-name>
             VotacionCandidatosFilter
         </filter-name>
         <url-pattern>/votacion</url-pattern>
     </filter-mapping>
-
     <filter-mapping>
         <filter-name>
             VotacionCandidatosFilter
         </filter-name>
         <url-pattern>/votacion/</url-pattern>
     </filter-mapping>
-
     <filter>
         <filter-name>VotacionPresidenteFilter</filter-name>
         <filter-class>controllers.filters.VotacionPresidenteFilter</filter-class>
     </filter>
-
+    <filter>
+        <filter-name>VotacionPresidentesFilter</filter-name>
+        <filter-class>controllers.filters.VotacionPresidentesFilter</filter-class>
+    </filter>
     <filter-mapping>
         <filter-name>
             VotacionPresidenteFilter
         </filter-name>
         <url-pattern>/votacion/presidente</url-pattern>
     </filter-mapping>
-
+    <filter-mapping>
+        <filter-name>
+            VotacionPresidentesFilter
+        </filter-name>
+        <url-pattern>/votacion/presidentes</url-pattern>
+    </filter-mapping>
     <!-- /Filters  -->
-
-
     <!-- confs -->
-
     <jsp-config>
         <jsp-property-group>
             <url-pattern>*.jsp</url-pattern>
             <scripting-invalid>true</scripting-invalid>
         </jsp-property-group>
     </jsp-config>
-
     <!-- /confs -->
-
-    --&gt;
-
     <servlet-name>setConsejo</servlet-name>
-
-    --&gt;
-
 </web-app>

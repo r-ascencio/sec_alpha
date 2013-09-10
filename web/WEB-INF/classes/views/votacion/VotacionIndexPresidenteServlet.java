@@ -37,12 +37,11 @@ public class VotacionIndexPresidenteServlet extends HttpServlet {
                 String.valueOf(request.getSession().getAttribute("voto_p"));
 
         if (votacion_realizada != null) {
-            if (votacion_realizada == "true") {
+            if (votacion_realizada.equals("true")
+                    || votacion_realizada.equals("1")) {
                 message = "El alumno "
-                        + request.getSession().getAttribute("codigo")
+                        + request.getSession().getAttribute("NIE")
                         + " ya ha realizado la votacion";
-                request.getSession().setAttribute("codigo", null);
-                request.getSession().setAttribute("NIE", null);
             }
         }
 

@@ -23,17 +23,20 @@
 <body>
     <div class="container">
         <c:if test="${iwantnav == null}">
-            <div class="row navbar" style="padding: 15px 0px; background: #676F73">
+            <div class="row navbar">
+                <div class="twelvecol">
+                </div>
+                <!-- 
                 <div class="sevencol">
                     <div class="onecol"></div>
                     <div class="sevencol" style="
                          line-height: 20px;">
-                        ${adminTitle}
-                    </div>
-                    <div class="fivecol last">
-                    </div>
-                </div>
-                <div class="onecol"></div>
+                ${adminTitle}
+            </div>
+            <div class="fivecol last">
+            </div>
+        </div>
+        <div class="onecol"></div>
 
                 <c:if test="${admin == 1}">
 
@@ -41,19 +44,45 @@
                         <div class="fivecol"></div>
                         <div class="fivecol">
                             <span class="rgt" style="line-height: 20px;">
-                                ${userName}
-                            </span>
-                        </div>
-                        <div class="onecol last">
-                            <div class="btn icon" style="padding: 0px 8px 8px 8px;">
-                                <div class="entypo cog" style="color: #676F73"></div>
-                            </div>
-                        </div>
-                    </div>
+                    ${userName}
+                </span>
+            </div>
+            <div class="onecol last">
+                <div class="btn icon" style="padding: 0px 8px 8px 8px;">
+                    <div class="entypo cog" style="color: #676F73"></div>
+                </div>
+            </div>
+        </div>
 
                 </c:if>
-
+                -->
             </div>
+            <c:if test="${admin == 1}">
+
+                <div class="row barheader">
+                    <div class="twelvecol">
+                        <div class="onecol"></div>
+                        <div class="threecol">
+                            ${userName} 
+                        </div>
+                        <div class="sixcol"></div>
+                        <div class="twocol last"
+                             style="text-align: right;">
+                            <a href="/admin/logout">
+                                <span class="
+                                      entypo logout
+                                      " 
+                                      style="
+                                      font-size: 30px;
+                                      padding-right: 10px;"
+                                      >
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </c:if>
         </c:if>
         <div class="row main">
             <jsp:invoke fragment="sidemenu"></jsp:invoke>

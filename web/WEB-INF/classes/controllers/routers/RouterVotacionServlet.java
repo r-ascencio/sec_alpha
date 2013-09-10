@@ -36,7 +36,10 @@ public class RouterVotacionServlet extends HttpServlet {
         Pattern VOTACION_LOGIN = Pattern.compile("/votacion/login(/?)$");
         Pattern VOTACION_PRESIDENTE = Pattern.compile("/votacion/presidente(/?)$");
         Pattern VOTACION_ELECTOS = Pattern.compile("/votacion/presidente/electos(/?)$");
+        Pattern VOTACION_ELECTOS_P = Pattern.compile("/votacion/presidentes/electos(/?)$");
         Pattern VOTACION_PRESIDENTE_LOGIN = Pattern.compile("/votacion/presidente/login(/?)$");
+        Pattern VOTACION_PRESIDENTES_LOGIN = Pattern.compile("/votacion/presidentes/login(/?)$");
+        Pattern VOTACION_PRESIDENTES = Pattern.compile("/votacion/presidentes(/?)$");
         Pattern VOTACION_COMPLETADA = Pattern.compile("/votacion/completada(/?)$");
         // /URL Patterns
         Matcher matcher;
@@ -78,6 +81,16 @@ public class RouterVotacionServlet extends HttpServlet {
             return;
         }
 
+        matcher = VOTACION_PRESIDENTES.matcher(pathInfo);
+
+        if (matcher.matches()) {
+            request.
+                    getServletContext()
+                    .getNamedDispatcher("VotacionPresidenteServlet")
+                    .forward(request, response);
+            return;
+        }
+        
         // votacion/presidente/electos
         /**
          * Retorna un JSON con los datos del consejo.
@@ -88,6 +101,19 @@ public class RouterVotacionServlet extends HttpServlet {
             request.
                     getServletContext()
                     .getNamedDispatcher("sourcePresidenteVotacion")
+                    .forward(request, response);
+            return;
+        }
+        
+        /**
+         * Retorna un JSON con los datos de la gente escogida para ser presidente.
+         */
+        matcher = VOTACION_ELECTOS_P.matcher(pathInfo);
+
+        if (matcher.matches()) {
+            request.
+                    getServletContext()
+                    .getNamedDispatcher("SourceOnlyPresidenteVotacion")
                     .forward(request, response);
             return;
         }
@@ -104,6 +130,18 @@ public class RouterVotacionServlet extends HttpServlet {
             return;
         }
 
+        matcher = VOTACION_PRESIDENTES_LOGIN.matcher(pathInfo);
+
+        if (matcher.matches()) {
+            request.
+                    getServletContext()
+                    .getNamedDispatcher("VotacionPresidenteIndexServlet")
+                    .forward(request, response);
+            return;
+        }
+
+
+
         // /votacion/completada/
 
         matcher = VOTACION_COMPLETADA.matcher(pathInfo);
@@ -114,6 +152,8 @@ public class RouterVotacionServlet extends HttpServlet {
                     .getNamedDispatcher("VotacionCompletadaServlet")
                     .forward(request, response);
             return;
+        } else {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
 

@@ -25,22 +25,25 @@ public final class HelperSQL {
     protected static String password = "Gx791NCp7K2q";
     private static String host = System.getenv("OPENSHIFT_MYSQL_DB_HOST");
     private static String port = System.getenv("OPENSHIFT_MYSQL_DB_PORT");
-    protected static String url = "jdbc:mysql://"+host+":"+port+"/" + base;
+    protected static String url = "jdbc:mysql://" + host + ":" + port + "/" + base;
 
     static {
         try {
 
             if (System.getenv("OPENSHIFT_MYSQL_DB_HOST") == null
-                    && System.getenv("OPENSHIFT_MYSQL_DB_PORT") == null){
-                
+                    && System.getenv("OPENSHIFT_MYSQL_DB_PORT") == null) {
+
+                usuario = "_r";
+                password = "foo45";
                 host = "127.0.0.1";
                 port = "3306";
-                
-                url = "jdbc:mysql://"+host+":"+port+"/" + base;
+                base = "sec_alpha";
+
+                url = "jdbc:mysql://" + host + ":" + port + "/" + base;
             }
-            
+
             System.out.println(url);
-            
+
             Class.forName("com.mysql.jdbc.Driver");
 
         } catch (ClassNotFoundException e) {
@@ -136,8 +139,8 @@ public final class HelperSQL {
      */
     public static List<HashMap<String, Object>> obtenerFilas(String tabla, ArrayList<String> campos,
             String condicion) {
-        
-        System.out.println( getUrl() );
+
+        System.out.println(getUrl());
 
         /**/
         List<HashMap<String, Object>> resultados = new ArrayList<>();
@@ -475,25 +478,26 @@ public final class HelperSQL {
     public static void actualizarFila(String tabla, String campo, Object valor, String key, Object id) {
         String sql = "UPDATE " + tabla + " SET " + campo
                 + " = " + valor + " WHERE " + key + " = ?;";
-        System.out.println(sql);
-        if (coneccion != null) {
-            PreparedStatement comando;
-            try {
-                coneccion = obtenerConneccion();
+
+        try {
+            coneccion = obtenerConneccion();
+            if (coneccion != null) {
+                PreparedStatement comando;
                 //tabla, valor, campo, key, id
                 comando = coneccion.prepareStatement(sql);
                 comando.setObject(1, id);
+                System.out.println("\n" + id + "::::: \n");
+                System.out.println("\n" + sql + ":::: \n");
                 comando.executeUpdate();
-            } catch (SQLException e) {
-                System.out.println("SQL ERROR:" + e.getMessage());
+            } else {
+                throw new Error("No existe una coneccion, utilize la funcion conectar()");
             }
-        } else {
-            throw new Error("No existe una coneccion, utilize la funcion conectar()");
+        } catch (SQLException e) {
+            System.out.println("SQL ERROR:" + e.getMessage());
         }
     }
-
-    // Pasar un String con el query, y los parametros.
-    // also params is stupid, it should be a constant.
+// Pasar un String con el query, y los parametros.
+// also params is stupid, it should be a constant.
     public static boolean borrarFila(String tabla, ArrayList<String> params,
             String id) {
         Boolean response = false;
@@ -506,9 +510,12 @@ public final class HelperSQL {
 
             if (pexec.executeUpdate() != 0) {
                 response = true;
+
+
             }
         } catch (SQLException ex) {
-            Logger.getLogger(HelperSQL.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(HelperSQL.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
         return response;
     }
@@ -523,8 +530,11 @@ public final class HelperSQL {
             String proc = "{call ".concat(procName).concat("}");
             callableStatement = coneccion.prepareCall(proc);
             callableStatement.executeUpdate();
+
+
         } catch (SQLException ex) {
-            Logger.getLogger(HelperSQL.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(HelperSQL.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

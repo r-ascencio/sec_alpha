@@ -52,6 +52,47 @@ ALTER TABLE Alumno
 ADD CONSTRAINT alumno_especialidad_fk
 FOREIGN KEY (especialidad) REFERENCES Especialidad(codigo) ON DELETE CASCADE ON UPDATE CASCADE;
 
+
+
+
+CREATE TABLE `Presidente` (
+  `alumno` varchar(8) NOT NULL,
+  `imagen_src` varchar(250) NOT NULL,
+  `puntaje` int(11) NOT NULL DEFAULT '0',
+  especialidad tinyint NOT NULL,
+  PRIMARY KEY (`alumno`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE Presidente
+ADD CONSTRAINT presidente_codigo_fk
+FOREIGN KEY (alumno) REFERENCES Alumno (codigo) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+ALTER TABLE Presidente
+ADD CONSTRAINT presidente_especialidad_fk
+FOREIGN KEY (especialidad) REFERENCES Especialidad(codigo) ON DELETE CASCADE ON UPDATE CASCADE;
+
+CREATE TABLE IF NOT EXISTS Votantes (
+    alumno VARCHAR(8) UNIQUE NOT NULL,
+    especialidad TINYINT NOT NULL,
+    imagen_src TEXT NOT NULL,
+    voto_realizado BOOLEAN  DEFAULT 0 NOT NULL
+);
+
+ALTER TABLE Votantes 
+ADD CONSTRAINT votantes_alumnos_fk 
+FOREIGN KEY (alumno) REFERENCES Alumno (codigo) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+ALTER TABLE Votantes 
+ADD CONSTRAINT votantes_especialidad_fk 
+FOREIGN KEY (especialidad) REFERENCES Especialidad (codigo) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+DROP TRIGGER agregarCandidatoVotantes;
+DELIMITER $$
+CREATE TRIGGER agregarCandidatoVotantes BEFORE INSERT ON Votantes FOR EACH ROW BEGIN
+SET NEW.especialidad = ( SELECT especialidad FROM Alumno WHERE codigo = NEW.alumno );
+END
+$$
+
 /**
  * /Alumno
  */
@@ -84,7 +125,7 @@ FOREIGN KEY (alumno) REFERENCES Alumno (codigo) ON DELETE RESTRICT ON UPDATE CAS
 
 ALTER TABLE Candidato
 ADD CONSTRAINT candidato_especialidad_fk
-FOREIGN KEY (especialidad) REFERENCES Especialidad (codigo) ON DELETE RESTRICT ON UPDATE RESTRICT ON DELETE RESTRICT;
+FOREIGN KEY (especialidad) REFERENCES Especialidad (codigo) ON DELETE RESTRICT ON UPDATE RESTRICT;
  
 
 /**
@@ -195,6 +236,9 @@ IF  countCandidato > 0 THEN
 END
 $$
 
+
+
+
 INSERT INTO Candidato (alumno) VALUES ('20070063');
 
 CREATE TABLE  debug (
@@ -203,6 +247,17 @@ CREATE TABLE  debug (
   line_id int(11) NOT NULL auto_increment,
   PRIMARY KEY  (line_id)
 );
+
+-- PRESIDENTES
+
+DROP TRIGGER agregarCandidatoPresidente;
+DELIMITER $$
+CREATE TRIGGER agregarCandidatoPresidente BEFORE INSERT ON Presidente FOR EACH ROW BEGIN
+SET NEW.especialidad = ( SELECT especialidad FROM Alumno WHERE codigo = NEW.alumno );
+END
+$$
+
+-- /PRESIDENTES
 
 
 
@@ -293,3 +348,11 @@ BEGIN
   CLOSE cursorCandidatos;
 END
 $$
+
+
+CREATE TABLE IF NOT EXISTS configuraciones
+(
+    nombre VARCHAR(150) NOT NULL,
+    valor  boolean NOT NULL DEFAULT FALSE 
+);
+

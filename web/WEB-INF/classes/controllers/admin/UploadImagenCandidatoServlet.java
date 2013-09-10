@@ -31,16 +31,15 @@ public class UploadImagenCandidatoServlet extends HttpServlet {
             throws ServletException, java.io.IOException {
         // verificar si es subida
         isMultipart = ServletFileUpload.isMultipartContent(request);
-        
+
         java.io.PrintWriter out = response.getWriter();
-        
+
         if (!isMultipart) {
             out.print("No es un archivo");
             return;
         }
         DiskFileItemFactory factory = new DiskFileItemFactory();
         // tamaño maximo de la foto
-        // TODO: extender.
         factory.setSizeThreshold(maxMemSize);
         // Guardar en temporar si es mas pesado.
         factory.setRepository(new File("/tmp/"));
@@ -50,9 +49,9 @@ public class UploadImagenCandidatoServlet extends HttpServlet {
         // maximo peso ah subir.
         upload.setSizeMax(maxFileSize);
         response.setContentType("application/json");
-        JSONObject _r = new JSONObject();
+        JSONObject json_response = new JSONObject();
         try {
-            
+
             List fileItems = upload.parseRequest(request);
 
             // procesar a subida
@@ -81,13 +80,14 @@ public class UploadImagenCandidatoServlet extends HttpServlet {
                             request.getServletContext()
                             .getRealPath(relativePath) + "/" + file.getName();
                     String imgPath = request.getServletContext().getContextPath()
-                            + "/" + relativePath + file.getName();
+                             + relativePath + file.getName();
                     if (file.renameTo(new File(userPath))) {
-                        _r.put("imagen_src", imgPath);
-
+                        System.out.println("\n:::::" + userPath + "\n:::::");
+                        json_response.put("imagen_src", imgPath);
+                        System.out.println("\n:::::" + imgPath + "\n:::::");
                     }
                 }
-                out.println(_r);
+                out.println(json_response);
                 out.flush();
             }
         } catch (Exception ex) {
