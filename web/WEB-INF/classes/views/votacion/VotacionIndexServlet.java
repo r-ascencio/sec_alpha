@@ -38,13 +38,14 @@ public class VotacionIndexServlet extends HttpServlet {
 
         if (votacion_realizada != null) {
             if (votacion_realizada.equals("true")) {
-                message = "El alumno "
-                        + request.getSession().getAttribute("codigo")
-                        + " ya ha realizado la votacion";
-
-                request.getSession().setAttribute("codigo", null);
-                request.getSession().setAttribute("NIE", null);
-                request.getSession().setAttribute("voto", 1);
+                if (request.getSession().getAttribute("codigo") != null) {
+                    message = "El alumno "
+                            + request.getSession().getAttribute("codigo")
+                            + " ya ha realizado la votacion";
+                    request.getSession().setAttribute("codigo", null);
+                    request.getSession().setAttribute("NIE", null);
+                    request.getSession().setAttribute("voto", 1);
+                }
 
             }
         }

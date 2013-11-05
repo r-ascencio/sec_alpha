@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -72,7 +73,7 @@ public class AdminLogServlet extends HttpServlet {
                         "WHERE nombre = \'" + userName + "\'");
 
                 if (selectUser.size() == 1) {
-                    if (encriptedPass.equals(selectUser.get(0).get("pass"))) {
+                    if (encriptedPass.toLowerCase(Locale.ENGLISH).equals(selectUser.get(0).get("pass"))) {
                         HttpSession session = request.getSession(true);
                         session.setAttribute("userName", userName);
                         response.sendRedirect(request.getContextPath()

@@ -16,16 +16,11 @@ TODO
                         controllers.admin.EspecialidadNAlumnus, 
                         controllers.admin.setConsejo, 
                         controllers.admin.setPresidente.
-+ **FIX** :     Field especialidad in candidato should be readonly.
-+ **FIX** :     Electo procedure.
 + **FIX** :     Comment more code and put info in package-info.java.
-+ **FIX** :     ( better way of manage the source ¿maven?)
++ **FIX** :     ( better way of manage the source ¿gradle, maven?)
 + **FIX** :     Upload on *Openshift*.
 + **FIX** :     Organize templates.
-+ **FIX** :     I'm a very stupid person. check Uploads controllers.
 + **FIX** :     Index on openshift.
-+ **FIX** :     Admin login bad user and password.
-
 
 DONE
 -----
@@ -38,3 +33,7 @@ DONE
 + DO:           Check js/*.js to build a utils.js later.
 + ADD:          An Index Page.
 + FIX :         Give that routers a 404. check.
++ **FIX** :     Admin login bad user and password.
++ **FIX** :     I'm a very stupid person. check Uploads controllers
++ **FIX** :     Electo procedure.
++ **FIX** :     Field especialidad in candidato should be readonly.

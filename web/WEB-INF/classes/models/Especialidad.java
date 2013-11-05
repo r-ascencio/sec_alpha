@@ -13,6 +13,7 @@ public class Especialidad extends Tabla {
     private Integer codigo_auto;
     private String  nombre;
     private Integer total_alumnos;
+    private Integer numero_candidatos;
     private Integer hidden_voto_alumnos;
     private String  hidden_fecha_registro;
     private String  hidden_fecha_modificacion;

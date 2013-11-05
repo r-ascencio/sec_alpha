@@ -37,6 +37,7 @@ public class VotacionCompletadaServlet extends HttpServlet {
             response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
             response.setDateHeader("Expires", 0); // Proxies.
 
+            
             Alumno alumno = new Alumno();
 
             ArrayList<String> values = new ArrayList<>();
@@ -44,17 +45,25 @@ public class VotacionCompletadaServlet extends HttpServlet {
             values.add("a.nombre as nombre");
             values.add("a.codigo as codigo");
             values.add("a.voto as voto");
-            values.add("a.voto_p as voto_p");
-            values.add("votante.imagen_src as alumno_imagen");
             values.add("a.especialidad as Aespecialidad");
             values.add("e.nombre as especialidad");
             String condicion = " a  "
                     + " INNER JOIN Especialidad e  "
-                    + " ON a.especialidad = e.codigo "
-                    + " INNER JOIN Votantes votante ON "
-                    + " votante.alumno = a.codigo "
-                    + " WHERE a.codigo = "
+                    + " ON a.especialidad = e.codigo ";
+            
+            if ((boolean) request.getSession().getAttribute("ConfVotacionP")) {
+                values.add("votante.imagen_src as alumno_imagen");
+                condicion += " INNER JOIN Votantes votante ON "
+                        + " votante.alumno = a.codigo ";
+                request.setAttribute("action", "votacion/presidentes/login");
+            } else if ((boolean) request.getSession().getAttribute("ConfVotacionN")) {
+                request.setAttribute("action", "votacion/login");
+            }
+             
+            condicion += " WHERE a.codigo = "
                     + request.getSession().getAttribute("codigo");
+
+
 
             List<HashMap<String, Object>> alumnos = HelperSQL.obtenerFilas(
                     alumno.getTableName(), values, condicion);
@@ -91,7 +100,8 @@ public class VotacionCompletadaServlet extends HttpServlet {
                         .forward(request, response);
 
             } else {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                response.sendRedirect(request.getContextPath()
+                        +"/"+request.getAttribute("action"));
             }
 
         } catch (ServletException | IOException e) {

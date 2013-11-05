@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="EstdisticaVotacionPresidente" language="groovy" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Empty" uuid="2afb6197-4f89-4d58-9441-4f0ab2aa0073">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="577"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#8FAECC">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#CFDAE6">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($V{REPORT_COUNT}.intValue()%2==0)]]></conditionExpression>
+			<style backcolor="#F3F5F8"/>
+		</conditionalStyle>
+	</style>
+	<style name="table 1">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TH" mode="Opaque" backcolor="#8FAFCC">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_CH" mode="Opaque" backcolor="#CFDBE6">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TH" mode="Opaque" backcolor="#8599BE">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_CH" mode="Opaque" backcolor="#CFD7E6">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($V{REPORT_COUNT}.intValue()%2==0)]]></conditionExpression>
+			<style backcolor="#F3F5F8"/>
+		</conditionalStyle>
+	</style>
+	<style name="table 3">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_TH" mode="Opaque" backcolor="#8FAECC">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_CH" mode="Opaque" backcolor="#CFDAE6">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 3_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($V{REPORT_COUNT}.intValue()%2==0)]]></conditionExpression>
+			<style backcolor="#F3F5F8"/>
+		</conditionalStyle>
+	</style>
+	<style name="Crosstab Data Text" hAlign="Center"/>
+	<style name="table 4">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 4_TH" mode="Opaque" backcolor="#56687A">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 4_CH" mode="Opaque" backcolor="#CFDAE6">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 4_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($V{REPORT_COUNT}.intValue()%2==0)]]></conditionExpression>
+			<style backcolor="#F3F5F8"/>
+		</conditionalStyle>
+	</style>
+	<subDataset name="Dataset" whenResourceMissingType="Empty" uuid="8f3c41f8-0562-461b-b076-2b41f1d22f54">
+		<queryString>
+			<![CDATA[SELECT a.nombre AS 'Nombre', ca.imagen_src AS 'Imagen',  c.nombre AS 'Categoria',  p.puntaje AS 'Puntaje' FROM  Puntaje p  INNER JOIN  Alumno a  ON a.codigo = p.alumno INNER JOIN  Categoria c ON c.codigo = p.categoria INNER JOIN Candidato ca ON ca.alumno = p.alumno ORDER BY  p.categoria;]]>
+		</queryString>
+		<field name="Nombre" class="java.lang.String"/>
+		<field name="Imagen" class="java.lang.String"/>
+		<field name="Categoria" class="java.lang.String"/>
+		<field name="Puntaje" class="java.lang.Integer"/>
+	</subDataset>
+	<queryString>
+		<![CDATA[SELECT 
+	a.nombre AS 'Nombre',
+	c.nombre AS 'Categoria',
+	p.puntaje AS 'Puntaje' 
+FROM  
+	Puntaje p  
+INNER JOIN  
+	Alumno a  
+	ON a.codigo = p.alumno 
+INNER JOIN  
+	Categoria c 
+	ON c.codigo = p.categoria 
+ORDER BY  categoria, p.puntaje DESC;]]>
+	</queryString>
+	<field name="Nombre" class="java.lang.String"/>
+	<field name="Categoria" class="java.lang.String"/>
+	<field name="Puntaje" class="java.lang.Integer"/>
+	<variable name="Alumnos sin votar_1" class="java.lang.Long" resetType="Page" calculation="First">
+		<variableExpression><![CDATA[]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="98" splitType="Stretch">
+			<image isLazy="true">
+				<reportElement uuid="5c3757f9-c94b-4657-af17-745763c12c17" x="-22" y="-19" width="616" height="117" isRemoveLineWhenBlank="true"/>
+				<imageExpression><![CDATA["http://localhost:8080/assets/img/header_bgr.jpg"]]></imageExpression>
+			</image>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement uuid="b215971b-b008-4175-ab10-8f7f48e46753" x="422" y="63" width="150" height="35"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Droid Sans" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="68" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="ef44994f-0262-4993-829c-ac32f3b2c40e" x="0" y="0" width="572" height="68"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Archivo Narrow" size="14" isBold="false" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Estadisticas Votación por Presidentes]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="461c4d80-6b32-493d-9d33-c6a5bb7d45ca" x="1" y="2" width="570" height="1"/>
+			</line>
+		</band>
+	</pageHeader>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="31" splitType="Stretch">
+			<textField>
+				<reportElement uuid="6611c72f-5f7b-44db-aa0c-507b1b703ad0" x="236" y="9" width="80" height="20"/>
+				<textElement textAlignment="Right">
+					<font isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pagina "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="ebe3fcfc-ad37-4eda-9813-707826f3d541" x="316" y="9" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="543" splitType="Stretch">
+			<bar3DChart>
+				<chart>
+					<reportElement uuid="26fd1069-f098-4e35-9c2e-532a780ada1c" x="-3" y="14" width="574" height="455"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<dataset>
+						<datasetRun subDataset="Dataset" uuid="22416cf5-32ae-453a-aaea-680ce428d6a1"/>
+					</dataset>
+					<categorySeries>
+						<seriesExpression><![CDATA[$F{Nombre}]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{Categoria}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{Puntaje}]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<bar3DPlot>
+					<plot orientation="Horizontal"/>
+					<itemLabel/>
+				</bar3DPlot>
+			</bar3DChart>
+			<componentElement>
+				<reportElement uuid="45168283-b5a6-4c3a-869d-db188efc455d" key="table 4" style="table 4" x="1" y="479" width="566" height="52"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="Dataset" uuid="58e03000-b8fb-4771-b990-42fbdf8a8518">
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column uuid="135a310b-129d-4a01-9b7f-10b65a3f8c29" width="248">
+						<jr:columnHeader style="table 4_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="3b94722c-7458-4a83-9ac1-dfcaa11ded14" x="0" y="0" width="248" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="DejaVu Sans" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Nombre]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 4_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement uuid="a30e4de7-796b-4a4f-ae96-1e66b5f09648" x="0" y="0" width="248" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="DejaVu Sans"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{Nombre}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column uuid="a8f1b7bc-344a-4bb8-9522-a36236adc0e5" width="227">
+						<jr:columnHeader style="table 4_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="2011800c-263c-4403-b035-86f0dfbe17e5" x="0" y="0" width="227" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="DejaVu Sans" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Categoria]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 4_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement uuid="f0267fb7-470b-432c-ab80-cc8189bbbd8a" x="0" y="0" width="227" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="DejaVu Sans"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{Categoria}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column uuid="d7c6402f-4fd2-41e7-b153-efeeb2d60344" width="90">
+						<jr:columnHeader style="table 4_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement uuid="30bed2d1-74b6-467a-82d8-4713a33eb063" x="0" y="0" width="90" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="DejaVu Sans" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Puntaje]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="table 4_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement uuid="47253ab3-4126-4077-b87d-7ab27a6750ec" x="0" y="0" width="90" height="20"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="DejaVu Sans"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{Puntaje}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<break>
+				<reportElement uuid="70180c89-2070-417e-be1e-addd2b1e25a2" x="0" y="514" width="100" height="1"/>
+			</break>
+		</band>
+	</summary>
+	<noData>
+		<band height="186"/>
+	</noData>
+</jasperReport>

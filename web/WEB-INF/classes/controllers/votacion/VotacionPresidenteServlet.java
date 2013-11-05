@@ -35,7 +35,7 @@ public class VotacionPresidenteServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String alumnoCodigo = null;
+        String alumnoCodigo = "";
         request.setAttribute("entityName", "Nuevo usuario");
         request.setAttribute("adminDesc", "Añada un nuevo usuario");
         request.setAttribute("eleccionPresidente", "not null");

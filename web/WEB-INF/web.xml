@@ -2,6 +2,58 @@
 <web-app id="WebApp_ID" version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
     <display-name>sec_alpha</display-name>
     <!-- misc -->
+    <servlet>
+        <servlet-name>setTipoVotacion</servlet-name>
+        <servlet-class>controllers.admin.setTipoVotacion</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>setVotacionSetCandidatoP</servlet-name>
+        <servlet-class>controllers.admin.setVotacionSetCandidatoP</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReiniciarPresidentes</servlet-name>
+        <servlet-class>controllers.admin.ReiniciarPresidentes</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReporteCandidatos</servlet-name>
+        <servlet-class>controllers.admin.ReporteCandidatos</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReporteCandidatoCategoria</servlet-name>
+        <servlet-class>controllers.admin.ReporteCandidatoCategoria</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReporteAlumnosFaltantes</servlet-name>
+        <servlet-class>controllers.admin.ReporteAlumnosFaltantes</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReporteVotanteFaltantes</servlet-name>
+        <servlet-class>controllers.admin.ReporteVotanteFaltantes</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReporteEstadisticasPresidenteServlet</servlet-name>
+        <servlet-class>controllers.admin.ReporteEstadisticasPresidenteServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>VotacionIndex2Servlet</servlet-name>
+        <servlet-class>views.votacion.VotacionIndex2Servlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Eleccion2PresidenteServlet</servlet-name>
+        <servlet-class>controllers.votacion.Eleccion2PresidenteServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>setCincoEleccion</servlet-name>
+        <servlet-class>controllers.admin.setCincoEleccion</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReportePresidene5Servlet</servlet-name>
+        <servlet-class>controllers.admin.ReportePresidene5Servlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReporteAlumnos5Faltantes</servlet-name>
+        <servlet-class>controllers.admin.ReporteAlumnos5Faltantes</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>GenerarReportesVotoServlet</servlet-name>
         <url-pattern>/admin/reportes/voto</url-pattern>
@@ -10,6 +62,50 @@
     <servlet-mapping>
         <servlet-name>AdminRestartServlet</servlet-name>
         <url-pattern>/admin/configs/restart</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>setTipoVotacion</servlet-name>
+        <url-pattern>/admin/configs/tipoVotacion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>setVotacionSetCandidatoP</servlet-name>
+        <url-pattern>/admin/configs/setCandidatoP</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReiniciarPresidentes</servlet-name>
+        <url-pattern>/admin/configs/restartP</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReporteCandidatos</servlet-name>
+        <url-pattern>/admin/reportes/Candidatos</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReporteCandidatoCategoria</servlet-name>
+        <url-pattern>/admin/reportes/CandidatosCategoria</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReporteAlumnosFaltantes</servlet-name>
+        <url-pattern>/admin/reportes/AlumnosFaltantes</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReporteVotanteFaltantes</servlet-name>
+        <url-pattern>/admin/reportes/Votantes</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReporteEstadisticasPresidenteServlet</servlet-name>
+        <url-pattern>/admin/reportes/Presidente</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>setCincoEleccion</servlet-name>
+        <url-pattern>/admin/configuraciones/setCincoElecciones</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReportePresidene5Servlet</servlet-name>
+        <url-pattern>/admin/reportes/eleccion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReporteAlumnos5Faltantes</servlet-name>
+        <url-pattern>/admin/reportes/alumnos-eleccion-faltantes</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>/WEB-INF/templates/index.jsp</welcome-file>
@@ -60,6 +156,10 @@
         <servlet-class>views.votacion.VotacionIndexPresidenteServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>VotacionIndex2PresidenteServlet</servlet-name>
+        <servlet-class>views.votacion.VotacionIndex2PresidenteServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>PresidenteVotacionServlet</servlet-name>
         <servlet-class>controllers.votacion.PresidenteVotacionServlet</servlet-class>
     </servlet>
@@ -70,6 +170,10 @@
     <servlet>
         <servlet-name>sourcePresidenteVotacion</servlet-name>
         <servlet-class>views.votacion.sourcePresidenteVotacion</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>sourceCandidato2Votacion</servlet-name>
+        <servlet-class>views.votacion.sourceCandidato2Votacion</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>SourceOnlyPresidenteVotacion</servlet-name>
@@ -134,8 +238,16 @@
         <servlet-class>controllers.votacion.ReturnQuestionsServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>ReturnEleccionesQuestionsServlet</servlet-name>
+        <servlet-class>controllers.votacion.ReturnEleccionesQuestionsServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>VotacionIndexServlet</servlet-name>
         <servlet-class>views.votacion.VotacionIndexServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>VotacionesIndexServlet</servlet-name>
+        <servlet-class>views.votacion.VotacionesIndexServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>VotacionCompletadaServlet</servlet-name>
@@ -223,6 +335,22 @@
             VotacionCandidatosFilter
         </filter-name>
         <url-pattern>/votacion/</url-pattern>
+    </filter-mapping>
+    <filter>
+        <filter-name>VotacionEleccionFilter</filter-name>
+        <filter-class>controllers.filters.VotacionEleccionFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>
+            VotacionEleccionFilter
+        </filter-name>
+        <url-pattern>/votacion/eleccion</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>
+            VotacionEleccionFilter
+        </filter-name>
+        <url-pattern>/votacion/eleccion/</url-pattern>
     </filter-mapping>
     <filter>
         <filter-name>VotacionPresidenteFilter</filter-name>

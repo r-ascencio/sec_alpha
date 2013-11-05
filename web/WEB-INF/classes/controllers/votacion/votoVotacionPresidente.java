@@ -37,6 +37,13 @@ public class votoVotacionPresidente extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+        
+        System.out.println(request.getParameter("cAlumnus")+";;;; ;;; ;;; ;;");
+        System.out.println(request.getSession().getAttribute("codigo")+";;;; ;;; ;;; ;;");
+        
+        HelperSQL.actualizarFila("Electo", "puntajeP", "puntajeP + 1",
+                "alumno", request.getParameter("cAlumnus"));
+        
         String NIE = (String) request.getSession().getAttribute("NIE");
         HelperSQL.actualizarFila("Alumno", "voto_p", 1, "NIE", NIE);
         

@@ -25,6 +25,7 @@ public class ReturnEntityServlet extends HttpServlet {
         models.Tabla tabla = new models.Tabla();
         String entityName = (String) request.getAttribute("entityName");
         tabla.setTableName(entityName);
+        System.out.println("RETURNING:" + entityName);
         out.print(
                 tabla.filasJSON(entityName));
         out.flush();

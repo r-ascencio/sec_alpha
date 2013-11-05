@@ -4,6 +4,7 @@
  */
 package utils;
 
+import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,8 +22,8 @@ public final class HelperSQL {
 
     private static Connection coneccion = null;
     protected static String base = "sec";
-    protected static String usuario = "adminRGTB9Uq";
-    protected static String password = "Gx791NCp7K2q";
+    protected static String usuario = "adminHM3bwaA";
+    protected static String password = "7p2G2iTXxRpc";
     private static String host = System.getenv("OPENSHIFT_MYSQL_DB_HOST");
     private static String port = System.getenv("OPENSHIFT_MYSQL_DB_PORT");
     protected static String url = "jdbc:mysql://" + host + ":" + port + "/" + base;
@@ -33,13 +34,13 @@ public final class HelperSQL {
             if (System.getenv("OPENSHIFT_MYSQL_DB_HOST") == null
                     && System.getenv("OPENSHIFT_MYSQL_DB_PORT") == null) {
 
-                usuario = "_r";
-                password = "foo45";
+                usuario = "claroline_usr";
+                password = "ucsp2009";
                 host = "127.0.0.1";
                 port = "3306";
-                base = "sec_alpha";
+                base = "sec";
 
-                url = "jdbc:mysql://" + host + ":" + port + "/" + base;
+                url = "jdbc:mysql://" + host + ":" + port + "/" + base + "";
             }
 
             System.out.println(url);
@@ -213,6 +214,7 @@ public final class HelperSQL {
             Statement comando = coneccion.createStatement();
             ResultSet rs = comando.executeQuery(sql);
             // se convierte el resultset a List
+            System.out.println(rs);
             resultados = UtilsSQL.ResultsetToJSON(rs);
             comando.close();
             desconectar();
@@ -336,13 +338,14 @@ public final class HelperSQL {
                 System.out.println("::::::" + values.get(count) + "::::::::::::");
 
                 if (fieldType != null) {
-                    if (!values.get(count).equals("null")) {
+                    if (!values.get(count).equals("null")
+                            || !values.get(count).equals("")) {
                         switch (fieldType) {
                             case "Integer":
                                 command.setInt(index, Integer.valueOf(values.get(count)));
                                 break;
                             case "String":
-                                command.setString(index, values.get(count));
+                                command.setString(index, new String(values.get(count).getBytes(), StandardCharsets.UTF_8));
                                 break;
                         }
                         index++;
@@ -422,7 +425,8 @@ public final class HelperSQL {
 
                 if (j != (cols.length - 1)
                         && !auto_matcher.matches()
-                        && !(fieldName == "codigo_auto")) {
+                        && !(fieldName == "codigo_auto")
+                        && !(fieldName == "numero_candidatos")) {
                     sql += " , ";
                 } else {
                     sql += " ";
@@ -433,7 +437,7 @@ public final class HelperSQL {
 
             sql += " WHERE " + Key + " =  " + values.get(0);
 
-            System.out.println(sql);
+            System.out.println("\n\n\n\n ::::::: " + sql + " ::::::: \n\n\n\n");
 
             PreparedStatement exc = coneccion.prepareStatement(sql);
 
@@ -452,13 +456,19 @@ public final class HelperSQL {
 
                         switch (tipo) {
                             case "Integer":
-                                exc.setInt(index, Integer.valueOf(values.get(count)));
+                                exc.setInt(index, 
+                                        Integer.valueOf(values.get(count)));
                                 break;
                             case "String":
-                                exc.setString(index, values.get(count));
+                                exc.setString(index, 
+                                        new String(
+                                        String.valueOf(values.get(count))
+                                            .getBytes(), 
+                                        StandardCharsets.UTF_8));
                                 break;
                         }
-
+                        System.out.println(":: UPDATE VALUE :: :" 
+                                + values.get(count));
                         index++;
                     }
                 }
@@ -474,7 +484,6 @@ public final class HelperSQL {
         }
     }
 
-    // Implementar esta funcion, con trabajadoras del sexo y martini.
     public static void actualizarFila(String tabla, String campo, Object valor, String key, Object id) {
         String sql = "UPDATE " + tabla + " SET " + campo
                 + " = " + valor + " WHERE " + key + " = ?;";
@@ -493,9 +502,33 @@ public final class HelperSQL {
                 throw new Error("No existe una coneccion, utilize la funcion conectar()");
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             System.out.println("SQL ERROR:" + e.getMessage());
         }
     }
+
+    public static void actualizarFilaSinCuidado(String tabla, String campo, Object valor, String condicion) {
+        String sql = "UPDATE " + tabla + " SET " + campo
+                + " = " + valor + " " + condicion + ";";
+        
+        System.out.println(sql);
+        
+        try {
+            coneccion = obtenerConneccion();
+            if (coneccion != null) {
+                PreparedStatement comando;
+                //tabla, valor, campo, key, id
+                comando = coneccion.prepareStatement(sql);
+                comando.executeUpdate();
+            } else {
+                throw new Error("No existe una coneccion, utilize la funcion conectar()");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("SQL ERROR:" + e.getMessage());
+        }
+    }
+
 // Pasar un String con el query, y los parametros.
 // also params is stupid, it should be a constant.
     public static boolean borrarFila(String tabla, ArrayList<String> params,

@@ -8,19 +8,62 @@ USE sec;
 /**
  * Especialidad
  */
+DROP TABLE IF EXISTS Especialidad;
 CREATE TABLE IF NOT EXISTS Especialidad (
   codigo TINYINT AUTO_INCREMENT UNIQUE NOT NULL,
   nombre VARCHAR(100) UNIQUE NOT NULL,
   total_alumnos TINYINT NOT NULL,
   voto_alumnos TINYINT NOT NULL DEFAULT 0,
   fecha_registro DATE,
+  numero_candidatos INTEGER NOT NULL DEFAULT 3,
   fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+
+
 
 ALTER TABLE Especialidad
 ADD CONSTRAINT especialidad_codigo_pk
 PRIMARY KEY (codigo);
 
+use sec_alpha;
+DROP TRIGGER IF EXISTS tresCandidatos;
+DELIMITER $$
+CREATE TRIGGER tresCandidatos BEFORE INSERT ON Candidato FOR EACH ROW BEGIN
+DECLARE done 					INT DEFAULT 0;
+DECLARE maxCandidatos 			TINYINT;
+DECLARE Nespecialidad 			TINYINT;
+DECLARE nCandidatos 			TINYINT;
+DECLARE CurrentCandidato 		VARCHAR(8);
+DECLARE currentCandidatoEsp 	TINYINT;
+DECLARE nCandidatosEsp			TINYINT;
+DECLARE countCandidato			TINYINT;
+DECLARE cursorCandidato 		CURSOR FOR SELECT alumno FROM Candidato;
+DECLARE CONTINUE HANDLER FOR SQLSTATE '02000' SET done = 1;
+
+SET maxCandidatos = 3;
+SET nCandidatos = 0;
+SET countCandidato = (SELECT COUNT(*) FROM Candidato);
+SET NEW.especialidad = ( SELECT especialidad FROM Alumno WHERE codigo = NEW.alumno ) ;
+IF  countCandidato > 0 THEN
+
+  OPEN cursorCandidato;
+  REPEAT	
+  FETCH cursorCandidato INTO CurrentCandidato;
+  SET currentCandidatoEsp = (SELECT especialidad FROM Alumno WHERE codigo = NEW.alumno);
+  SET Nespecialidad = (SELECT especialidad FROM Alumno WHERE codigo = CurrentCandidato);
+  IF (Nespecialidad = currentCandidatoEsp) THEN
+	SET nCandidatos = nCandidatos + 1;	
+  END IF; 
+  SELECT alumno INTO CurrentCandidato FROM Candidato LIMIT 1;
+  UNTIL done END REPEAT;
+  CLOSE cursorCandidato;
+
+  IF (nCandidatos > 3 OR NEW.especialidad <= 0) THEN
+	SET NEW.alumno = null;
+  END IF;
+  END IF;
+END
+$$
 
 /**
  * /Especialidad
@@ -72,9 +115,7 @@ CREATE TABLE IF NOT EXISTS Candidato (
 ALTER TABLE Candidato
 ADD CONSTRAINT candidato_codigo_pk
 PRIMARY KEY (alumno);
-
--- FK Candidato
-
+-- FK Candidato  
 ALTER TABLE Candidato
 ADD CONSTRAINT candidato_codigo_fk
 FOREIGN KEY (alumno) REFERENCES Alumno (codigo) ON DELETE CASCADE ON UPDATE CASCADE;
@@ -171,9 +212,10 @@ DECLARE maxCandidatos 			TINYINT;
 DECLARE Nespecialidad 			TINYINT;
 DECLARE nCandidatos 			TINYINT;
 DECLARE CurrentCandidato 		VARCHAR(8);
-DECLARE currentCandidatoEsp 	TINYINT;
+DECLARE currentCandidatoEsp             TINYINT;
 DECLARE nCandidatosEsp			TINYINT;
 DECLARE countCandidato			TINYINT;
+DECLARE nTmpVotantes                    TINYINT;
 DECLARE cursorCandidato 		CURSOR FOR SELECT alumno FROM Candidato;
 DECLARE CONTINUE HANDLER FOR SQLSTATE '02000' SET done = 1;
 
@@ -191,11 +233,13 @@ IF  countCandidato > 0 THEN
 	SET nCandidatos = nCandidatos + 1;	
   END IF; 
   SELECT alumno INTO CurrentCandidato FROM Candidato LIMIT 1;
-  SET NEW.especialidad = ( SELECT especialidad FROM Alumno WHERE codigo = NEW.alumno ) ;
-  UNTIL done END REPEAT;
+    SET NEW.especialidad = ( SELECT especialidad FROM Alumno WHERE codigo = NEW.alumno ) ;
+    SET nTmpVotantes = ( SELECT numero_candidatos FROM Especialidadd WHERE especialidad = NEW.especialidad) ;
+    UNTIL done END REPEAT;
   CLOSE cursorCandidato;
-
-  IF (nCandidatos > 3) THEN
+  
+    
+  IF (nCandidatos > nTmpVotantes) THEN
 	SET NEW.alumno = null;
   END IF;
   END IF;
@@ -295,16 +339,22 @@ END
 
 
 -- PROCEDURE RESTART ELECTIONS
-
+use sec_alpha;
+DROP PROCEDURE IF EXISTS reiniciarElecciones;
 DELIMITER $$
 CREATE PROCEDURE reiniciarElecciones()
 BEGIN
-  TRUNCATE TABLE Electo;
-  TRUNCATE TABLE Presidente;
-  TRUNCATE TABLE Candidato;
-  TRUNCATE TABLE Alumno;
+  DELETE FROM Electo;
+  DELETE FROM Candidato;
+  DELETE FROM Votantes;
+  DELETE FROM Presidente;
+  DELETE FROM Alumno;
+  DELETE FROM Especialidad;
+  DELETE FROM Pregunta;
 END
 $$
+
+
 
 CREATE TABLE `Presidente` (
   `alumno` varchar(8) NOT NULL,
@@ -312,3 +362,56 @@ CREATE TABLE `Presidente` (
   `puntaje` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`alumno`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+use sec_alpha;
+DROP PROCEDURE IF EXISTS EscogerFaseVotacion;
+DELIMITER //
+CREATE PROCEDURE EscogerFaseVotacion()
+BEGIN
+    IF (SELECT valor FROM configuraciones WHERE nombre = 'faseConcejo') THEN
+        UPDATE configuraciones 
+			SET valor = 0 
+			WHERE nombre = 'faseConcejo';
+    ELSE
+        UPDATE configuraciones 
+			SET valor = 1 
+			WHERE nombre = 'faseConcejo';
+    END IF;
+END
+//
+
+
+
+-- PROCEDURE RESTART PRESIDENTE
+use sec_alpha;
+DROP PROCEDURE IF EXISTS reiniciarPresidente;
+DELIMITER $$
+CREATE PROCEDURE reiniciarPresidente()
+BEGIN
+  DELETE FROM Presidentes;
+END
+$$
+
+
+use sec_alpha;
+DROP TRIGGER IF EXISTS insertarCandidatos;
+DROP TRIGGER IF EXISTS tresCandidatos;
+DELIMITER $$
+CREATE TRIGGER insertarCandidatos BEFORE INSERT ON Candidato FOR EACH ROW BEGIN
+	DECLARE nMaxCandidatos 		TINYINT;
+	DECLARE nActualCandidatos 	TINYINT;
+	DECLARE codigoEspecialidad 	TINYINT;
+	DECLARE codigoCandidato 	VARCHAR(8);
+
+	SET codigoEspecialidad = (SELECT especialidad FROM Alumno WHERE codigo = NEW.alumno);
+	SET NEW.especialidad = codigoEspecialidad;
+	SET nMaxCandidatos = (SELECT numero_candidatos FROM Especialidad WHERE codigo = codigoEspecialidad);
+	SET nActualCandidatos = (SELECT COUNT(*) FROM Candidato WHERE especialidad = codigoEspecialidad);
+	IF (nActualCandidatos = nMaxCandidatos) THEN 
+		SET NEW.alumno = NULL;
+	END IF;
+END
+$$
+
+SELECT   a.nombre as nombre, c.alumno as codigo, a.especialidad as especialidadAlumno, c.imagen_src as imagen_src, e.nombre as especialidad  FROM Candidato  c   INNER JOIN Alumno a  ON a.codigo = c.alumno JOIN Especialidad e  ON e.codigo = a.especialidad WHERE a.especialidad = (SELECT especialidad FROM Alumno WHERE codigo  = 20090369);
+

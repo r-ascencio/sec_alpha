@@ -55,18 +55,19 @@ $(document)
                             var data = this.data();
                             console.log(data.length);
                         },
-                        pageSize: 10,
                         schema: {
                             model: {
                                 id: ID,
                                 fields: Fields
                             }
-                        }
+                        },
+                        pageSize: 20
                     });
 
             $("#grid").kendoGrid({
                 dataSource: dataSource,
                 sortable: true,
+                pageSize: 10,
                 groupable: {
                     messages: {
                         empty: "Arrastre una columna para agrupar"
@@ -135,12 +136,16 @@ $(document)
                         refresh: "Refrescar"
                     }
                 },
-                height: 430,
+                height: 600,
                 columns: Columns,
                 edit: function(e) {
                     $("#grid").closest(".k-upload-button").find("span").text("subir...");
                 },
                 editable: "popup",
-                toolbar: [{name: "create", text: "Añadir"}]
+                toolbar: [{name: "create", text: "Añadir"}],
+                pageable: {
+                    refresh: true,
+                    pageSizes: true
+                }
             });
         });

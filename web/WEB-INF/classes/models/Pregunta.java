@@ -1,16 +1,16 @@
 package models;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class Pregunta extends Tabla {
 
     private Integer codigo_auto;
+    private Integer categoria_fk;
     private String descripcion;
-    private String hidden_fecha_modificacion;
-
+    
     public Pregunta(int codigo, String Ycreacion, String descripcion) {
         this.setCodigo(codigo);
-        this.setYcreacion(Ycreacion);
         this.setDescripcion(descripcion);
         this.setTableName("Pregunta");
     }
@@ -32,21 +32,6 @@ public class Pregunta extends Tabla {
     public void setCodigo(int i) {
         this.codigo_auto = i;
     }
-
-    /**
-     * @return the ycreacion
-     */
-    public String getYcreacion() {
-        return hidden_fecha_modificacion;
-    }
-
-    /**
-     * @param ycreacion the ycreacion to set
-     */
-    public void setYcreacion(String ycreacion) {
-        hidden_fecha_modificacion = ycreacion;
-    }
-
     /**
      * @return the descripcion
      */
@@ -108,7 +93,6 @@ public class Pregunta extends Tabla {
      */
     public void construirLista(ArrayList<String> campos) {
         campos.add(this.getCodigo());
-        campos.add(this.getYcreacion());
         campos.add(this.getDescripcion());
     }
 }

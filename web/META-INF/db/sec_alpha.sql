@@ -86,7 +86,7 @@ ALTER TABLE Votantes
 ADD CONSTRAINT votantes_especialidad_fk 
 FOREIGN KEY (especialidad) REFERENCES Especialidad (codigo) ON DELETE RESTRICT ON UPDATE CASCADE;
 
-DROP TRIGGER agregarCandidatoVotantes;
+DROP TRIGGER IF EXISTS agregarCandidatoVotantes;
 DELIMITER $$
 CREATE TRIGGER agregarCandidatoVotantes BEFORE INSERT ON Votantes FOR EACH ROW BEGIN
 SET NEW.especialidad = ( SELECT especialidad FROM Alumno WHERE codigo = NEW.alumno );
@@ -137,7 +137,7 @@ CREATE TABLE IF NOT EXISTS Electo (
   alumno VARCHAR(8) UNIQUE UNIQUE NOT NULL,
   cargo VARCHAR(150),
   fecha_registro DATE,
-  puntajeP INTEGER,
+  puntajeP INTEGER DEFAULT 0,
   fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
@@ -205,7 +205,7 @@ DECLARE maxCandidatos 			TINYINT;
 DECLARE Nespecialidad 			TINYINT;
 DECLARE nCandidatos 			TINYINT;
 DECLARE CurrentCandidato 		VARCHAR(8);
-DECLARE currentCandidatoEsp 	TINYINT;
+DECLARE currentCandidatoEsp 	        TINYINT;
 DECLARE nCandidatosEsp			TINYINT;
 DECLARE countCandidato			TINYINT;
 DECLARE cursorCandidato 		CURSOR FOR SELECT alumno FROM Candidato;
@@ -250,7 +250,7 @@ CREATE TABLE  debug (
 
 -- PRESIDENTES
 
-DROP TRIGGER agregarCandidatoPresidente;
+DROP TRIGGER IF EXISTS agregarCandidatoPresidente;
 DELIMITER $$
 CREATE TRIGGER agregarCandidatoPresidente BEFORE INSERT ON Presidente FOR EACH ROW BEGIN
 SET NEW.especialidad = ( SELECT especialidad FROM Alumno WHERE codigo = NEW.alumno );
@@ -271,9 +271,7 @@ DROP PROCEDURE numeroAlumnos;
 CALL actualizarCAlm;
 
 DROP PROCEDURE IF EXISTS actualizarCAlm;
-USE sec_alpha;
-DESC Especialidad;
-SELECT nombre, total_alumnos FROM Especialidad;
+
 DELIMITER //
 CREATE PROCEDURE actualizarCAlm()
 BEGIN
@@ -297,6 +295,39 @@ BEGIN
   CLOSE CURSORCAlm;
 END
 //
+
+-- PROCEDURE TIPO DE VOTACION
+DROP PROCEDURE IF EXISTS EscogerVotacionN;
+DELIMITER //
+CREATE PROCEDURE EscogerVotacionN()
+BEGIN
+    UPDATE configuraciones SET valor = 0;
+    UPDATE configuraciones SET valor = 1 WHERE nombre = 'votacionNormal';
+END
+//
+
+
+DROP PROCEDURE IF EXISTS EscogerVotacionP;
+DELIMITER //
+CREATE PROCEDURE EscogerVotacionP()
+BEGIN
+    UPDATE configuraciones SET valor = 0;
+    UPDATE configuraciones SET valor = 1 WHERE nombre = 'votacionPresidente';
+END
+//
+
+DELIMITER //
+CREATE PROCEDURE EscogerFaseVotacion()
+BEGIN
+    IF (SELECT valor FROM configuraciones WHERE nombre = 'faseConcejo') THEN
+        UPDATE configuraciones SET valor = 0 WHERE nombre = 'faseConcejo';
+    ELSE
+        UPDATE configuraciones SET valor = 1 WHERE nombre = 'faseConcejo';
+    END IF;
+END
+//
+
+-- /PROCEDURE TIPO DE VOTACION
 
 -- PROCEDURE UNLOCK PRESIDENTE
 
@@ -352,7 +383,26 @@ $$
 
 CREATE TABLE IF NOT EXISTS configuraciones
 (
-    nombre VARCHAR(150) NOT NULL,
+    nombre VARCHAR(150) NOT NULL PRIMARY KEY,
     valor  boolean NOT NULL DEFAULT FALSE 
 );
 
+INSERT INTO configuraciones (nombre) VALUES ('votacionNormal');
+INSERT INTO configuraciones (nombre) VALUES ('votacionPresidente');
+INSERT INTO configuraciones (nombre) VALUES ('faseConcejo');
+
+
+CREATE TABLE IF NOT EXISTS Categoria (
+    codigo INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(150) NOT NULL,
+    fecha_ingreso TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+ALTER TABLE Pregunta ADD categoria INTEGER;
+
+ CREATE TABLE Puntaje (
+    alumno VARCHAR(8), 
+    categoria INTEGER, 
+    puntaje INTEGER DEFAULT 0,  
+    PRIMARY KEY(alumno, categoria)
+);

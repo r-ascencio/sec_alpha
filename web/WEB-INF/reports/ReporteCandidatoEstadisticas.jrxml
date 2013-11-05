@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="EstdisticaVotacionPresidente" language="groovy" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Empty" uuid="2afb6197-4f89-4d58-9441-4f0ab2aa0073">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="baseURL" class="java.lang.String">
+		<defaultValueExpression><![CDATA["http://localhost:8080/"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT 
+
+	a.nombre AS 'Nombre',
+
+	e.nombre AS 'Especialidad', 
+
+	a.codigo AS 'Codigo', 
+
+	a.NIE AS 'NIE',
+
+	p.puntaje AS 'Puntaje',
+
+	p.imagen_src AS 'Imagen'
+
+FROM 
+
+	Candidato AS p 
+
+INNER JOIN
+	Alumno AS a
+	ON a.codigo = p.alumno
+INNER JOIN 
+
+	Especialidad AS e 
+	ON e.codigo = a.especialidad
+ORDER BY
+	a.especialidad, p.puntaje DESC;]]>
+	</queryString>
+	<field name="Nombre" class="java.lang.String"/>
+	<field name="Especialidad" class="java.lang.String"/>
+	<field name="Codigo" class="java.lang.String"/>
+	<field name="NIE" class="java.lang.String"/>
+	<field name="Puntaje" class="java.lang.Integer"/>
+	<field name="Imagen" class="java.lang.String"/>
+	<variable name="Alumnos sin votar_1" class="java.lang.Long" resetType="Page" calculation="First">
+		<variableExpression><![CDATA[]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="98" splitType="Stretch">
+			<image isLazy="true">
+				<reportElement uuid="5c3757f9-c94b-4657-af17-745763c12c17" x="-22" y="-19" width="616" height="117" isRemoveLineWhenBlank="true"/>
+				<imageExpression><![CDATA[$P{baseURL}+"assets/img/header_bgr.jpg"]]></imageExpression>
+			</image>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement uuid="b215971b-b008-4175-ab10-8f7f48e46753" x="422" y="63" width="150" height="35"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="68" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="ef44994f-0262-4993-829c-ac32f3b2c40e" x="0" y="0" width="572" height="68"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="14" isBold="false" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Estadisticas Votación por Presidentes]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="39" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="48d650a4-02ba-408b-9362-76f0ccab63e6" x="18" y="12" width="168" height="21"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" isBold="true" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Nombre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="fcedcfc5-77fd-47b3-a25a-107e082320b4" x="356" y="12" width="75" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" isBold="true" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[NIE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="39c16f37-d547-44ea-b982-b0bb76c057f0" x="281" y="12" width="75" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" isBold="true" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Codigo]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="461c4d80-6b32-493d-9d33-c6a5bb7d45ca" x="1" y="2" width="570" height="1"/>
+			</line>
+			<staticText>
+				<reportElement uuid="591bf618-ad81-40ef-ac4d-2d64c1384dd9" x="186" y="12" width="95" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" isBold="true" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Especialidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="fcedcfc5-77fd-47b3-a25a-107e082320b4" x="432" y="12" width="57" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" isBold="true" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Puntaje]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="fcedcfc5-77fd-47b3-a25a-107e082320b4" x="489" y="11" width="82" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" isBold="true" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Foto]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="62" splitType="Stretch">
+			<textField>
+				<reportElement uuid="c64843ef-4ddd-4c61-ade8-6d276a7c2734" x="356" y="15" width="75" height="33"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NIE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="d2fb3188-77f4-4601-8b3f-86deda27aaa7" x="281" y="15" width="75" height="33"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Codigo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="94c06edf-3fbb-49a6-ab61-a168a92567b7" x="18" y="15" width="168" height="33"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f0fb9c59-e576-4ec8-9757-f528b151e36e" x="186" y="15" width="95" height="33"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Especialidad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="44d1d3be-a7d0-40a4-8671-574b2eb2e228" x="432" y="15" width="57" height="33"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" pdfFontName="Helvetica" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Puntaje}]]></textFieldExpression>
+			</textField>
+			<image hAlign="Center" vAlign="Middle" onErrorType="Blank">
+				<reportElement uuid="7940ecff-9bff-45bd-804e-e89e6243a041" x="489" y="15" width="83" height="32"/>
+				<imageExpression><![CDATA[$P{baseURL}+$F{Imagen}]]></imageExpression>
+			</image>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement uuid="6611c72f-5f7b-44db-aa0c-507b1b703ad0" x="236" y="9" width="80" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pagina "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="ebe3fcfc-ad37-4eda-9813-707826f3d541" x="316" y="9" width="40" height="20"/>
+				<textElement>
+					<font fontName="DejaVu Sans"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="254" splitType="Stretch">
+			<pie3DChart>
+				<chart>
+					<reportElement uuid="e89df4e3-b819-48b0-b44e-5041c07f9c14" x="2" y="0" width="570" height="229"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<pieDataset>
+					<keyExpression><![CDATA[$F{Nombre}]]></keyExpression>
+					<valueExpression><![CDATA[$F{Puntaje}]]></valueExpression>
+				</pieDataset>
+				<pie3DPlot>
+					<plot/>
+					<itemLabel/>
+				</pie3DPlot>
+			</pie3DChart>
+		</band>
+	</summary>
+</jasperReport>

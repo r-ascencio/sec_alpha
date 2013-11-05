@@ -101,6 +101,8 @@ public class VotacionPresidenteFilter implements Filter {
         HttpServletResponse httpRes = (HttpServletResponse) response;
 
 
+
+
         if (httpReq.getSession().getAttribute("codigo") == null
                 || httpReq.getSession().getAttribute("NIE") == null
                 || httpReq.getSession().getAttribute("voto_p") == null) {

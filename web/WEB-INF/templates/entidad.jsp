@@ -1,6 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <c:set var="baseURL" value="${fn:replace(pageContext.request.requestURL, 
@@ -24,48 +24,99 @@
         <script type="text/javascript">
 
             <c:choose>
-                <c:when test="${entityName == 'Candidato' || 
-                                entityName == 'Presidente' ||
+                <c:when test="${entityName == 'Candidato'   || 
+                                entityName == 'Presidente'  ||
+                                entityName == 'Presidentes'  ||
                                 entityName == 'Votantes'}">
-                        var fkEditor = function(container, options) {
-                            if (options.field === "especialidad") {                                
-                                $('<input data-text-field="text" data-value-field="value" data-bind="value:' + options.field + '" />')
-                                        .appendTo(container)
-                                        .kendoComboBox({
-                                    autoBind: false,
-                                    dataSource: options.values,
-                                    enable: false,
-                                    text: "",
-                                    index: 0
-                                });
-                            } else {
-                                $('<input data-text-field="text" data-value-field="value" data-bind="value:' + options.field + '" />')
-                                        .appendTo(container)
-                                        .kendoComboBox({
-                                    autoBind: false,
-                                    dataSource: options.values,
-                                    enable: true,
-                                    text: "",
-                                    index: 0
-                                });                                
-                            }
+                var fkEditor = function(container, options) {
+                    if (options.field === "especialidad") {
+                        $('<input data-text-field="text" data-value-field="value" data-bind="value:' + options.field + '" />')
+                                .appendTo(container)
+                                .kendoComboBox({
+                            autoBind: false,
+                            dataSource: options.values,
+                            enable: false,
+                            text: "",
+                            index: 0
+                        });
+                    } else {
+                        $('<input data-text-field="text" data-value-field="value" data-bind="value:' + options.field + '" />')
+                                .appendTo(container)
+                                .kendoComboBox({
+                            autoBind: false,
+                            dataSource: options.values,
+                            enable: true,
+                            text: "",
+                            index: 0
+                        });
+                    }
                 };
-                
-               </c:when>
+
+                </c:when>
+                <c:when test="${entityName == 'Pregunta'}">
+                    var fkEditor = function(container, options) {
+                        if (options.field === "categoria") {
+                            $('<input data-text-field="text" data-value-field="value" data-bind="value:' + options.field + '" />')
+                                    .appendTo(container)
+                                    .kendoComboBox({
+                                autoBind: false,
+                                dataSource: options.values,
+                                enable: true,
+                                text: "-- Escoger Categoria --",
+                                index: 1
+                            });
+                        } else {
+                            $('<input data-text-field="text" data-value-field="value" data-bind="value:' + options.field + '" />')
+                                    .appendTo(container)
+                                    .kendoComboBox({
+                                autoBind: false,
+                                dataSource: options.values,
+                                enable: true,
+                                text: "-- Escoger Categoria --",
+                                index: 1
+                            });
+                        }
+                    };
+                </c:when>
+                <c:when test="${entityName == 'Electo'}">
+                    var fkEditor = function(container, options) {
+                        if (options.field === "alumno") {
+                            $('<input data-text-field="text" data-value-field="value" data-bind="value:' + options.field + '" />')
+                                    .appendTo(container)
+                                    .kendoComboBox({
+                                autoBind: false,
+                                dataSource: options.values,
+                                enable: false,
+                                text: "",
+                                index: 0
+                            });
+                        } else {
+                            $('<input data-text-field="text" data-value-field="value" data-bind="value:' + options.field + '" />')
+                                    .appendTo(container)
+                                    .kendoComboBox({
+                                autoBind: false,
+                                dataSource: options.values,
+                                enable: true,
+                                text: "",
+                                index: 0
+                            });
+                        }
+                    };
+
+                </c:when>
                 <c:otherwise>
-                                        
-                        var fkEditor = function(container, options) {
-                    console.log(options);
-                    $('<input data-text-field="text" data-value-field="value" data-bind="value:' + options.field + '" />')
-                            .appendTo(container)
-                            .kendoComboBox({
-                        autoBind: false,
-                        dataSource: options.values,
-                        enable: true,
-                        text: "",
-                        index: 0
-                    });
-                };
+                    var fkEditor = function(container, options) {
+                        console.log(options);
+                        $('<input data-text-field="text" data-value-field="value" data-bind="value:' + options.field + '" />')
+                                .appendTo(container)
+                                .kendoComboBox({
+                            autoBind: false,
+                            dataSource: options.values,
+                            enable: true,
+                            text: "",
+                            index: 0
+                        });
+                    };
                 </c:otherwise>
             </c:choose>
                 var imgEditorCandidato = function(container, options) {
@@ -94,8 +145,11 @@
                     var files = e.files;
                     $.each(files, function() {
                         if (this.extension !== ".jpg"
-                                && this.extension !== ".png") {
-                            alert("Solo .jpg y .png");
+                                && this.extension !== ".JPG"
+                                && this.extension !== ".png"
+                                && this.extension !== ".PNG") {
+                            alert("La extensión y/o formato de la imagen, debe ser\n\
+                                    archivo.jpg, archivo.JPG, archivo.png, archivo.PNG");
                             e.preventDefault();
                         }
                     });
@@ -203,6 +257,87 @@
             </div>
         </c:if>
 
+        <c:if test="${entityName == 'Pregunta'}">
+            <div class="twelvecol">
+                <div class="fourcol"></div>
+                <div class="fourcol">
+                    <a href="${baseURL}/admin/Categoria" class="btn">
+                        Categoria de Preguntas
+                    </a>
+                </div>
+                <div class="fourcol last"></div>
+            </div>
+        </c:if>
+
+        <c:if test="${entityName == 'Candidato'}">
+            <div class="twelvecol">
+                <div class="fourcol"></div>
+                <div class="fourcol">
+                    <a href="${baseURL}/admin/reportes/Candidatos" class="btn">
+                        Reporte General Candidatos
+                    </a>
+                </div>
+                <div class="fourcol last"></div>
+            </div>
+            <hr/><br/>
+            <div class="twelvecol">
+                <div class="fourcol"></div>
+                <div class="fourcol">
+                    <a href="${baseURL}/admin/reportes/CandidatosCategoria" class="btn">
+                        Candidatos Estadisticas Categorias
+                    </a>
+                </div>
+                <div class="fourcol last"></div>
+            </div>
+        </c:if>
+
+        <c:if test="${entityName == 'Presidentes'}">
+            <div class="twelvecol">
+                <div class="fourcol"></div>
+                <div class="fourcol">
+                    <a href="${baseURL}/admin/reportes/eleccion" class="btn">
+                        Reporte Estadisticas Candidatos
+                    </a>
+                </div>
+                <div class="fourcol last"></div>
+            </div>
+        </c:if>
+
+        <c:if test="${entityName == 'Categoria'}">
+            <div class="twelvecol">
+                <div class="fourcol"></div>
+                <div class="fourcol">
+                    <a href="${baseURL}/admin/Pregunta" class="btn">
+                        Preguntas
+                    </a>
+                </div>
+                <div class="fourcol last"></div>
+            </div>
+        </c:if>
+
+        <c:if test="${entityName == 'Votantes'}">
+            <div class="twelvecol">
+                <div class="fourcol"></div>
+                <div class="fourcol">
+                    <a href="${baseURL}/admin/reportes/Votantes" class="btn">
+                        Reporte Votantes Faltantes
+                    </a>
+                </div>
+                <div class="fourcol last"></div>
+            </div>
+        </c:if>
+        <c:if test="${entityName == 'Presidente'}">
+            <div class="twelvecol">
+                <div class="fourcol"></div>
+                <div class="fourcol">
+                    <a href="${baseURL}/admin/reportes/Presidente" class="btn">
+                        Reporte Presidente Estadisticas
+                    </a>
+                </div>
+                <div class="fourcol last"></div>
+            </div>
+        </c:if>
+
         <c:if test="${entityName == 'Especialidad'}">
             <div class="twelvecol">
                 <div class="fourcol"></div>
@@ -283,14 +418,72 @@
                     </div>
                 </div>
             </div>
+            <br/>
+            <div class="twelvecol">
+                <hr/>
+                <div class="fourcol"></div>
+                <div class="fourcol">
+                    <c:if test="${cincoElecciones == false}">
+                        <form 
+                            method="POST"
+                            action="${baseURL}/admin/reportes/AlumnosFaltantes">
+                            <center>
+                                <select name="especialidad">
+                                    <c:forEach items="${especialidades}" 
+                                               var="especialidad">
+                                        <option value="${especialidad.codigo}">
+                                            ${especialidad.nombre}
+                                        </option>
+                                    </c:forEach>
+                                </select>
+                            </center>
+                            <br/>
+                            <input 
+                                type="submit" 
+                                class="btn"
+                                value="Reporte Faltantes Voto" />
+                        </form>
+                    </c:if>
+                    <c:if test="${cincoElecciones == true}">
+                        <form 
+                            method="POST"
+                            action="${baseURL}/admin/reportes/alumnos-eleccion-faltantes">
+                            <center>
+                                <select name="especialidad">
+                                    <c:forEach items="${especialidades}" 
+                                               var="especialidad">
+                                        <option value="${especialidad.codigo}">
+                                            ${especialidad.nombre}
+                                        </option>
+                                    </c:forEach>
+                                </select>
+                            </center>
+                            <br/>
+                            <input 
+                                type="submit" 
+                                class="btn"
+                                value="Reporte Faltantes Voto" />
+                        </form>
+                    </c:if>
+                </div>
+                <div class="fourcol last"></div>
+                <hr/>
+            </div>
         </c:if>
         <div class="twelvecol" style="margin-bottom: 10px;"></div>
         <div class="twelvecol" style="margin-top: 10px;"></div>
+
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $('form:first').find('.elevencol').last().remove();
+            });
+        </script>
     </jsp:attribute>
 
     <jsp:attribute name="frm">
         ${grid}
     </jsp:attribute>
+
 </t:adminbody>
 
 <!-- TODO : IF IT'S LOGGED -->

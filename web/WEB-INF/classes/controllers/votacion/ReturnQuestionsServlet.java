@@ -26,53 +26,89 @@ public class ReturnQuestionsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Pregunta pregunta = new Pregunta();
-        Candidato candidato = new Candidato();
-        Alumno alumno = new Alumno();
+        
+        int cantidadCandidatos = 3;
+        try {
+        if (null != request.getSession().getAttribute("codigo")) {
+            Pregunta pregunta = new Pregunta();
+            Candidato candidato = new Candidato();
+            Alumno alumno = new Alumno();
 
-        ArrayList<String> values = new ArrayList<>();
+            ArrayList<String> values = new ArrayList<>();
 
-        // shame on me :(
-        values.add("a.nombre as nombre");
-        values.add("c.alumno as codigo");
-        values.add("a.especialidad as especialidadAlumno");
-        values.add("c.imagen_src as imagen_src");
-        values.add("e.nombre as especialidad");
-        String condicion = " c  "
-                + " INNER JOIN Alumno a "
-                + " ON a.codigo = c.alumno"
-                + " JOIN Especialidad e "
-                + " ON e.codigo = a.especialidad"
-                + " WHERE a.especialidad = "
-                + "(SELECT especialidad FROM Alumno WHERE codigo  = "
-                + request.getSession().getAttribute("codigo").toString() + ")";
+            // shame on me :(
+            values.add("a.nombre as nombre");
+            values.add("c.alumno as codigo");
+            values.add("a.especialidad as especialidadAlumno");
+            values.add("c.imagen_src as imagen_src");
+            values.add("e.nombre as especialidad");
+            String condicion = " c  "
+                    + " INNER JOIN Alumno a "
+                    + " ON a.codigo = c.alumno"
+                    + " JOIN Especialidad e "
+                    + " ON e.codigo = a.especialidad"
+                    + " WHERE a.especialidad = "
+                    + "(SELECT especialidad FROM Alumno WHERE codigo  = "
+                    + request.getSession().getAttribute("codigo").toString() + ")";
 
-        List<HashMap<String, Object>> candidatos = HelperSQL.obtenerFilas(
-                candidato.getTableName(), values, condicion);
+            List<HashMap<String, Object>> candidatos = HelperSQL.obtenerFilas(
+                    candidato.getTableName(), values, condicion);
 
-        values.clear();
-        values.add("codigo");
-        values.add("descripcion");
+            values.clear();
+            values.add("codigo");
+            values.add("descripcion");
+            
+            List<HashMap<String, Object>> preguntasFilas =
+                    HelperSQL.obtenerFilas(pregunta.getTableName(), 
+                        values, 
+                        " WHERE categoria <> (SELECT codigo FROM Categoria WHERE nombre = \'elecciones\')"
+                        + "ORDER BY categoria");
+            
+            values.clear();
+            values.add("*");
+            List<HashMap<String, Object>> especialidad = HelperSQL.obtenerFilas(
+                    "Especialidad", 
+                    values, 
+                    "WHERE codigo ="+candidatos.get(0).get("especialidadAlumno")
+                    );
 
-        List<HashMap<String, Object>> preguntasFilas =
-                HelperSQL.obtenerFilas(pregunta.getTableName(), values, "");
+            
+            System.out.println(
+                    "\n-|::::::::::::::::|-\n" + 
+                    especialidad.get(0).get("numero_candidatos")
+                    + "\n-|::::::::::::::::|-\n"
+                    );
+            
+            if (null != Integer.valueOf(especialidad.get(0).get("numero_candidatos").toString())) {
+                cantidadCandidatos = Integer.valueOf(especialidad.get(0).get("numero_candidatos").toString());
+            }
+            if (candidatos.size() != cantidadCandidatos) { 
+                request.setAttribute("cantidad", true);
+                request.setAttribute("message",
+                        "No existe la candidad necesaria de candidatos.\n"
+                        + " Cantidad Actual Candidatos: " + cantidadCandidatos
+                        );
+            }
 
-        if (candidatos.size() != 3) {
-            request.setAttribute("cantidad", true);
-            request.setAttribute("message",
-                    "No existe la candidad necesaria de candidatos.");
+            request.setAttribute("maxCandidatos", 
+                    cantidadCandidatos);
+            
+            request.setAttribute("candidatos",
+                    candidatos);
+
+            request.setAttribute("preguntas",
+                    preguntasFilas);
+
+
+            request.getRequestDispatcher("/WEB-INF/templates/votacion.jsp")
+                    .forward(request, response);
+        } else {
+            response.sendRedirect(request.getContextPath()+"/votacion/login");
         }
-
-        request.setAttribute("candidatos",
-                candidatos);
-
-        request.setAttribute("preguntas",
-                preguntasFilas);
-
-
-        request.getRequestDispatcher("/WEB-INF/templates/votacion.jsp")
-                .forward(request, response);
-
+        } catch (Exception excep) {
+            excep.printStackTrace();
+            response.sendRedirect(request.getContextPath()+"/votacion/login");
+        }
         return;
     }
 
@@ -80,6 +116,9 @@ public class ReturnQuestionsServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        System.out.println("\nVotacion ESTO es VOTACION\n");
+        HelperSQL.callProc("setearPuntaje");
+        // START PREGUNTA
         Pregunta pregunta = new Pregunta();
         Candidato candidato = new Candidato();
         Alumno alumno = new Alumno();
@@ -104,12 +143,12 @@ public class ReturnQuestionsServlet extends HttpServlet {
 
         List<HashMap<String, Object>> candidatos = HelperSQL.obtenerFilas(
                 candidato.getTableName(), values, condicion);
+        
         values.clear();
-
         values.add("codigo as codigo");
 
         List<HashMap<String, Object>> preguntas = HelperSQL.obtenerFilas(
-                pregunta.getTableName(), values, "");
+                pregunta.getTableName(), values, "ORDER BY categoria");
 
         maxPuntaje = (preguntas.size() * 4);
         for (int i = 0; i < candidatos.size(); i++) {
@@ -129,6 +168,13 @@ public class ReturnQuestionsServlet extends HttpServlet {
                             Integer valor = Integer.valueOf(paramValues[k]);
                             if (valor >= 1 && valor <= 4) {
                                 puntajeAdquirido += valor;
+                                HelperSQL.actualizarFilaSinCuidado(
+                                        "Puntaje", 
+                                        "puntaje", 
+                                        "puntaje + " + paramValues[k], 
+                                        "WHERE alumno = " +
+                                        codigoCandidato + " AND categoria = "
+                                        + "(SELECT categoria FROM Pregunta WHERE codigo = "+cp_matcher.group(1).substring(0, 1)+")");
                             }
                         }
                     }
@@ -136,7 +182,7 @@ public class ReturnQuestionsServlet extends HttpServlet {
             }
             if (puntajeAdquirido <= maxPuntaje
                     && puntajeAdquirido > 0) {
-                imok = true;
+                imok = true;                                    
                 values.add("codigo as codigo");
                 HelperSQL.actualizarFila(candidato.getTableName(), "puntaje",
                         "puntaje + " + puntajeAdquirido, "alumno", codigoCandidato);
@@ -145,24 +191,27 @@ public class ReturnQuestionsServlet extends HttpServlet {
 
                 imok = false;
             }
-           
+
         }
 
 
         if (imok == true) {
 
-            
+
             HelperSQL.actualizarFila(alumno.getTableName(), "voto",
                     1, "codigo", request.getSession().getAttribute("codigo"));
             request.getSession().setAttribute("voto", 1);
+            
+            request.setAttribute("action", "/votacion/login");
+            
             response.sendRedirect(request.getContextPath()
                     + "/votacion/completada/");
 
         } else {
-            
-                        response.sendRedirect(request.getContextPath()
+
+            response.sendRedirect(request.getContextPath()
                     + "/votacion/login/");
-            
+
         }
     }
 }

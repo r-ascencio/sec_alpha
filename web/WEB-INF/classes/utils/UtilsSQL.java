@@ -1,5 +1,7 @@
 package utils;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,7 +41,6 @@ public class UtilsSQL {
             HashMap<String, Object> fila = new HashMap<String, Object>(columnas);
 
             for (int i = 1; i <= columnas; ++i) {
-                
                 fila.put(metadatos.getColumnLabel(i), rs.getObject(i));
             }
 
@@ -85,7 +86,12 @@ public class UtilsSQL {
                 } else if (rsmd.getColumnType(i) == java.sql.Types.TINYINT) {
                     obj.put(column_name, rs.getInt(column_name));
                 } else if (rsmd.getColumnType(i) == java.sql.Types.VARCHAR) {
-                    obj.put(column_name, rs.getString(column_name));
+                    // DONT EVER IMPLEMENT SOMETIHNG LIKE THIS EVER! {{
+                    if (!column_name.equals("candidato1") ||
+                            !column_name.equals("candidato2")) {
+                        obj.put(column_name, new String(rs.getString(column_name).getBytes(), StandardCharsets.UTF_8));
+                    }
+                    // }}
                 } else if (rsmd.getColumnType(i) == java.sql.Types.DATE) {
                     obj.put(column_name, rs.getDate(column_name));
                 } else if (rsmd.getColumnType(i) == java.sql.Types.TIMESTAMP) {

@@ -4,11 +4,9 @@ import java.util.ArrayList;
 
 public class Electo extends Tabla {
 
-    private String alumno_auto;
     private String alumno_fk;
+    private Integer puntajeP_auto;
     private String cargo;
-    private Integer puntaje_auto;
-    private String hidden_fecha_registro;
 
     public Electo(String codigo, String cargo) {
         this.setCargo(cargo);

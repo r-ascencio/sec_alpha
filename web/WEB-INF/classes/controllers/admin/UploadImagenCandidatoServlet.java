@@ -21,7 +21,6 @@ import org.json.JSONObject;
 public class UploadImagenCandidatoServlet extends HttpServlet {
 
     private boolean isMultipart;
-    private String filePath;
     private int maxFileSize = 600 * 1024;
     private int maxMemSize = 400 * 1024;
     private File file;
@@ -31,25 +30,34 @@ public class UploadImagenCandidatoServlet extends HttpServlet {
             throws ServletException, java.io.IOException {
         // verificar si es subida
         isMultipart = ServletFileUpload.isMultipartContent(request);
-
+        String relativePath = "/media/candidatos/";
+        String filePath = request.getServletContext()
+                .getRealPath("/media/candidatos");
         java.io.PrintWriter out = response.getWriter();
-
         if (!isMultipart) {
             out.print("No es un archivo");
             return;
         }
         DiskFileItemFactory factory = new DiskFileItemFactory();
         // tamaño maximo de la foto
+
         factory.setSizeThreshold(maxMemSize);
         // Guardar en temporar si es mas pesado.
-        factory.setRepository(new File("/tmp/"));
+
+        factory.setRepository(
+                new File("/tmp/"));
 
         // org.apache.fileupload gestiona la subida.
         ServletFileUpload upload = new ServletFileUpload(factory);
         // maximo peso ah subir.
+
         upload.setSizeMax(maxFileSize);
-        response.setContentType("application/json");
+
+        response.setContentType(
+                "application/json");
         JSONObject json_response = new JSONObject();
+
+
         try {
 
             List fileItems = upload.parseRequest(request);
@@ -67,24 +75,23 @@ public class UploadImagenCandidatoServlet extends HttpServlet {
                     long sizeInBytes = fi.getSize();
                     // descarga en el servidor
                     if (fileName.lastIndexOf("\\") >= 0) {
-                        file = new File(filePath
+                        file = new File(filePath + "/"
                                 + fileName.substring(fileName.lastIndexOf("\\")));
                     } else {
-                        file = new File(filePath
+                        file = new File(filePath + "/"
                                 + fileName.substring(fileName.lastIndexOf("\\") + 1));
                     }
                     fi.write(file);
                     ///String userPath = System.getenv("PLACE_TO_UPLOAD_MOTHEFUCKA");
-                    String relativePath = "/assets/uploads/";
-                    String userPath =
-                            request.getServletContext()
-                            .getRealPath(relativePath) + "/" + file.getName();
-                    String imgPath = request.getServletContext().getContextPath()
-                             + relativePath + file.getName();
+                    String userPath = file.getAbsolutePath();
+                    String imgPath = request.getContextPath() + relativePath + file.getName();
                     if (file.renameTo(new File(userPath))) {
-                        System.out.println("\n:::::" + userPath + "\n:::::");
+                        System.out.println("\n::::::::::::::::::::::::::::::::::::::::::\n");
+                        System.out.println("\n\n" + file.getPath() + "\n\n");
+                        System.out.println("\n::::: USER PATH: " + userPath + "\n:::::");
                         json_response.put("imagen_src", imgPath);
-                        System.out.println("\n:::::" + imgPath + "\n:::::");
+                        System.out.println("\n::::: IMG PATH: " + imgPath + "\n:::::");
+                        System.out.println("\n::::::::::::::::::::::::::::::::::::::::::\n");
                     }
                 }
                 out.println(json_response);

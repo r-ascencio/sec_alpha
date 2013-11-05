@@ -18,8 +18,7 @@
 
     <div class="row normal">
         <div class="twelvecol">
-            <div class="onecol"></div>
-            <div id="preguntas-container" class="tencol">
+            <div id="preguntas-container" class="twelvecol">
                 <!-- wtf, i did this why i just not... -->
                 <!-- this is stupid -->
                 <jsp:invoke fragment="preguntas"></jsp:invoke>

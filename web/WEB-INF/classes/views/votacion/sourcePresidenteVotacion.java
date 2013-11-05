@@ -47,15 +47,17 @@ public class sourcePresidenteVotacion extends HttpServlet {
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
         models.Tabla tabla = new models.Tabla();
-        tabla.setTableName("Candidato");
+        tabla.setTableName("Presidente");
         ArrayList<String> values = new ArrayList<>();
         // shame on me :(
         values.add("a.nombre as nombre");
         values.add("c.imagen_src as imagen_src");
         values.add("c.alumno as alumno");
-        String condicion = " as c  "
+        String condicion = " as e  "
                 + " JOIN Alumno as a"
-                + " ON a.codigo = c.alumno ";
+                + " ON a.codigo = e.alumno "
+                + " JOIN Candidato As c "
+                + " ON c.alumno = e.alumno";
 
 
         out.print(

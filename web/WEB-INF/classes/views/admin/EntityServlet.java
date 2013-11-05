@@ -61,6 +61,20 @@ public class EntityServlet extends HttpServlet {
         }
 
         request.setAttribute("foo", entidad.getTableName());
+        if ("Alumno" == entidad.getTableName()) {
+            ArrayList<String> values = new ArrayList<>();
+
+            values.add("codigo");
+            values.add("nombre");
+
+            List<HashMap<String, Object>> especialidades =
+                    HelperSQL.obtenerFilas(
+                    "Especialidad",
+                    values,
+                    "ORDER BY nombre");
+
+            request.setAttribute("especialidades", especialidades);
+        }
         if ("Electo" == entidad.getTableName()) {
             ArrayList<String> values = new ArrayList<>();
 
@@ -76,7 +90,6 @@ public class EntityServlet extends HttpServlet {
             } else {
                 request.setAttribute("electos", false);
             }
-
 
         }
 
@@ -124,8 +137,8 @@ public class EntityServlet extends HttpServlet {
             }
             hidden_matcher = hidden.matcher(field);
 
-            if (!hidden_matcher.matches() && 
-                    !field.equals("pass_auto")) {
+            if (!hidden_matcher.matches()
+                    && !field.equals("pass_auto")) {
 
                 fk_matcher = fk.matcher(field);
                 auto_matcher = auto.matcher(field);
@@ -143,9 +156,25 @@ public class EntityServlet extends HttpServlet {
                             values,
                             "");
 
+                    if (entidad.getTableName().equals("Presidente")
+                            && Utils.firstUpper(fk_matcher.group(1)).equals("Alumno")) {
+                        // That was like wtf! ^
+                        vals = HelperSQL.obtenerFilas(
+                                Utils.firstUpper(fk_matcher.group(1)),
+                                values,
+                                " INNER JOIN Candidato AS c ON c.alumno = Alumno.codigo"
+                                + " ORDER BY codigo DESC");
+                    }
+
+                    System.out.println("\n ___ \n :::::FK VALUES:::: \t"
+                            + vals.toString()
+                            + "\n ___ \n ::::: \n");
+
+
+
                     int tmpMax = vals.size() - 1;
                     int tmpI = 0;
-
+                    
                     StringBuilder arrayValues = new StringBuilder();
                     arrayValues.append("[");
                     for (HashMap<String, Object> hashMap : vals) {
@@ -234,7 +263,6 @@ public class EntityServlet extends HttpServlet {
         for (Entry<String, String> field : entidad.getCols().entrySet()) {
             String fieldName = field.getKey();
             String fieldValue = field.getValue();
-
 
             auto_matcher = auto.matcher(fieldName);
 

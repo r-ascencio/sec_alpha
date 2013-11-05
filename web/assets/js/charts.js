@@ -7,20 +7,21 @@ function makePie() {
     $("#candidatoGrafica").kendoChart({
         title: {
             position: "top",
-            text: "Resultados Candidatos"
+            text: "Resultados Votaciones"
         },
         legend: {
             visible: true,
-            position: "bottom"
+            position: "left"
         },
         chartArea: {
             background: ""
         },
         seriesDefaults: {
             labels: {
-                visible: false,
+                visible: true,
                 background: "transparent",
-                template: "#= category #: #= value#%"
+                position: "outsideEnd",
+                template: "#= category #"
             }
         },
         dataSource: {
@@ -29,7 +30,7 @@ function makePie() {
         series: [{
                 type: "pie",
                 startAngle: 150,
-                field: "puntaje",
+                field: fieldPie,
                 categoryField: "nombre"
             }],
         tooltip: {
@@ -45,7 +46,7 @@ function makeBar() {
             text: "Proceso de votacion."
         },
         legend: {
-            visible: false
+            visible: true
         },
         seriesDefaults: {
             type: "bar"

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="AlumnosRestantesVotoConsejo" language="groovy" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2afb6197-4f89-4d58-9441-4f0ab2aa0073">
+	<property name="ireport.zoom" value="1.1586575189467514"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="Especialidad" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[7]]></defaultValueExpression>
+	</parameter>
+	<parameter name="baseURL" class="java.lang.String">
+		<defaultValueExpression><![CDATA[http://localhost:8080/]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT 
+
+
+	a.nombre AS 'Nombre',
+
+	e.nombre AS 'Especialidad', 
+
+	a.codigo AS 'Codigo', 
+
+	a.NIE AS 'NIE',
+
+	(
+	
+	SELECT 
+		COUNT(*) AS 'Total Alumnos' 
+	FROM 
+		Alumno AS a
+	WHERE 
+		a.especialidad = $P{Especialidad}
+	) AS 'Total de Alumnos',
+	
+	( 
+	SELECT 
+		COUNT(*) 
+	FROM 
+		Alumno a
+	WHERE 
+		a.especialidad = $P{Especialidad}
+		AND a.voto = FALSE	
+	) AS 'Alumnos sin votar'
+	
+FROM 
+
+	Alumno AS a 
+
+INNER JOIN 
+
+	Especialidad AS e 
+	ON e.codigo = a.especialidad
+
+WHERE 
+	votaciones = FALSE
+	AND a.especialidad = $P{Especialidad};]]>
+	</queryString>
+	<field name="Nombre" class="java.lang.String"/>
+	<field name="Especialidad" class="java.lang.String"/>
+	<field name="Codigo" class="java.lang.String"/>
+	<field name="NIE" class="java.lang.String"/>
+	<field name="Total de Alumnos" class="java.lang.Long"/>
+	<field name="Alumnos sin votar" class="java.lang.Long"/>
+	<variable name="Alumnos sin votar_1" class="java.lang.Long" resetType="Page" calculation="First">
+		<variableExpression><![CDATA[$F{Alumnos sin votar}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="98" splitType="Stretch">
+			<image isLazy="true">
+				<reportElement uuid="5c3757f9-c94b-4657-af17-745763c12c17" x="-22" y="-19" width="616" height="117" isRemoveLineWhenBlank="true"/>
+				<imageExpression><![CDATA[$P{baseURL}+"assets/img/header_bgr.jpg"]]></imageExpression>
+			</image>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement uuid="b215971b-b008-4175-ab10-8f7f48e46753" x="422" y="63" width="150" height="35"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="68" splitType="Stretch">
+			<textField>
+				<reportElement uuid="4f33a911-4b90-4098-a691-c3c772ec0c5a" x="1" y="48" width="298" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="14" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Especialidad}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="ef44994f-0262-4993-829c-ac32f3b2c40e" x="0" y="0" width="572" height="48"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="14" isBold="false" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Alumnos que no han participado en la votación por Presidente Estudiantil]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="bd145259-d75a-4f44-b443-7f059ab30da1" x="299" y="48" width="272" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="14" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Alumnos sin votar} + "/" + $F{Total de Alumnos}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="39" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="48d650a4-02ba-408b-9362-76f0ccab63e6" x="43" y="11" width="241" height="20"/>
+				<textElement>
+					<font fontName="DejaVu Sans" isBold="true" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Nombre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="fcedcfc5-77fd-47b3-a25a-107e082320b4" x="384" y="11" width="100" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" isBold="true" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[NIE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="39c16f37-d547-44ea-b982-b0bb76c057f0" x="284" y="11" width="100" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" isBold="true" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[Codigo]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="461c4d80-6b32-493d-9d33-c6a5bb7d45ca" x="1" y="2" width="570" height="1"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement uuid="c64843ef-4ddd-4c61-ade8-6d276a7c2734" x="384" y="0" width="100" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NIE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="d2fb3188-77f4-4601-8b3f-86deda27aaa7" x="284" y="0" width="100" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Codigo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="94c06edf-3fbb-49a6-ab61-a168a92567b7" x="43" y="0" width="241" height="20"/>
+				<textElement>
+					<font fontName="DejaVu Sans" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Nombre}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement uuid="6611c72f-5f7b-44db-aa0c-507b1b703ad0" x="236" y="9" width="80" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="DejaVu Sans" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pagina "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="ebe3fcfc-ad37-4eda-9813-707826f3d541" x="316" y="9" width="40" height="20"/>
+				<textElement>
+					<font fontName="DejaVu Sans" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

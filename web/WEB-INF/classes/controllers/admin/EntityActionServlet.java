@@ -1,6 +1,7 @@
 package controllers.admin;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.logging.Level;
@@ -37,22 +38,31 @@ public class EntityActionServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        response.setCharacterEncoding("UTF-8");
+        request.setCharacterEncoding("UTF-8");
+        
         if (request.getAttribute("entityName") != null) {
             try {
                 tablaClass = Class.forName("models." + request.getAttribute("entityName"));
                 tabla = (Tabla) tablaClass.newInstance();
-                System.out.println("You're here tabla....");
-
             } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
                 System.out.println(e.getMessage());
             }
         }
 
         if (request.getAttribute("action") != null) {
-            String action = (String) request.getAttribute("action");
+            String action = new String(String.valueOf(
+                    request.getAttribute("action")).getBytes(),
+                    StandardCharsets.UTF_8);
             if (request.getParameter("models") != null) {
+
+                System.out.println("\n :::::: MODEL PARAMETER : "
+                        + new String(String.valueOf(
+                    request.getParameter("models")).getBytes(),
+                    StandardCharsets.UTF_8) + " \n ::::: \n");
+                
                 models = new JSONArray(request.getParameter("models"));
+                
                 switch (action) {
 
                     case "create":
@@ -94,8 +104,7 @@ public class EntityActionServlet extends HttpServlet {
                                     field = "codigo"; // dont hur't me babe, dont hur't me.
                                 }
                                 tabla.Borrar(
-                                        String.valueOf(model.get(field))
-                                        );
+                                        String.valueOf(model.get(field)));
                             } catch (Exception ex) {
                                 Logger.getLogger(EntityActionServlet.class.getName()).log(Level.SEVERE, null, ex);
                             }
@@ -106,7 +115,8 @@ public class EntityActionServlet extends HttpServlet {
                         for (int i = 0; i < models.length(); i++) {
                             JSONObject model = models.getJSONObject(i);
                             ArrayList<String> values = new ArrayList<>();
-
+                            System.out.println("JSON MODEL: "
+                                    + model.toString());
                             for (int j = 0; j < tabla.getColsName().length; j++) {
                                 String fieldName = tabla.getColsName()[j];
 
@@ -119,8 +129,14 @@ public class EntityActionServlet extends HttpServlet {
                                     fieldName = auto_matcher.group(1);
                                 }
 
-                                String value = String.valueOf(
-                                        model.get(fieldName));
+                                System.out.println(" \n :::: \n "
+                                        + String.valueOf(model.get(fieldName))
+                                        + " \n :::: \n ");
+
+                                String value = new String(String.valueOf(
+                                        model.get(fieldName)).getBytes(), StandardCharsets.UTF_8);
+                                System.out.println(
+                                        "\n :: VALUE ::" + value + "\n");
                                 values.add(value);
                             }
 

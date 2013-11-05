@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -41,7 +40,7 @@ public class UploadExcelAlumnoServlet extends HttpServlet {
     private String xlsxContentType =
             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
     private boolean isMultipart;
-    private String uploadPath;
+    private String uploadPath = "";
 
     /**
      * Handles the HTTP
@@ -135,7 +134,7 @@ public class UploadExcelAlumnoServlet extends HttpServlet {
                                 ArrayList<HashMap<String, String>> rowsExcel = new ArrayList<>();
                                 ArrayList<String> nombreEspecialidades = new ArrayList<>();
 
-                                for (int x = 1; x < nRows; x++) {
+                                for (int x = 0; x < nRows; x++) {
                                     //Get the row
                                     Row row = sheet.getRow(x);
 
@@ -147,10 +146,10 @@ public class UploadExcelAlumnoServlet extends HttpServlet {
                                     row.getCell(2).setCellType(Cell.CELL_TYPE_STRING);
                                     tmp.put("NIE", row.getCell(2).getStringCellValue());
 
-                                    String nombre = row.getCell(3).getStringCellValue()
-                                            .concat(" " + row.getCell(4).getStringCellValue()
-                                            .concat(" " + row.getCell(5).getStringCellValue())
-                                            .concat(" " + row.getCell(6).getStringCellValue()));
+                                    String nombre = row.getCell(3).getStringCellValue().trim()
+                                            .concat(" " + row.getCell(4).getStringCellValue().trim()
+                                            .concat(" " + row.getCell(5).getStringCellValue().trim())
+                                            .concat(" " + row.getCell(6).getStringCellValue().trim()));
 
                                     tmp.put("nombre", nombre);
 
@@ -204,14 +203,15 @@ public class UploadExcelAlumnoServlet extends HttpServlet {
                                     values.add(nombreEspecialidad);
                                     // Shame on me?
                                     values.add("0");
+                                    values.add("3");
                                     try {
                                         HelperSQL.insertarFila(
                                                 modeloEspecialidad.getTableName(),
                                                 modeloEspecialidad.getColsName(),
                                                 values);
                                     } catch (Exception e) {
-                                        System.out.println("\n\t\tERROR.");
-                                        System.out.println("\n\t\t" + e.getMessage());
+                                        System.out.println("\n\n\t\tERROR : : :: : : : : :  ::  : :: :: ::: \n\n");
+                                        System.out.println("\n\n\t\t" + e.getMessage() + "\t\t\n\n");
                                     }
                                 }
 
@@ -237,6 +237,8 @@ public class UploadExcelAlumnoServlet extends HttpServlet {
                                                 .concat("\'")));
                                         //shame on me??
                                         HelperSQL.desconectar();
+                                        
+                                        if (tmpCodigoEspecialidad.size() > 0) {
                                         values.add(tmpCodigoEspecialidad
                                                 .get(0).get("codigo").toString());
                                         tmpCodigoEspecialidad = null;
@@ -250,9 +252,13 @@ public class UploadExcelAlumnoServlet extends HttpServlet {
                                         //shame on me??
                                         HelperSQL.desconectar();
                                         System.out.println("\n ::: INSERT ::: \n");
-
+                                        } else {
+                                        System.out.println("\n ::: "+ tmpAlumno.get("nombreEspecialidad")  +" ::: \n");
+                                        }
 
                                     } catch (Exception e) {
+                                        System.out.println("\n::::::::::\n");
+                                        e.printStackTrace();
                                         System.out.println("\n::::::::::\n");
                                         System.out.println("\nError: Actualizacion tabla.");
                                         System.out.println("\n::::::::::\n");

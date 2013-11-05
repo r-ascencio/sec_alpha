@@ -70,9 +70,18 @@
                             <div class="twelvecol">
                                 <span class="twocol"></span>
                                 <span class="eightcol">
-                                    <img 
-                                        src="${alumno_imagen}"
-                                        />
+                                    <c:choose>
+                                        <c:when test="${alumno_imagen}">
+                                            <img 
+                                                src="${alumno_imagen}"
+                                                /> 
+                                        </c:when>
+                                        <c:otherwise>
+                                            <img class="none"
+                                                src="${baseURL}/assets/img/ad_astra.jpg"
+                                                /> 
+                                        </c:otherwise>
+                                    </c:choose>
                                 </span>
                                 <span class="twocol last"></span>
                             </div>
@@ -185,15 +194,25 @@
                                 <span class="twocol"></span>
                                 <span class="eightcol" style="
                                       text-align: center;">
-                                    <a href="${baseURL}/votacion/presidentes/login/"
-                                       class="btn success">
-                                    Aceptar
-                                    </a>
+                                    <c:choose>
+                                        <c:when test="${action != null}">
+                                            <a href="${baseURL}/${action}"
+                                               class="btn success">
+                                                Aceptar
+                                            </a>  
+                                        </c:when>
+                                        <c:otherwise>
+                                            <a href="${baseURL}/votacion/eleccion/"
+                                               class="btn success">
+                                                Aceptar
+                                            </a> 
+                                        </c:otherwise>
+                                    </c:choose>
                                 </span>
                                 <span class="twocol last"></span>
                             </div>
                             <!-- -->
-                            
+
                         </div>
                     </div>
                 </div>

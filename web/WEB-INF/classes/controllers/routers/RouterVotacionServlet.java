@@ -5,12 +5,16 @@
 package controllers.routers;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import utils.HelperSQL;
 
 /**
  *
@@ -34,18 +38,57 @@ public class RouterVotacionServlet extends HttpServlet {
         // URL Patterns
         Pattern VOTACION = Pattern.compile("/votacion(/?)$");
         Pattern VOTACION_LOGIN = Pattern.compile("/votacion/login(/?)$");
+        Pattern VOTACIONES = Pattern.compile("/votacion/eleccion(/?)$");
+        Pattern VOTACIONES_LOGIN = Pattern.compile("/votacion/eleccion/login(/?)$");
         Pattern VOTACION_PRESIDENTE = Pattern.compile("/votacion/presidente(/?)$");
         Pattern VOTACION_ELECTOS = Pattern.compile("/votacion/presidente/electos(/?)$");
         Pattern VOTACION_ELECTOS_P = Pattern.compile("/votacion/presidentes/electos(/?)$");
         Pattern VOTACION_PRESIDENTE_LOGIN = Pattern.compile("/votacion/presidente/login(/?)$");
         Pattern VOTACION_PRESIDENTES_LOGIN = Pattern.compile("/votacion/presidentes/login(/?)$");
         Pattern VOTACION_PRESIDENTES = Pattern.compile("/votacion/presidentes(/?)$");
+        Pattern VOTACION_2PRESIDENTES_LOGIN = Pattern.compile("/votacion/elecciones/login(/?)$");
+        Pattern VOTACION_2PRESIDENTES = Pattern.compile("/votacion/elecciones(/?)$");
+        Pattern VOTACION_ELECTOS_2P = Pattern.compile("/votacion/elecciones/electos(/?)$");
         Pattern VOTACION_COMPLETADA = Pattern.compile("/votacion/completada(/?)$");
         // /URL Patterns
         Matcher matcher;
         // url requested
         String pathInfo = request.getRequestURI().
                 substring(request.getContextPath().length());
+
+        ArrayList<String> values = new ArrayList<>();
+        values.clear();
+        values.add("nombre, valor");
+        List<HashMap<String, Object>> tipoVotacion = HelperSQL.obtenerFilas(
+                "configuraciones",
+                values, "");
+
+        request.getSession().setAttribute("ConfVotacionP", tipoVotacion.get(0).get("valor"));
+        request.getSession().setAttribute("ConfVotacionN", tipoVotacion.get(1).get("valor"));
+        request.getSession().setAttribute("faseConsejo", tipoVotacion.get(2).get("valor"));
+        request.getSession().setAttribute("dosElecciones", tipoVotacion.get(3).get("valor"));
+        request.getSession().setAttribute("cincoElecciones", tipoVotacion.get(4).get("valor"));
+
+        // /votacion/login/
+
+        matcher = VOTACIONES_LOGIN.matcher(pathInfo);
+
+        if (matcher.matches()) {
+            request.
+                    getServletContext()
+                    .getNamedDispatcher("VotacionesIndexServlet")
+                    .forward(request, response);
+            return;
+        }
+        // /votacion/
+        matcher = VOTACIONES.matcher(pathInfo);
+        if (matcher.matches()) {
+            request.
+                    getServletContext()
+                    .getNamedDispatcher("ReturnEleccionesQuestionsServlet")
+                    .forward(request, response);
+            return;
+        }
 
         // /votacion/
         matcher = VOTACION.matcher(pathInfo);
@@ -56,8 +99,7 @@ public class RouterVotacionServlet extends HttpServlet {
                     .forward(request, response);
             return;
         }
-
-        // /votacion/login/
+// /votacion/login/
 
         matcher = VOTACION_LOGIN.matcher(pathInfo);
 
@@ -68,6 +110,7 @@ public class RouterVotacionServlet extends HttpServlet {
                     .forward(request, response);
             return;
         }
+
 
         // /votacion/presidente
 
@@ -90,8 +133,21 @@ public class RouterVotacionServlet extends HttpServlet {
                     .forward(request, response);
             return;
         }
-        
+
         // votacion/presidente/electos
+
+        // Votacion Elecciones Presidentes 2 {{
+        matcher = VOTACION_2PRESIDENTES.matcher(pathInfo);
+
+        if (matcher.matches()) {
+            request.
+                    getServletContext()
+                    .getNamedDispatcher("Eleccion2PresidenteServlet")
+                    .forward(request, response);
+            return;
+        }
+        // }} Votacion Elecciones Presidentes 2
+
         /**
          * Retorna un JSON con los datos del consejo.
          */
@@ -104,9 +160,10 @@ public class RouterVotacionServlet extends HttpServlet {
                     .forward(request, response);
             return;
         }
-        
+
         /**
-         * Retorna un JSON con los datos de la gente escogida para ser presidente.
+         * Retorna un JSON con los datos de la gente escogida para ser
+         * presidente.
          */
         matcher = VOTACION_ELECTOS_P.matcher(pathInfo);
 
@@ -119,6 +176,22 @@ public class RouterVotacionServlet extends HttpServlet {
         }
 
         // /votacion/presidente/login
+
+
+        /**
+         * Retorna un JSON con los datos de la gente escogida para ser
+         * presidente.
+         */
+        matcher = VOTACION_ELECTOS_2P.matcher(pathInfo);
+
+        if (matcher.matches()) {
+            request.
+                    getServletContext()
+                    .getNamedDispatcher("sourceCandidato2Votacion")
+                    .forward(request, response);
+            return;
+        }
+
 
         matcher = VOTACION_PRESIDENTE_LOGIN.matcher(pathInfo);
 
@@ -140,9 +213,20 @@ public class RouterVotacionServlet extends HttpServlet {
             return;
         }
 
-
-
         // /votacion/completada/
+
+        // Votacion Elecciones Presidentes 2 {{
+        matcher = VOTACION_2PRESIDENTES_LOGIN.matcher(pathInfo);
+
+        if (matcher.matches()) {
+            request.
+                    getServletContext()
+                    .getNamedDispatcher("VotacionIndex2PresidenteServlet")
+                    .forward(request, response);
+            return;
+        }
+        // }} Votacion Elecciones Presidentes 2
+
 
         matcher = VOTACION_COMPLETADA.matcher(pathInfo);
 

@@ -54,8 +54,10 @@ public class SourceOnlyPresidenteServlet extends HttpServlet {
         values.add("p.imagen_src as imagen_src");
         values.add("p.alumno as alumno");
         String condicion = " as p "
-                + " JOIN Alumno as a"
-                + " ON a.codigo = p.alumno ";
+                + " INNER JOIN Alumno as a"
+                + " ON a.codigo = p.alumno "
+                + " INNER JOIN Candidato as c"
+                + " ON c.alumno = a.codigo";
 
 
         out.print(

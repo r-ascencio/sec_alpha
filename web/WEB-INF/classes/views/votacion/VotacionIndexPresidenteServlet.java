@@ -36,18 +36,23 @@ public class VotacionIndexPresidenteServlet extends HttpServlet {
         votacion_realizada =
                 String.valueOf(request.getSession().getAttribute("voto_p"));
 
+        System.out.println("HERE PRESIDENTE VOTACION INDEX SERVLET");
+
         if (votacion_realizada != null) {
             if (votacion_realizada.equals("true")
                     || votacion_realizada.equals("1")) {
-                message = "El alumno "
-                        + request.getSession().getAttribute("NIE")
-                        + " ya ha realizado la votacion";
+                if (request.getSession().getAttribute("NIE") != null) {
+                    message = "El alumno "
+                            + request.getSession().getAttribute("NIE")
+                            + " ya ha realizado la votacion";
+                }
             }
         }
 
         request.setAttribute("message", message);
-        request.getRequestDispatcher(
-                "/WEB-INF/templates/votacionPresidenteIndex.jsp")
+
+        // not a valid student.
+        request.getRequestDispatcher("/WEB-INF/templates/votacionPresidenteIndex.jsp")
                 .forward(request, response);
     }
 
@@ -63,22 +68,23 @@ public class VotacionIndexPresidenteServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        /*  SELECT to Alumno */ 
+
+        /*  SELECT to Alumno */
         Alumno alumno = new Alumno();
         ArrayList<String> values = new ArrayList<>();
         values.add("*");
         String alumnoCodigo = "";
-        
+
         // this is from the form?
         if (request.getParameter("codigo") != null) {
+            System.out.println(".......................");
             alumnoCodigo = request.getParameter("codigo");
         } else {
             // go to login if you don't exists.
             response.sendRedirect(request.getContextPath()
                     + "/votacion/presidente/login/");
         }
-        
+
         // getting the "alumno"
         List<HashMap<String, Object>> alumnos = HelperSQL.obtenerFilas(
                 alumno.getTableName(), values, "WHERE codigo = "
@@ -93,8 +99,8 @@ public class VotacionIndexPresidenteServlet extends HttpServlet {
                     + "/votacion/presidente");
         } else {
             // not a valid student.
-            response.sendRedirect(request.getContextPath()
-                    + "/votacion/presidente/login");
+            request.getRequestDispatcher("/WEB-INF/templates/votacionPresidenteIndex.jsp")
+                    .forward(request, response);
         }
 
     }

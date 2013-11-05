@@ -1,11 +1,11 @@
 package models;
 
 public class Usuario extends Tabla {
-;
+    
+    private Integer codigo_auto;
     private String nombre;
-    private String descripcion;
     private String pass_auto;
-    private Integer hidden_codigo;
+    private String descripcion;
 
     public Usuario() {
         super();

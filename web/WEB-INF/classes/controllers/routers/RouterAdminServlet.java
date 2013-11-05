@@ -1,6 +1,9 @@
 package controllers.routers;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -8,6 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import utils.HelperSQL;
 
 /**
  * AdminRouterServlet, es un intento por hacer las url's dinamicas.
@@ -75,13 +79,27 @@ public class RouterAdminServlet extends HttpServlet {
         String pathInfo = request.getRequestURI().substring(request.getContextPath().length());
 
         System.out.println("::::: " + pathInfo + " :::::");
+        
+        
+        ArrayList<String> values = new ArrayList<>();
+        values.clear();
+        values.add("nombre, valor");
+        List<HashMap<String, Object>> tipoVotacion = HelperSQL.obtenerFilas(
+                "configuraciones",
+                values, "");
+        
+        request.getSession().setAttribute("ConfVotacionP", tipoVotacion.get(0).get("valor"));
+        request.getSession().setAttribute("ConfVotacionN", tipoVotacion.get(1).get("valor"));
+        request.getSession().setAttribute("faseConsejo", tipoVotacion.get(2).get("valor"));
+        request.getSession().setAttribute("dosElecciones", tipoVotacion.get(3).get("valor"));
+        request.getSession().setAttribute("cincoElecciones", tipoVotacion.get(4).get("valor"));
+        
         // Enumeration enumeration = request.getParameterNames();
         // while (enumeration.hasMoreElements()) {
         // String parameterName = (String) enumeration.nextElement();
         // System.out.println(request.getAttribute(parameterName) + " : " +
         // parameterName);
         // }
-
 
         matcher = ADMIN_LOGOUT.matcher(pathInfo);
         if (matcher.matches()) {
@@ -103,9 +121,9 @@ public class RouterAdminServlet extends HttpServlet {
 
             return;
         }
-        
+
         matcher = ADMIN_SETTINGS.matcher(pathInfo);
-        
+
         if (matcher.matches()) {
             getServletContext()
                     .getNamedDispatcher("ConfiguracionServlet")
@@ -230,7 +248,7 @@ public class RouterAdminServlet extends HttpServlet {
                     .forward(request, response);
             return;
         }
-        
+
         matcher = ADMIN_LOGIN.matcher(pathInfo);
         if (matcher.matches()) {
 
@@ -238,7 +256,7 @@ public class RouterAdminServlet extends HttpServlet {
                     .getNamedDispatcher("AdminSessionServlet")
                     .forward(request, response);
             return;
-        } 
+        }
 
 
         // "********************************************"

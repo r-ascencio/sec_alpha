@@ -13,7 +13,9 @@ $('#preguntas-form').stepy({
 
 // find a better way...
 jQuery.extend(jQuery.validator.messages, {
-    required: "Este campo es requerido."
+    required: "Campo requerido."
 });
+
+$(".stepy-navigator").find('a').addClass("btn").text("Siguiente Candidato > ");
 
 $('.button-back').remove();
