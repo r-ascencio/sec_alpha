@@ -60,9 +60,7 @@ public class VotacionPresidenteServlet extends HttpServlet {
         
         
         if (alumnos.size() == 1
-                || alumnos.get(0).get("voto_p").equals("false")
-                || alumnos.get(0).get("voto_p") == 0
-                || alumnos.get(0).get("voto_p") == false) {
+                || alumnos.get(0).get("voto_p").equals("false")) {
             
             System.out.println(alumnos.get(0).get("voto_p"));
             

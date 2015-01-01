@@ -7,6 +7,10 @@
 
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 
+<c:set var="baseURL" value="${fn:replace(pageContext.request.requestURL, 
+                              pageContext.request.requestURI, 
+                              pageContext.request.contextPath)}" />
+
 <head>
     <title>
         sec - inicio

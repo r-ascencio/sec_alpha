@@ -381,5 +381,5 @@
         </jsp-property-group>
     </jsp-config>
     <!-- /confs -->
-    <servlet-name>setConsejo</servlet-name>
+    
 </web-app>

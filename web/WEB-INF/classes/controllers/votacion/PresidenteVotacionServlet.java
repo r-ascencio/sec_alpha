@@ -56,7 +56,7 @@ public class PresidenteVotacionServlet extends HttpServlet {
 
             if (alumnos.size() > 0
                     || alumnos.get(0).get("voto_p").equals("false")
-                    || alumnos.get(0).get("voto_p") == 0) {
+                   ) {
 
                 request.getRequestDispatcher("/WEB-INF/templates/votacionPresidente.jsp")
                         .forward(request, response);

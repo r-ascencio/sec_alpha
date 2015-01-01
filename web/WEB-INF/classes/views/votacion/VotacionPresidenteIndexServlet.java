@@ -104,9 +104,7 @@ public class VotacionPresidenteIndexServlet extends HttpServlet {
                 + alumnoCodigo + " LIMIT 1");
 //shame on me.
         if (votantes.size() > 0
-                && (votantes.get(0).get("voto_realizado").equals("false")
-                || votantes.get(0).get("voto_realizado") == 0
-                || votantes.get(0).get("voto_realizado") == false)) {
+                && (votantes.get(0).get("voto_realizado").equals("false"))) {
             HttpSession session = request.getSession(true);
             session.setAttribute("codigo", votantes.get(0).get("codigo"));
             session.setAttribute("NIE", votantes.get(0).get("NIE"));
